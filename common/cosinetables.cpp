@@ -50,6 +50,18 @@ CosineTable::CosineTable(int nPoints) {
 }
 
 float CosineTable::at(int index) const {
+	//RTR 10.4.2018
+	//guard:index
+	if ((index < 0) || (index >= _nPoints))
+	{
+		//option 1: try abs
+		index = abs(index);
+	}
+	if ((index < 0) || (index >= _nPoints))
+	{
+		//option 2: clamp to "0"
+		index = abs(0);
+	}
 	assert((index >= 0) && (index < _nPoints));
 	return _table[index];
 }

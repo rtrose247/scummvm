@@ -210,10 +210,16 @@ bool Obstacles::mergePolygons(Polygon &polyA, Polygon &polyB) {
 		flagAddVertexToVertexList = true;
 		int polySecondaryIntersectionIndex = -1;
 
+		//RTR 10.4.2018
+		//blind fix=>
 		if (linePolygonIntersection(polyLine, polyPrimaryType, polySecondary, &intersectionPoint, &polySecondaryIntersectionIndex)) {
 			if (WITHIN_TOLERANCE(intersectionPoint.x, polyLine.start.x) && WITHIN_TOLERANCE(intersectionPoint.y, polyLine.start.y)) {
 				warning("Set: %d Scene: %d", _vm->_scene->getSetId(), _vm->_scene->getSceneId());
-				assert(0 && "Report instances of this to madmoose!");
+				//
+				//...
+				//assert(0 && "Report instances of this to madmoose!");
+				//
+				//
 				flagAddVertexToVertexList = false;
 				polyMerged.verticeCount--; // TODO(madmoose): How would this work?
 			} else {

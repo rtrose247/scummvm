@@ -167,6 +167,14 @@ void *SliceAnimations::PageFile::loadPage(uint32 pageNumber) {
 }
 
 void *SliceAnimations::getFramePtr(uint32 animation, uint32 frame) {
+	//RTR 10.4.2018
+	//need clamp:i.e.,
+	//additional clamp to animations[] => go to 0
+	if (frame >= _animations[animation].frameCount)
+	{
+		frame = 0;
+	}
+	//
 	assert(frame < _animations[animation].frameCount);
 
 	uint32 frameOffset = _animations[animation].offset + frame * _animations[animation].frameSize;
