@@ -7,7 +7,7 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * of the License, or (at your option) any later version.Zuben:11:Actor_Face_Heading
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -232,42 +232,57 @@ void AIScriptZuben::OtherAgentEnteredCombatMode(int otherActorId, int combatMode
 
 void AIScriptZuben::ShotAtAndMissed() {
 	//return false;
+	Scene_Exits_Enable();
 }
 
 bool AIScriptZuben::ShotAtAndHit() {
+	//RTR 10.21.2018
+	Scene_Exits_Enable();
+	//
 	Game_Flag_Set(712);
-	if (Actor_Query_Goal_Number(kActorZuben) == 5 && !Actor_Clue_Query(kActorZuben, kClueMcCoyShotZubenInTheBack)) {
-		Actor_Clue_Acquire(kActorZuben, kClueMcCoyShotZubenInTheBack, true, -1);
-		Actor_Clue_Lose(kActorZuben, kClueMcCoyLetZubenEscape);
+	//RTR 10.21.2018
+	//if (Actor_Query_Goal_Number(kActorZuben) == 5 && !Actor_Clue_Query(kActorZuben, kClueMcCoyShotZubenInTheBack)) {
+	Actor_Clue_Acquire(kActorZuben, kClueMcCoyShotZubenInTheBack, true, -1);
+	Actor_Clue_Lose(kActorZuben, kClueMcCoyLetZubenEscape);
+	//
+	if (Random_Query(1, 9) < 3) {
 		Actor_Start_Speech_Sample(kActorMcCoy, 490);
 	}
+	//}
+	//
 	if (Player_Query_Current_Scene() == kSceneCT07) {
 		Music_Stop(2);
 	}
+	//
 	return false;
 }
 
 void AIScriptZuben::Retired(int byActorId) {
-	if (!Actor_Query_In_Set(kActorZuben, kSetKP07)) {
-		// return false;
-		return;
-	}
+	//if (!Actor_Query_In_Set(kActorZuben, kSetKP07)) {
+	//// return false;
+	//	return;
+	//}
 	Global_Variable_Decrement(51, 1);
 	Actor_Set_Goal_Number(kActorZuben, 599);
+	//
+	//RTR 10.22.2018
 	if (Global_Variable_Query(51)) {
 		// return false;
 		return;
 	}
+	//
 	//RTR 10.4.2018
-	//Player_Loses_Control();
-	//Delay(2000);
+	Player_Loses_Control();
+	Delay(2000);
 	Player_Set_Combat_Mode(false);
 	Loop_Actor_Walk_To_XYZ(kActorMcCoy, -12.0f, -41.58f, 72.0f, 0, true, false, 0);
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 	Ambient_Sounds_Remove_All_Looping_Sounds(1);
 	Game_Flag_Set(579);
 	Game_Flag_Reset(653);
+	//????
 	Set_Enter(kSetKP05_KP06, kSceneKP06);
+	//^^^^
 	// return true;
 }
 
@@ -289,12 +304,12 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		//
 		Scene_Exits_Enable();
 		//
-		//AI_Movement_Track_Append(kActorZuben, 86, 0);
-		//AI_Movement_Track_Append(kActorZuben, 106, 0);
-		//AI_Movement_Track_Append_With_Facing(kActorZuben, 45, 0, 481);
-		//AI_Movement_Track_Repeat(kActorZuben);
+		AI_Movement_Track_Append(kActorZuben, 86, 0);
+		AI_Movement_Track_Append(kActorZuben, 106, 0);
+		AI_Movement_Track_Append_With_Facing(kActorZuben, 45, 0, 481);
+		AI_Movement_Track_Repeat(kActorZuben);
 		//retire:
-		Actor_Set_Goal_Number(kActorZuben, 6);
+		//Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 2:
 		//
@@ -305,16 +320,16 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		//
 		Scene_Exits_Enable();
 		//
-		//AI_Movement_Track_Append_Run(kActorZuben, 84, 0);
-		//AI_Movement_Track_Append_Run(kActorZuben, 85, 0);
-		//AI_Movement_Track_Append(kActorZuben, 39, 0);
-		//AI_Countdown_Timer_Reset(kActorZuben, 1);
-		//AI_Countdown_Timer_Start(kActorZuben, 1, 10);
-		//AI_Countdown_Timer_Reset(kActorZuben, 0);
-		//AI_Countdown_Timer_Start(kActorZuben, 0, 70);
-		//AI_Movement_Track_Repeat(kActorZuben);
+		AI_Movement_Track_Append_Run(kActorZuben, 84, 0);
+		AI_Movement_Track_Append_Run(kActorZuben, 85, 0);
+		AI_Movement_Track_Append(kActorZuben, 39, 0);
+		AI_Countdown_Timer_Reset(kActorZuben, 1);
+		AI_Countdown_Timer_Start(kActorZuben, 1, 10);
+		AI_Countdown_Timer_Reset(kActorZuben, 0);
+		AI_Countdown_Timer_Start(kActorZuben, 0, 70);
+		AI_Movement_Track_Repeat(kActorZuben);
 		//retire:
-		Actor_Set_Goal_Number(kActorZuben, 6);
+		//Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 4:
 		//
@@ -325,26 +340,26 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		//
 		Scene_Exits_Enable();
 		//
-		//Actor_Face_Actor(kActorZuben, kActorMcCoy, true);
-		//Music_Stop(3);
-		//Actor_Says(kActorZuben, 100, 19);
-		//Actor_Says(kActorMcCoy, 470, 12);
-		//Actor_Says(kActorZuben, 110, 18);
-		//Actor_Says(kActorMcCoy, 475, 12);
-		//Actor_Says(kActorZuben, 120, 15);
-		//Actor_Says(kActorMcCoy, 480, 16);
-		//Actor_Says(kActorZuben, 130, 17);
-		//Actor_Says(kActorMcCoy, 485, 14);
-		//if (Random_Query(1, 3) < 3) {
-		//	Actor_Clue_Acquire(kActorZuben, kClueMcCoysDescription, 1, -1);
-		//}
-		//if (Random_Query(1, 5) < 5) {
-		//	Actor_Clue_Acquire(kActorZuben, kClueMcCoyIsABladeRunner, 1, -1);
-		//}
-		//Actor_Clue_Acquire(kActorZuben, kClueMcCoyLetZubenEscape, 1, -1);
-		//Actor_Set_Goal_Number(kActorZuben, 5);
+		Actor_Face_Actor(kActorZuben, kActorMcCoy, true);
+		Music_Stop(3);
+		Actor_Says(kActorZuben, 100, 19);
+		Actor_Says(kActorMcCoy, 470, 12);
+		Actor_Says(kActorZuben, 110, 18);
+		Actor_Says(kActorMcCoy, 475, 12);
+		Actor_Says(kActorZuben, 120, 15);
+		Actor_Says(kActorMcCoy, 480, 16);
+		Actor_Says(kActorZuben, 130, 17);
+		Actor_Says(kActorMcCoy, 485, 14);
+		if (Random_Query(1, 3) < 3) {
+			Actor_Clue_Acquire(kActorZuben, kClueMcCoysDescription, 1, -1);
+		}
+		if (Random_Query(1, 5) < 5) {
+			Actor_Clue_Acquire(kActorZuben, kClueMcCoyIsABladeRunner, 1, -1);
+		}
+		Actor_Clue_Acquire(kActorZuben, kClueMcCoyLetZubenEscape, 1, -1);
+		Actor_Set_Goal_Number(kActorZuben, 5);
 		//retire:
-		Actor_Set_Goal_Number(kActorZuben, 6);
+		//Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 5:
 		//
@@ -355,11 +370,11 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		//
 		Scene_Exits_Enable();
 		//
-		//AI_Movement_Track_Append_Run(kActorZuben, 94, 0);
-		//AI_Movement_Track_Append_Run(kActorZuben, 33, 0);
-		//AI_Movement_Track_Repeat(kActorZuben);
+		AI_Movement_Track_Append_Run(kActorZuben, 94, 0);
+		AI_Movement_Track_Append_Run(kActorZuben, 33, 0);
+		AI_Movement_Track_Repeat(kActorZuben);
 		//retire:
-		Actor_Set_Goal_Number(kActorZuben, 6);
+		//Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 6:
 		//!!
@@ -388,7 +403,7 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		_animationState = 26;
 		//
 		//retire:
-		Actor_Set_Goal_Number(kActorZuben, 6);
+		//Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 9:
 		//
@@ -399,47 +414,50 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		//
 		Scene_Exits_Enable();
 		//
-		//AI_Movement_Track_Append_Run(kActorZuben, 46, 0);
-		//AI_Movement_Track_Repeat(kActorZuben);
+		AI_Movement_Track_Append_Run(kActorZuben, 46, 0);
+		AI_Movement_Track_Repeat(kActorZuben);
 		//retire:
-		Actor_Set_Goal_Number(kActorZuben, 6);
+		//Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 10:
 		//
-		//Actor_Set_Targetable(kActorZuben, true);
-		//AI_Movement_Track_Flush(kActorZuben);
+		Actor_Set_Targetable(kActorZuben, true);
+		AI_Movement_Track_Flush(kActorZuben);
 		//
 		Game_Flag_Set(kFlagWarehouseOpen);
 		//
 		Scene_Exits_Enable();
 		//
-		//Actor_Face_Heading(kActorZuben, kActorMcCoy, false);
-		//_animationFrame = 0;
-		//_animationState = 27;
+		Actor_Face_Heading(kActorZuben, kActorMcCoy, false);
+		_animationFrame = 0;
+		_animationState = 27;
 		//retire:
-		Actor_Set_Goal_Number(kActorZuben, 6);
+		//Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 11:
 		//
-		//Actor_Set_Targetable(kActorZuben, true);
-		//AI_Movement_Track_Flush(kActorZuben);
+		Actor_Set_Targetable(kActorZuben, true);
+		AI_Movement_Track_Flush(kActorZuben);
 		//
 		Game_Flag_Set(kFlagWarehouseOpen);
 		//
 		Scene_Exits_Enable();
 		//
-		//AI_Countdown_Timer_Reset(kActorZuben, 0);
-		//Actor_Put_In_Set(kActorZuben, kSetCT06);
-		//Actor_Set_At_XYZ(kActorZuben, 37.14f, -58.23f, 4.0f, 256);
-		//_animationFrame = 0;
-		//_animationState = 28;
+		AI_Countdown_Timer_Reset(kActorZuben, 0);
+		Actor_Put_In_Set(kActorZuben, kSetCT06);
+		Actor_Set_At_XYZ(kActorZuben, 37.14f, -58.23f, 4.0f, 256);
+		_animationFrame = 0;
+		_animationState = 28;
+		// change Zuben 's heading
+		Actor_Face_Heading(kActorZuben, kActorMcCoy, true);
+		//
 		//retire:
-		Actor_Set_Goal_Number(kActorZuben, 6);
+		//Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 12:
 		//
-		//Actor_Set_Targetable(kActorZuben, true);
-		//AI_Movement_Track_Flush(kActorZuben);
+		Actor_Set_Targetable(kActorZuben, true);
+		AI_Movement_Track_Flush(kActorZuben);
 		//
 		Game_Flag_Set(kFlagWarehouseOpen);
 		//
@@ -450,51 +468,68 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		//	Player_Set_Combat_Mode(true);
 		//}
 		//Player_Gains_Control();
+		//
 		Game_Flag_Set(142);
+		//
+		//???
+		//=>causing unwanted scene transition...if at McCoy apt rooftop....
+		//=>
 		Set_Enter(kSetCT07, kSceneCT07);
-		//retire:
+		//
+		//^^^^
+		// change Zuben 's heading
+		Actor_Face_Heading(kActorZuben, kActorMcCoy, true);
+		//
+		//=>
+		//retire:12+
 		Actor_Set_Goal_Number(kActorZuben, 6);
+		//
+		//
 		return false;
 	case 13:
 		//
-		//Actor_Set_Targetable(kActorZuben, true);
-		//AI_Movement_Track_Flush(kActorZuben);
+		Actor_Set_Targetable(kActorZuben, true);
+		AI_Movement_Track_Flush(kActorZuben);
 		//
 		Game_Flag_Set(kFlagWarehouseOpen);
 		//
 		Scene_Exits_Enable();
 		//
-		//AI_Movement_Track_Append_Run(kActorZuben, 51, 0);
-		//AI_Movement_Track_Append_Run(kActorZuben, 51, 0);
-		//AI_Movement_Track_Append_Run(kActorZuben, 48, 0);
-		//AI_Movement_Track_Append(kActorZuben, 33, 1);
-		//AI_Movement_Track_Repeat(kActorZuben);
-		//retire:
+		AI_Movement_Track_Append_Run(kActorZuben, 51, 0);
+		AI_Movement_Track_Append_Run(kActorZuben, 51, 0);
+		AI_Movement_Track_Append_Run(kActorZuben, 48, 0);
+		AI_Movement_Track_Append(kActorZuben, 33, 1);
+		AI_Movement_Track_Repeat(kActorZuben);
+		//retire:12+		
 		Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 14:
 		//
-		//Actor_Set_Targetable(kActorZuben, true);
-		//AI_Movement_Track_Flush(kActorZuben);
+		Actor_Set_Targetable(kActorZuben, true);
+		AI_Movement_Track_Flush(kActorZuben);
 		//
 		Game_Flag_Set(kFlagWarehouseOpen);
 		//
 		Scene_Exits_Enable();
 		//
 		//if (Actor_Query_Goal_Number(kActorMcCoy) != 1) {
-		//	Player_Loses_Control();
-		//	Actor_Change_Animation_Mode(kActorMcCoy, 48);
-		//	Game_Flag_Set(210);
-		//	Game_Flag_Set(719);
+		Player_Loses_Control();
+		Actor_Change_Animation_Mode(kActorMcCoy, 48);
+		Game_Flag_Set(210);
+		Game_Flag_Set(719);
+		//RTR 10.24.2018
+		Player_Gains_Control();
 		//}
+		//
 		//Actor_Set_Goal_Number(kActorZuben, 9);
-		//retire:
+		//
+		//retire:12+
 		Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 21:
 		//
-		//Actor_Set_Targetable(kActorZuben, true);
-		//AI_Movement_Track_Flush(kActorZuben);
+		Actor_Set_Targetable(kActorZuben, true);
+		AI_Movement_Track_Flush(kActorZuben);
 		//
 		Game_Flag_Set(kFlagWarehouseOpen);
 		//
@@ -503,9 +538,9 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		//Game_Flag_Set(kFlagWarehouseOpen);
 		//Actor_Set_Targetable(kActorZuben, true);
 		//AI_Movement_Track_Flush(kActorZuben);
-		//AI_Movement_Track_Append_Run(kActorZuben, 125, 0);
-		//AI_Movement_Track_Repeat(kActorZuben);
-		//retire:
+		AI_Movement_Track_Append_Run(kActorZuben, 125, 0);
+		AI_Movement_Track_Repeat(kActorZuben);
+		//retire:12+
 		Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 22:
@@ -517,17 +552,17 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		//
 		Scene_Exits_Enable();
 		//
-		//AI_Movement_Track_Flush(kActorZuben);
-		//AI_Movement_Track_Append_Run(kActorZuben, 125, 0);
-		//AI_Movement_Track_Append_Run(kActorZuben, 33, 0);
-		//AI_Movement_Track_Repeat(kActorZuben);
-		//retire:
+		AI_Movement_Track_Flush(kActorZuben);
+		AI_Movement_Track_Append_Run(kActorZuben, 125, 0);
+		AI_Movement_Track_Append_Run(kActorZuben, 33, 0);
+		AI_Movement_Track_Repeat(kActorZuben);
+		//retire:12+
 		Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 99:
 		//
-		//Actor_Set_Targetable(kActorZuben, true);
-		//AI_Movement_Track_Flush(kActorZuben);
+		Actor_Set_Targetable(kActorZuben, true);
+		AI_Movement_Track_Flush(kActorZuben);
 		//
 		Game_Flag_Set(kFlagWarehouseOpen);
 		//AI_Movement_Track_Flush(kActorZuben);
@@ -542,9 +577,9 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		AI_Movement_Track_Flush(kActorZuben);
 		//
 		Game_Flag_Set(kFlagWarehouseOpen);
-		//AI_Movement_Track_Flush(kActorZuben);
-		//AI_Movement_Track_Append_Run(kActorZuben, 33, 3);
-		//AI_Movement_Track_Repeat(kActorZuben);
+		AI_Movement_Track_Flush(kActorZuben);
+		AI_Movement_Track_Append_Run(kActorZuben, 33, 3);
+		AI_Movement_Track_Repeat(kActorZuben);
 		//retire:
 		Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
@@ -625,7 +660,7 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		//}
 		//retire:
 		Actor_Set_Goal_Number(kActorZuben, 6);
-			return false;
+		return false;
 		}
 	case 106:
 		//
@@ -633,9 +668,9 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		AI_Movement_Track_Flush(kActorZuben);
 		//
 		Game_Flag_Set(kFlagWarehouseOpen);
-		//Actor_Set_Goal_Number(kActorZuben, 105);
+		Actor_Set_Goal_Number(kActorZuben, 105);
 		//retire:
-		Actor_Set_Goal_Number(kActorZuben, 6);
+		//Actor_Set_Goal_Number(kActorZuben, 6);
 		return true;
 	case 200:
 		//
@@ -759,6 +794,18 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		return false;
 	}
 	//all others|599
+	//RTR 10.22.2018
+	//from(6):
+	if (Actor_Query_In_Set(kActorZuben, kSetCT07)) {
+		Game_Flag_Set(144);
+		Actor_Set_Goal_Number(kActorGaff, 1);
+		Set_Enter(kSetCT06, kSceneCT06);
+	}
+	else if (Actor_Query_In_Set(kActorZuben, kSetMA01)) {
+		Player_Set_Combat_Mode(false);
+		Actor_Set_Goal_Number(kActorGaff, 3);
+	}
+	//
 	//=>
 	return false;
 }

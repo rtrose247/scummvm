@@ -30,6 +30,9 @@ enum kRC02Exits {
 };
 
 void SceneScriptRC02::InitializeScene() {
+	Scene_Exit_Add_2D_Exit(kRC02ExitRC51, 265, 58, 346, 154, 0);
+	Game_Flag_Set(kFlagRC02LucyDeskAvailable);
+	//
 	if (Game_Flag_Query(kFlagRC01toRC02)) {
 		Setup_Scene_Information(-103.0f, -1238.89f, 108603.04f, 1007);
 	} else {
@@ -59,6 +62,32 @@ void SceneScriptRC02::InitializeScene() {
 }
 
 void SceneScriptRC02::SceneLoaded() {
+	//
+	//RTR 10.23.2018
+	//clues are *essential* to the game:
+	//
+	//!!
+	Item_Pickup_Spin_Effect(975, 357, 228);
+	Actor_Clue_Acquire(kActorMcCoy, kClueRuncitersVideo, 1, kActorRunciter);
+	//
+	//200 ms
+	Delay(200);
+	Actor_Clue_Acquire(kActorMcCoy, kClueRunciterInterviewB1, 1, kActorRunciter);
+	Actor_Clue_Acquire(kActorMcCoy, kClueRunciterInterviewB2, 1, kActorRunciter);
+	//
+	//200 ms
+	Delay(400);
+	Item_Pickup_Spin_Effect(964, 357, 228);
+	Actor_Clue_Acquire(kActorMcCoy, kClueReferenceLetter, 1, kActorRunciter);
+	//
+	//200 ms
+	Delay(400);
+	Actor_Clue_Acquire(kActorMcCoy, kClueShellCasings, 1, -1);
+	Item_Pickup_Spin_Effect(966, 395, 352);
+	//
+	Actor_Clue_Acquire(kActorMcCoy, kClueLimpingFootprints, 1, -1);
+	Actor_Clue_Acquire(kActorMcCoy, kClueGracefulFootprints, 1, -1);
+	//!!
 	Obstacle_Object("TABLETOP", true);
 	Obstacle_Object("DRAPE01", true);
 	Obstacle_Object("DRAPE03", true);
@@ -92,6 +121,44 @@ void SceneScriptRC02::SceneLoaded() {
 }
 
 bool SceneScriptRC02::MouseClick(int x, int y) {
+	//
+	//RTR 10.23.2018
+	//clues are *essential* to the game:
+	//
+	//=>don't actually need this ....
+	//:)
+	if (!Actor_Clue_Query(kActorMcCoy, kClueRuncitersVideo))
+	{
+		Item_Pickup_Spin_Effect(975, 357, 228);
+		Actor_Clue_Acquire(kActorMcCoy, kClueRuncitersVideo, 1, kActorRunciter);
+		//
+		Actor_Clue_Acquire(kActorMcCoy, kClueRunciterInterviewB1, 1, kActorRunciter);
+		Actor_Clue_Acquire(kActorMcCoy, kClueRunciterInterviewB2, 1, kActorRunciter);
+		//
+	}
+	if (!Actor_Clue_Query(kActorMcCoy, kClueReferenceLetter))
+	{
+		Item_Pickup_Spin_Effect(964, 357, 228);
+		Actor_Clue_Acquire(kActorMcCoy, kClueReferenceLetter, 1, kActorRunciter);
+		//
+		//Actor_Clue_Acquire(kActorMcCoy, kClueShellCasings, 1, -1);
+		//Item_Pickup_Spin_Effect(966, 395, 352);
+		//
+		Actor_Clue_Acquire(kActorMcCoy, kClueLimpingFootprints, 1, -1);
+		Actor_Clue_Acquire(kActorMcCoy, kClueGracefulFootprints, 1, -1);
+	}
+	//also,optional....:
+	if (!Actor_Clue_Query(kActorMcCoy, kClueReferenceLetter))
+	{
+		Actor_Face_Item(kActorMcCoy, kItemShellCasingA, true);
+		Actor_Clue_Acquire(kActorMcCoy, kClueShellCasings, 1, -1);
+		Game_Flag_Set(kFlagShellCasingsTaken);
+		Item_Remove_From_World(kItemShellCasingA);
+		Item_Remove_From_World(kItemShellCasingB);
+		Item_Remove_From_World(kItemShellCasingC);
+		Item_Pickup_Spin_Effect(966, 395, 352);
+	}
+	//
 	return false;
 }
 

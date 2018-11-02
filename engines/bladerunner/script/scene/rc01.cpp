@@ -77,7 +77,34 @@ void SceneScriptRC01::InitializeScene() {
 	Set_Enter(14, 73);
 
 #endif
-
+	//RTR 10.23.2018
+	//
+	//interesting(!)
+	Spinner_Set_Selectable_Destination_Flag(0, true);
+	Spinner_Set_Selectable_Destination_Flag(1, true);
+	Spinner_Set_Selectable_Destination_Flag(2, true);
+	Spinner_Set_Selectable_Destination_Flag(3, true);
+	Spinner_Set_Selectable_Destination_Flag(4, true);
+	Spinner_Set_Selectable_Destination_Flag(5, true);
+	Spinner_Set_Selectable_Destination_Flag(6, true);
+	Spinner_Set_Selectable_Destination_Flag(7, true);
+	Spinner_Set_Selectable_Destination_Flag(8, true);
+	Spinner_Set_Selectable_Destination_Flag(9, true);
+	//
+	//also,
+	//RTR 10.23.2018
+	//clues are *essential* to the game....
+	Actor_Clue_Acquire(kActorMcCoy, kCluePaintTransfer, true, -1);
+	//
+	Actor_Clue_Acquire(kActorMcCoy, kClueDoorForced1, true, -1);
+	//
+	Actor_Clue_Acquire(kActorMcCoy, kClueDoorForced2, true, kActorOfficerLeary);
+	Actor_Clue_Acquire(kActorMcCoy, kClueCrowdInterviewA, true, kActorOfficerLeary);
+	Actor_Clue_Acquire(kActorMcCoy, kClueCrowdInterviewB, true, kActorOfficerLeary);
+	Actor_Clue_Acquire(kActorMcCoy, kClueOfficersStatement, true, kActorOfficerLeary);
+	Actor_Clue_Acquire(kActorMcCoy, kClueChromeDebris, true, -1);
+	//
+	//
 	if (!Game_Flag_Query(kFlagIntroPlayed)) {
 		Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 		Ambient_Sounds_Remove_All_Looping_Sounds(1);

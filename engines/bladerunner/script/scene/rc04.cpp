@@ -25,6 +25,13 @@
 namespace BladeRunner {
 
 void SceneScriptRC04::InitializeScene() {
+	//RTR 10.23.2018
+	//clues are *essential* to the game:
+	Actor_Clue_Acquire(kActorMcCoy, kClueBobInterview1, 1, kActorMcCoy);
+	Actor_Clue_Acquire(kActorMcCoy, kClueBobInterview2, 1, kActorMcCoy);
+	Actor_Clue_Acquire(kActorMcCoy, kClueGogglesReplicantIssue, 1, kActorMcCoy);
+	Actor_Clue_Acquire(kActorBulletBob, kClueHoldensBadge, 1, kActorMcCoy);
+	//
 	Setup_Scene_Information(45.0f, 0.15f, 68.0f, 1018);
 	Game_Flag_Reset(120);
 	Scene_Exit_Add_2D_Exit(0, 225, 47, 359, 248, 0);
