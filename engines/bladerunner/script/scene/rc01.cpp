@@ -84,10 +84,10 @@ void SceneScriptRC01::InitializeScene() {
 	Spinner_Set_Selectable_Destination_Flag(1, true);
 	Spinner_Set_Selectable_Destination_Flag(2, true);
 	Spinner_Set_Selectable_Destination_Flag(3, true);
-	Spinner_Set_Selectable_Destination_Flag(4, true);
-	Spinner_Set_Selectable_Destination_Flag(5, true);
+	//Spinner_Set_Selectable_Destination_Flag(4, true);
+	Spinner_Set_Selectable_Destination_Flag(5, true);//
 	Spinner_Set_Selectable_Destination_Flag(6, true);
-	Spinner_Set_Selectable_Destination_Flag(7, true);
+	Spinner_Set_Selectable_Destination_Flag(7, true);//
 	Spinner_Set_Selectable_Destination_Flag(8, true);
 	Spinner_Set_Selectable_Destination_Flag(9, true);
 	//

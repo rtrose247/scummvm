@@ -7,7 +7,7 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.Zuben:11:Actor_Face_Heading
+ * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -258,31 +258,26 @@ bool AIScriptZuben::ShotAtAndHit() {
 }
 
 void AIScriptZuben::Retired(int byActorId) {
-	//if (!Actor_Query_In_Set(kActorZuben, kSetKP07)) {
-	//// return false;
-	//	return;
-	//}
+	if (!Actor_Query_In_Set(kActorZuben, kSetKP07)) {
+		// return false;
+		return;
+	}
 	Global_Variable_Decrement(51, 1);
 	Actor_Set_Goal_Number(kActorZuben, 599);
-	//
-	//RTR 10.22.2018
 	if (Global_Variable_Query(51)) {
 		// return false;
 		return;
 	}
-	//
 	//RTR 10.4.2018
-	Player_Loses_Control();
-	Delay(2000);
+	//Player_Loses_Control();
+	//Delay(2000);
 	Player_Set_Combat_Mode(false);
 	Loop_Actor_Walk_To_XYZ(kActorMcCoy, -12.0f, -41.58f, 72.0f, 0, true, false, 0);
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 	Ambient_Sounds_Remove_All_Looping_Sounds(1);
 	Game_Flag_Set(579);
 	Game_Flag_Reset(653);
-	//????
 	Set_Enter(kSetKP05_KP06, kSceneKP06);
-	//^^^^
 	// return true;
 }
 
@@ -353,9 +348,11 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		if (Random_Query(1, 3) < 3) {
 			Actor_Clue_Acquire(kActorZuben, kClueMcCoysDescription, 1, -1);
 		}
+
 		if (Random_Query(1, 5) < 5) {
 			Actor_Clue_Acquire(kActorZuben, kClueMcCoyIsABladeRunner, 1, -1);
 		}
+
 		Actor_Clue_Acquire(kActorZuben, kClueMcCoyLetZubenEscape, 1, -1);
 		Actor_Set_Goal_Number(kActorZuben, 5);
 		//retire:
@@ -451,6 +448,11 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		// change Zuben 's heading
 		Actor_Face_Heading(kActorZuben, kActorMcCoy, true);
 		//
+
+
+
+
+
 		//retire:
 		//Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
@@ -482,7 +484,8 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		//
 		//=>
 		//retire:12+
-		Actor_Set_Goal_Number(kActorZuben, 6);
+		//13+
+		//Actor_Set_Goal_Number(kActorZuben, 6);
 		//
 		//
 		return false;
@@ -521,10 +524,9 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		Player_Gains_Control();
 		//}
 		//
-		//Actor_Set_Goal_Number(kActorZuben, 9);
-		//
+		Actor_Set_Goal_Number(kActorZuben, 9);
 		//retire:12+
-		Actor_Set_Goal_Number(kActorZuben, 6);
+		//Actor_Set_Goal_Number(kActorZuben, 6);
 		return false;
 	case 21:
 		//

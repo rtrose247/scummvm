@@ -35,6 +35,10 @@ Items::Items(BladeRunnerEngine *vm) {
 }
 
 Items::~Items() {
+	reset();
+}
+
+void Items::reset() {
 	for (int i = _items.size() - 1; i >= 0; i--) {
 		delete _items.remove_at(i);
 	}
@@ -42,6 +46,10 @@ Items::~Items() {
 
 void Items::getXYZ(int itemId, float *x, float *y, float *z) const {
 	int itemIndex = findItem(itemId);
+	//RTR 12.2.2018
+	//prevent itemindex issue: occurring in rc01
+	if (itemIndex < 0)
+		itemIndex = 0;
 	assert(itemIndex != -1);
 
 	_items[itemIndex]->getXYZ(x, y, z);

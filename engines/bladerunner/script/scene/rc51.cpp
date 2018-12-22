@@ -56,6 +56,23 @@ void SceneScriptRC51::SceneLoaded() {
 	if (!Game_Flag_Query(kFlagDogTaken)) {
 		Item_Add_To_World(kItemToyDog, 971, kSetRC02_RC51, -69.65f, -1238.89f, 107995.24f, 256, 18, 18, false, true, false, true);
 	}
+	//RTR 12.2.2018
+	//(+)clues
+	if (!Actor_Clue_Query(kActorMcCoy, kClueChopstickWrapper))
+	{
+		Actor_Clue_Acquire(kActorMcCoy, kClueCandy, 1, -1);
+		Actor_Clue_Acquire(kActorMcCoy, kClueChopstickWrapper, 1, -1);
+		Actor_Clue_Acquire(kActorMcCoy, kClueToyDog, 1, -1);
+		//400 ms
+		Delay(400);
+		Item_Pickup_Spin_Effect(933, 445, 230);
+		//400 ms
+		Delay(400);
+		Item_Pickup_Spin_Effect(937, 437, 407);
+		//400 ms
+		Delay(400);
+		Item_Pickup_Spin_Effect(971, 55, 376);
+	}	
 }
 
 bool SceneScriptRC51::MouseClick(int x, int y) {

@@ -179,6 +179,9 @@ int AIScriptGaff::GetFriendlinessModifierIfGetsClue(int otherActorId, int clueId
 }
 
 bool AIScriptGaff::GoalChanged(int currentGoalNumber, int newGoalNumber) {
+	//RTR 12.2.2018
+	//always enable
+	Scene_Exits_Enable();
 	switch (newGoalNumber) {
 	case 1:
 		Actor_Put_In_Set(kActorGaff, kSetCT01_CT12);

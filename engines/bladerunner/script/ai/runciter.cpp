@@ -50,14 +50,14 @@ void AIScriptRunciter::Initialize() {
 	var_45CD88 = 0;
 	Actor_Set_Goal_Number(kActorRunciter, 0);
 	//RTR 10.23.2018
-	//always set taegetable
+	//always set targetable
 	Actor_Set_Targetable(kActorRunciter, true);
 	//
 }
 
 bool AIScriptRunciter::Update() {
 	//RTR 10.23.2018
-	//always set taegetable
+	//always set targetable
 	Actor_Set_Targetable(kActorRunciter, true);
 	//
 	if (Actor_Query_Goal_Number(kActorRunciter) == 0 && Game_Flag_Query(kFlagRC01PoliceDone)) {
@@ -71,14 +71,14 @@ bool AIScriptRunciter::Update() {
 
 void AIScriptRunciter::TimerExpired(int timer) {
 	//RTR 10.23.2018
-	//always set taegetable
+	//always set targetable
 	Actor_Set_Targetable(kActorRunciter, true);
 	//
 }
 
 void AIScriptRunciter::CompletedMovementTrack() {
 	//RTR 10.23.2018
-	//always set taegetable
+	//always set targetable
 	Actor_Set_Targetable(kActorRunciter, true);
 	//
 	if (Actor_Query_Goal_Number(kActorRunciter) == 1) {
@@ -171,6 +171,7 @@ void AIScriptRunciter::ShotAtAndMissed() {
 }
 
 bool AIScriptRunciter::ShotAtAndHit() {
+
 	//Actor_Set_Targetable(kActorRunciter, false);
 	//RTR 10.23.2018
 	//always set targetable
@@ -232,6 +233,7 @@ bool AIScriptRunciter::ShotAtAndHit() {
 	Actor_Voice_Over(2070, kActorVoiceOver);
 	Actor_Voice_Over(2080, kActorVoiceOver);
 	Actor_Voice_Over(2090, kActorVoiceOver);
+
 	//}
 	Actor_Modify_Friendliness_To_Other(kActorClovis, kActorMcCoy, 3);
 	//
@@ -243,64 +245,12 @@ bool AIScriptRunciter::ShotAtAndHit() {
 }
 
 void AIScriptRunciter::Retired(int byActorId) {
-	//RTR 10.23.2018
-	//always set targetable
-	Actor_Set_Targetable(kActorRunciter, true);
-	//
-	//if (Actor_Query_Goal_Number(kActorRunciter) == 300 && combatMode == 1 && !Game_Flag_Query(705)) {
-	//Actor_Set_Targetable(kActorRunciter, true);
-	//Actor_Face_Actor(kActorRunciter, kActorMcCoy, true);
-	//Actor_Says(kActorRunciter, 420, 12);
-	//Actor_Face_Actor(kActorMcCoy, kActorRunciter, true);
-	//Actor_Change_Animation_Mode(kActorMcCoy, 5);
-	////if (Actor_Clue_Query(kActorMcCoy, kClueZubensMotive)) {
-	//Actor_Says(kActorMcCoy, 4770, -1);
-	//Actor_Says(kActorRunciter, 590, 13);
-	//Actor_Says(kActorMcCoy, 4775, -1);
-	//Actor_Says(kActorRunciter, 600, 17);
-	//Sound_Play(492, 100, 0, 100, 50);
-	//Actor_Says(kActorMcCoy, 4780, -1);
-	//Actor_Says(kActorRunciter, 610, 18);
-	//Actor_Says(kActorMcCoy, 4785, -1);
-	//Actor_Says(kActorRunciter, 620, 15);
-	////if (Game_Flag_Query(kFlagLucyIsReplicant)) {
-	//Actor_Says(kActorRunciter, 630, 12);
-	//Actor_Says(kActorRunciter, 640, 17);
-	//Actor_Says(kActorMcCoy, 4790, -1);
-	//Actor_Says(kActorRunciter, 650, 18);
-	//Actor_Says(kActorRunciter, 660, 19);
-	//Actor_Clue_Acquire(kActorMcCoy, kClueRuncitersConfession1, 1, kActorRunciter);
-	////}
-	////else {
-	//Actor_Says(kActorRunciter, 670, 18);
-	//Actor_Says(kActorMcCoy, 4795, -1);
-	//Actor_Says(kActorRunciter, 730, 17);
-	//	//}
-	////}
-	////else if (Actor_Clue_Query(kActorMcCoy, kClueEnvelope)) {
-	//Actor_Says(kActorMcCoy, 4730, -1);
-	//Actor_Says(kActorRunciter, 480, 17);
-	//Actor_Says(kActorMcCoy, 4735, -1);
-	//Actor_Says(kActorRunciter, 490, 16);
-	//Sound_Play(492, 100, 0, 100, 50);
-	//Actor_Says(kActorMcCoy, 4740, -1);
-	//Actor_Says(kActorRunciter, 500, 18);
-	//Actor_Says(kActorRunciter, 510, 19);
-	//Actor_Says(kActorMcCoy, 4745, -1);
-	//Actor_Says(kActorMcCoy, 4750, -1);
-	//Actor_Says(kActorRunciter, 520, 17);
-	//Actor_Says(kActorRunciter, 530, 18);
-	//Actor_Says(kActorRunciter, 540, 16);
-	////}
-	//Game_Flag_Set(705);
-	//RTR 10.23.2018
-	//not targetable now...:
 	Actor_Set_Targetable(kActorRunciter, false);
 }
 
 int AIScriptRunciter::GetFriendlinessModifierIfGetsClue(int otherActorId, int clueId) {
 	//RTR 10.23.2018
-	//always set taegetable
+	//always set targetable
 	Actor_Set_Targetable(kActorRunciter, true);
 	//
 	return 0;

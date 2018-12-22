@@ -418,6 +418,19 @@ bool AIScriptHawkersBarkeep::ChangeAnimationMode(int mode) {
 		break;
 
 	default:
+		//RTR 12.2.2018
+		//Prevent actor 32 changing into player character(?).
+		if (_animationState) {
+			_animationState = 2;
+			_animationFrame = 0;
+		}
+		else {
+			_animationState = 1;
+			_animationStateNext = 7;
+			_animationNext = 715;
+		}
+		_flag = false;
+		//
 		break;
 	}
 
