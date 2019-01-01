@@ -60,6 +60,7 @@
 #include "bladerunner/shape.h"
 #include "bladerunner/slice_animations.h"
 #include "bladerunner/slice_renderer.h"
+#include "bladerunner/subtitles.h"
 #include "bladerunner/suspects_database.h"
 #include "bladerunner/text_resource.h"
 #include "bladerunner/time.h"
@@ -97,6 +98,7 @@ BladeRunnerEngine::BladeRunnerEngine(OSystem *syst, const ADGameDescription *des
 
 	_vqaIsPlaying = false;
 	_vqaStopIsRequested = false;
+	_subtitlesEnabled = false;
 
 	_playerLosesControlCounter = 0;
 
@@ -149,7 +151,7 @@ BladeRunnerEngine::BladeRunnerEngine(OSystem *syst, const ADGameDescription *des
 	_lights                  = nullptr;
 	_obstacles               = nullptr;
 	_sceneScript             = nullptr;
-	_gameTime                = nullptr;
+	_time                = nullptr;
 	_gameInfo                = nullptr;
 	_waypoints               = nullptr;
 	_gameVars                = nullptr;
@@ -181,6 +183,7 @@ BladeRunnerEngine::BladeRunnerEngine(OSystem *syst, const ADGameDescription *des
 	_scores                  = nullptr;
 	_elevator                = nullptr;
 	_mainFont                = nullptr;
+	_subtitles               = nullptr;
 	_esper                   = nullptr;
 	_vk                      = nullptr;
 	_policeMaze              = nullptr;
@@ -221,9 +224,7 @@ bool BladeRunnerEngine::canLoadGameStateCurrently() {
 }
 
 Common::Error BladeRunnerEngine::loadGameState(int slot) {
-	const Common::String saveName = Common::String::format("%s.%03d", _targetName.c_str(), slot);
-
-	Common::InSaveFile *saveFile = getSaveFileManager()->openForLoading(saveName);
+	Common::InSaveFile *saveFile = BladeRunner::SaveFileManager::openForLoading(_targetName, slot);
 	if (saveFile == nullptr || saveFile->err()) {
 		delete saveFile;
 		return Common::kReadingFailed;
@@ -253,9 +254,7 @@ bool BladeRunnerEngine::canSaveGameStateCurrently() {
 }
 
 Common::Error BladeRunnerEngine::saveGameState(int slot, const Common::String &desc) {
-	const Common::String saveName = Common::String::format("%s.%03d", _targetName.c_str(), slot);
-
-	Common::OutSaveFile *saveFile = g_system->getSavefileManager()->openForSaving(saveName);
+	Common::OutSaveFile *saveFile = BladeRunner::SaveFileManager::openForSaving(_targetName, slot);
 	if (saveFile == nullptr || saveFile->err()) {
 		delete saveFile;
 		return Common::kReadingFailed;
@@ -356,7 +355,17 @@ bool BladeRunnerEngine::startup(bool hasSavegames) {
 	_surfaceBack.create(640, 480, createRGB555());
 	_surface4.create(640, 480, createRGB555());
 
-	_gameTime = new Time(this);
+	_time = new Time(this);
+
+	// Try to load the SUBTITLES.MIX first, before Startup.MIX
+	// allows overriding any identically named resources (such as the original font files and as a bonus also the TRE files for the UI and dialogue menu)
+	_subtitles = new Subtitles(this);
+	r = openArchive("SUBTITLES.MIX");
+	if (!r) {
+		_subtitles->setSubtitlesSystemInactive(true); // no subtitles support
+	}
+	_subtitles->init();
+
 
 	r = openArchive("STARTUP.MIX");
 	if (!r)
@@ -404,6 +413,11 @@ bool BladeRunnerEngine::startup(bool hasSavegames) {
 
 	_gameFlags = new GameFlags();
 	_gameFlags->setFlagCount(_gameInfo->getFlagCount());
+
+	// Assign default values to the ScummVM configuration manager, in case settings are missing
+	ConfMan.registerDefault("subtitles", "true");
+	// get value from the ScummVM configuration manager
+	_subtitlesEnabled = ConfMan.getBool("subtitles");
 
 	_items = new Items(this);
 
@@ -672,6 +686,14 @@ void BladeRunnerEngine::shutdown() {
 		_mainFont = nullptr;
 	}
 
+	if(isArchiveOpen("SUBTITLES.MIX")) {
+		closeArchive("SUBTITLES.MIX");
+	}
+	if (_subtitles) {
+		delete _subtitles;
+		_subtitles = nullptr;
+	}
+
 	delete _items;
 	_items = nullptr;
 
@@ -744,8 +766,8 @@ void BladeRunnerEngine::shutdown() {
 
 	// TODO: Delete MIXArchives here
 
-	delete _gameTime;
-	_gameTime = nullptr;
+	delete _time;
+	_time = nullptr;
 
 	// These are static objects in original game
 
@@ -942,6 +964,8 @@ void BladeRunnerEngine::gameTick() {
 				_obstacles->draw();
 			}
 
+			_subtitles->tick(_surfaceFront);
+
 			blitToScreen(_surfaceFront);
 			_system->delayMillis(10);
 		}
@@ -1097,6 +1121,7 @@ void BladeRunnerEngine::handleKeyDown(Common::Event &event) {
 
 	if (_kia->isOpen()) {
 		_kia->handleKeyDown(event.kbd);
+		return;
 	}
 
 	if (_spinner->isOpen()) {
@@ -1151,7 +1176,7 @@ void BladeRunnerEngine::handleMouseAction(int x, int y, bool mainButton, bool bu
 	x = CLIP(x, 0, 639);
 	y = CLIP(y, 0, 479);
 
-	int timeNow = getTotalPlayTime();
+	int timeNow = _time->current();
 
 	if (buttonDown) {
 		_mouseClickTimeDiff = timeNow - _mouseClickTimeLast;
@@ -1667,6 +1692,21 @@ bool BladeRunnerEngine::isArchiveOpen(const Common::String &name) const {
 	}
 
 	return false;
+}
+
+void BladeRunnerEngine::syncSoundSettings() {
+	Engine::syncSoundSettings();
+
+	_subtitlesEnabled = ConfMan.getBool("subtitles");
+}
+
+bool BladeRunnerEngine::isSubtitlesEnabled() {
+	return _subtitlesEnabled;
+}
+
+void BladeRunnerEngine::setSubtitlesEnabled(bool newVal) {
+	ConfMan.setBool("subtitles", newVal);
+	syncSoundSettings();
 }
 
 Common::SeekableReadStream *BladeRunnerEngine::getResourceStream(const Common::String &name) {
