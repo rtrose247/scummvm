@@ -1272,6 +1272,8 @@ void BladeRunnerEngine::handleMouseAction(int x, int y, bool mainButton, bool bu
 		} else if (sceneObjectId >= kSceneObjectOffsetObjects && sceneObjectId <= 293) {
 			handleMouseClick3DObject(sceneObjectId - kSceneObjectOffsetObjects, buttonDown, isClickable, isTarget);
 		}
+	//RTR 1.12.2019
+	//retain right-click exit shortcut
 	} else if (buttonDown) {
 		if (_playerActor->inWalkLoop()) {
 			_playerActor->stopWalking(false);

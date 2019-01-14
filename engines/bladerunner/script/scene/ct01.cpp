@@ -113,6 +113,7 @@ void SceneScriptCT01::SceneLoaded() {
 	Unclickable_Object("TURBINE");
 	Unclickable_Object("SPINNER BODY");
 	Unclickable_Object("OBJECT04");
+
 }
 
 bool SceneScriptCT01::MouseClick(int x, int y) {

@@ -91,6 +91,9 @@ void SceneScriptCT02::SceneLoaded() {
 		Player_Set_Combat_Mode(true);
 		Player_Gains_Control();
 	}
+	//RTR 1.14.2019
+	//maybe...
+	Actor_Put_In_Set(kActorLucy, kSetCT02);
 }
 
 bool SceneScriptCT02::MouseClick(int x, int y) {

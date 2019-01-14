@@ -67,6 +67,18 @@ void SceneScriptCT06::SceneLoaded() {
 	Unobstacle_Object("INSULPIP01", true);
 	Unobstacle_Object("CB BOX04", true);
 	Unclickable_Object("DOOR");
+	//RTR 1.14.2019
+	//zuben roll=>put in set
+	if (Random_Query(1, 9) < 10 && !Actor_Clue_Query(kActorZuben, kClueMcCoyShotZubenInTheBack))
+	{
+		Actor_Put_In_Set(kActorZuben, kSetCT06);
+		//RTR 1.14.2019
+		//change goal
+		//e.g.,retire(6):
+		Actor_Set_Goal_Number(kActorZuben, 11);//11); //6);
+	}
+	//RTR 1.14.2019
+	//continue with orginal logic
 	if (Actor_Query_Goal_Number(kActorZuben) == 13) {
 		Preload(3);
 		Preload(4);

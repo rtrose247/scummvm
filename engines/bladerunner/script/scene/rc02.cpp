@@ -130,7 +130,7 @@ bool SceneScriptRC02::MouseClick(int x, int y) {
 	//
 	//=>don't actually need this ....
 	//:)
-	if (!Actor_Clue_Query(kActorMcCoy, kItemShellCasingA))
+	if (!Actor_Clue_Query(kActorMcCoy, kClueShellCasings))
 	{
 		Actor_Face_Item(kActorMcCoy, kItemShellCasingA, true);
 		Actor_Clue_Acquire(kActorMcCoy, kClueShellCasings, 1, -1);
@@ -145,7 +145,7 @@ bool SceneScriptRC02::MouseClick(int x, int y) {
 }
 
 bool SceneScriptRC02::ClickedOn3DObject(const char *objectName, bool a2) {
-	if (Object_Query_Click("SCRTY CA03", objectName) && !Actor_Clue_Query(kActorMcCoy, kClueRuncitersVideo)) {
+	if (Object_Query_Click("SCRTY CA03", objectName)) { //&& !Actor_Clue_Query(kActorMcCoy, kClueRuncitersVideo)) {
 		if (Actor_Clue_Query(kActorMcCoy, kClueRunciterInterviewA) && Actor_Query_Is_In_Current_Set(kActorRunciter)) {
 			AI_Movement_Track_Pause(kActorRunciter);
 			Actor_Face_Actor(kActorMcCoy, kActorRunciter, true);
@@ -169,12 +169,17 @@ bool SceneScriptRC02::ClickedOn3DObject(const char *objectName, bool a2) {
 			Actor_Says(kActorRunciter, 30, 23);
 			Actor_Says(kActorMcCoy, 4555, 18);
 			Actor_Clue_Acquire(kActorMcCoy, kClueRuncitersVideo, 1, kActorRunciter);
-			Unclickable_Object("SCRTY CA03");
 			AI_Movement_Track_Unpause(kActorRunciter);
+			//
+			Unclickable_Object("SCRTY CA03");
+			//
 			return true;
 		} else {
 			Actor_Face_Object(kActorMcCoy, "SCRTY CA03", true);
 			Actor_Voice_Over(2000, kActorVoiceOver);
+			//
+			Unclickable_Object("SCRTY CA03");
+			//
 			return true;
 		}
 	}
