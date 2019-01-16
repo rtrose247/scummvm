@@ -169,10 +169,10 @@ bool SceneScriptRC02::ClickedOn3DObject(const char *objectName, bool a2) {
 			Actor_Says(kActorRunciter, 30, 23);
 			Actor_Says(kActorMcCoy, 4555, 18);
 			Actor_Clue_Acquire(kActorMcCoy, kClueRuncitersVideo, 1, kActorRunciter);
-			AI_Movement_Track_Unpause(kActorRunciter);
-			//
+			//RTR 1.14.2019
 			Unclickable_Object("SCRTY CA03");
 			//
+			AI_Movement_Track_Unpause(kActorRunciter);
 			return true;
 		} else {
 			Actor_Face_Object(kActorMcCoy, "SCRTY CA03", true);
@@ -186,11 +186,14 @@ bool SceneScriptRC02::ClickedOn3DObject(const char *objectName, bool a2) {
 	return false;
 }
 
+
 void SceneScriptRC02::dialogueWithRunciter() {
 	Dialogue_Menu_Clear_List();
 	DM_Add_To_List_Never_Repeat_Once_Selected(0, 5, 6, 2);
 	DM_Add_To_List_Never_Repeat_Once_Selected(10, 5, 4, 8);
-	if (Actor_Clue_Query(kActorMcCoy, kClueRunciterInterviewB1) || (Actor_Clue_Query(kActorMcCoy, kClueRunciterInterviewB2))) {
+	if (Actor_Clue_Query(kActorMcCoy, kClueRunciterInterviewB1)
+	 || Actor_Clue_Query(kActorMcCoy, kClueRunciterInterviewB2)
+	) {
 		DM_Add_To_List_Never_Repeat_Once_Selected(20, 6, 4, 5);
 	}
 	Dialogue_Menu_Add_DONE_To_List(30);
@@ -206,7 +209,7 @@ void SceneScriptRC02::dialogueWithRunciter() {
 		Actor_Says(kActorRunciter, 130, 19);
 		Actor_Says(kActorMcCoy, 4605, 13);
 		Actor_Says(kActorRunciter, 140, 16);
-		Game_Flag_Set(187);
+		Game_Flag_Set(kFlagRC02TalkedToRunciter);
 		break;
 	case 10:
 		Actor_Says(kActorMcCoy, 4585, 13);
@@ -302,7 +305,7 @@ bool SceneScriptRC02::ClickedOnActor(int actorId) {
 	AI_Movement_Track_Pause(kActorRunciter);
 	Loop_Actor_Walk_To_Actor(kActorMcCoy, kActorRunciter, 48, 1, false);
 	Actor_Face_Actor(kActorMcCoy, kActorRunciter, true);
-	if (!Game_Flag_Query(6)) {
+	if (!Game_Flag_Query(kFlagRunciterInterviewA)) {
 		Actor_Says(kActorMcCoy, 4560, 13);
 		Actor_Face_Actor(kActorRunciter, kActorMcCoy, true);
 		Actor_Says(kActorRunciter, 40, 16);
@@ -311,13 +314,13 @@ bool SceneScriptRC02::ClickedOnActor(int actorId) {
 		Actor_Says(kActorRunciter, 60, 14);
 		Actor_Says(kActorMcCoy, 4570, 18);
 		Actor_Says(kActorRunciter, 70, 13);
-		Game_Flag_Set(6);
+		Game_Flag_Set(kFlagRunciterInterviewA);
 		Actor_Clue_Acquire(kActorMcCoy, kClueRunciterInterviewA, 1, kActorRunciter);
 		AI_Movement_Track_Unpause(kActorRunciter);
 		return true;
 	}
-	if (Game_Flag_Query(187)) {
-		if (Player_Query_Agenda() == 0) {
+	if (Game_Flag_Query(kFlagRC02TalkedToRunciter)) {
+		if (Player_Query_Agenda() == kPlayerAgendaPolite) {
 			Game_Flag_Reset(0);
 			dialogueWithRunciter();
 			AI_Movement_Track_Unpause(kActorRunciter);
@@ -332,7 +335,7 @@ bool SceneScriptRC02::ClickedOnActor(int actorId) {
 		Actor_Says(kActorRunciter, 170, 15);
 		Actor_Says(kActorRunciter, 180, 13);
 
-		if (Player_Query_Agenda() == 2) {
+		if (Player_Query_Agenda() == kPlayerAgendaSurly) {
 			Actor_Says(kActorMcCoy, 4620, 19);
 			Actor_Says(kActorRunciter, 190, 14);
 			Actor_Says(kActorMcCoy, 4625, 13);
@@ -344,7 +347,7 @@ bool SceneScriptRC02::ClickedOnActor(int actorId) {
 			Actor_Says(kActorRunciter, 240, 16);
 			Actor_Says(kActorMcCoy, 4640, 17);
 		}
-		Game_Flag_Reset(187);
+		Game_Flag_Reset(kFlagRC02TalkedToRunciter);
 		AI_Movement_Track_Unpause(kActorRunciter);
 		return true;
 	}

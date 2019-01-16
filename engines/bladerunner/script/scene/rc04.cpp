@@ -33,7 +33,7 @@ void SceneScriptRC04::InitializeScene() {
 	Actor_Clue_Acquire(kActorBulletBob, kClueHoldensBadge, 1, kActorMcCoy);
 	//
 	Setup_Scene_Information(45.0f, 0.15f, 68.0f, 1018);
-	Game_Flag_Reset(120);
+	Game_Flag_Reset(kFlagRC03toRC04);
 	Scene_Exit_Add_2D_Exit(0, 225, 47, 359, 248, 0);
 	if (!Game_Flag_Query(289)) {
 		Actor_Put_In_Set(kActorBulletBob, 71);
@@ -378,8 +378,8 @@ bool SceneScriptRC04::ClickedOnItem(int itemId, bool a2) {
 bool SceneScriptRC04::ClickedOnExit(int exitId) {
 	if (exitId == 0) {
 		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 45.0f, 0.15f, 68.0f, 0, 1, false, 0)) {
-			Game_Flag_Set(121);
-			Set_Enter(70, kSceneRC03);
+			Game_Flag_Set(kFlagRC04toRC03);
+			Set_Enter(kSetRC03, kSceneRC03);
 		}
 		return true;
 	}

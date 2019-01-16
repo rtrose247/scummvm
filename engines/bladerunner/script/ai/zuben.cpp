@@ -146,7 +146,7 @@ void AIScriptZuben::CompletedMovementTrack() {
 			Delay(2000);
 			Game_Flag_Set(144);
 			Game_Flag_Set(kFlagZubenSpared);
-			Game_Flag_Set(31);
+			Game_Flag_Set(kFlagCT01ZubenGone);
 			Actor_Set_Goal_Number(kActorZuben, kGoalZubenSpared);
 			Actor_Set_Goal_Number(kActorGaff, 1);
 			Set_Enter(kSetCT06, kSceneCT06);
@@ -239,10 +239,12 @@ bool AIScriptZuben::ShotAtAndHit() {
 	if (Actor_Query_Goal_Number(kActorZuben) == kGoalZubenCT07Leave && !Actor_Clue_Query(kActorZuben, kClueMcCoyShotZubenInTheBack)) {
 		Actor_Clue_Acquire(kActorZuben, kClueMcCoyShotZubenInTheBack, true, -1);
 		Actor_Clue_Lose(kActorZuben, kClueMcCoyLetZubenEscape);
-		if (Random_Query(1, 9) < 3)
-		{
-			Actor_Start_Speech_Sample(kActorMcCoy, 490);			
-		}
+	}
+	//RTR 1.14.2019
+	//always roll for speech sample
+	if (Random_Query(1, 9) < 3)
+	{
+		Actor_Start_Speech_Sample(kActorMcCoy, 490);			
 	}
 	if (Player_Query_Current_Scene() == kSceneCT07) {
 		Music_Stop(2);
@@ -374,7 +376,7 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		Scene_Exits_Enable();
 		//
 		Game_Flag_Set(kFlagZubenRetired);
-		Game_Flag_Set(31);
+		Game_Flag_Set(kFlagCT01ZubenGone);
 		if (Actor_Query_In_Set(kActorZuben, kSetCT07)) {
 			Game_Flag_Set(kFlagCT07toCT06);
 			Actor_Set_Goal_Number(kActorGaff, 1);

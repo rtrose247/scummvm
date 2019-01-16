@@ -281,16 +281,8 @@ void VQADecoder::readPacket(uint readFlags) {
 }
 
 void VQADecoder::readFrame(int frame, uint readFlags) {
-	//if (frame < 0 || frame >= numFrames()) {
-	//	error("VQADecoder::readFrame: frame %d out of bounds, frame count is %d", frame, numFrames());
-	//}
-	//RTR 10.22.2018
-	//tmp vqa ack :=> always reset to frame 0
 	if (frame < 0 || frame >= numFrames()) {
-		frame = 0;
-		//maybe...:
-		//nop
-		return;
+		error("VQADecoder::readFrame: frame %d out of bounds, frame count is %d", frame, numFrames());
 	}
 
 	uint32 frameOffset = 2 * (_frameInfo[frame] & 0x0FFFFFFF);

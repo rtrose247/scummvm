@@ -130,7 +130,7 @@ DECLARE_SCRIPT(CT03)
 END_SCRIPT
 
 DECLARE_SCRIPT(CT04)
-	void sub_401D4C();
+	void dialogueWithHomeless();
 END_SCRIPT
 
 DECLARE_SCRIPT(CT05)
@@ -407,7 +407,7 @@ DECLARE_SCRIPT(PS15)
 END_SCRIPT
 
 DECLARE_SCRIPT(RC01)
-	void investigateCrowd();
+	void interrogateCrowd();
 	void walkToCenter();
 END_SCRIPT
 

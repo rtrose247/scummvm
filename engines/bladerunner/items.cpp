@@ -46,10 +46,6 @@ void Items::reset() {
 
 void Items::getXYZ(int itemId, float *x, float *y, float *z) const {
 	int itemIndex = findItem(itemId);
-	//RTR 12.2.2018
-	//prevent itemindex issue: occurring in rc01
-	if (itemIndex < 0)
-		itemIndex = 0;
 	assert(itemIndex != -1);
 
 	_items[itemIndex]->getXYZ(x, y, z);
