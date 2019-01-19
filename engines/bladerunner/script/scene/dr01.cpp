@@ -122,8 +122,12 @@ bool SceneScriptDR01::ClickedOnExit(int exitId) {
 		}
 		return true;
 	}
+	//RTR 1.19.2019
+	//Ensure McCoy can walk to spinner and choose a destination (* on Windows)
 	if (exitId == 2) {
-		if (Loop_Actor_Walk_To_XYZ(kActorMcCoy, -372.0f, -0.04f, -82.0f, 0, 1, false, 0)) {
+		if (true) { //(Loop_Actor_Walk_To_XYZ(kActorMcCoy, -372.0f, -0.04f, -82.0f, 0, 1, false, 0)) {
+			if (Loop_Actor_Walk_To_XYZ(kActorMcCoy, -372.0f, -0.04f, -82.0f, 0, 1, false, 0)) {
+			}
 			Game_Flag_Reset(176);
 			Game_Flag_Reset(182);
 			Game_Flag_Reset(179);
