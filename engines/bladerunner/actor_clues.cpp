@@ -69,7 +69,7 @@ void ActorClues::acquire(int clueId, bool flag2, int fromActorId) {
 	_clues[clueIndex].flags |= 0x01;
 	_clues[clueIndex].flags = (_clues[clueIndex].flags & ~0x02) | ((flag2 << 1) & 0x02);
 	_clues[clueIndex].fromActorId = fromActorId;
-	//
+
 	debug("Actor acquired clue: \"%s\" from %d", _vm->_crimesDatabase->getClueText(clueId), fromActorId);
 }
 
@@ -110,14 +110,16 @@ int ActorClues::getModifier(int actorId, int otherActorId, int clueId) {
 	} else {
 		modifier1 = 0;
 	}
-	modifier2 = 0;
-	modifier3 = _vm->_aiScripts->callGetFriendlinessModifierIfGetsClue(otherActorId, actorId, clueId);
 
+	modifier2 = 0;
 	for (int i = 0; i < (int)_vm->_gameInfo->getActorCount(); i++) {
 		if (i != actorId && i != otherActorId) {
 			modifier2 += (friendliness - 50) * _vm->_aiScripts->callGetFriendlinessModifierIfGetsClue(i, otherActorId, clueId) / 100;
 		}
 	}
+
+	modifier3 = _vm->_aiScripts->callGetFriendlinessModifierIfGetsClue(otherActorId, actorId, clueId);
+
 	modifier4 = _vm->_rnd.getRandomNumberRng(0, (100 - actor->getIntelligence()) / 10);
 
 	if (_vm->_rnd.getRandomNumberRng(0, 1) == 1) {
@@ -160,14 +162,14 @@ void ActorClues::acquireCluesByRelations(int actorId, int otherActorId) {
 		uint avgParameters = (otherActor->getHonesty() + otherActor->getIntelligence() + actor->getFriendlinessToOther(otherActorId)) / 3;
 		int clue1count = avgParameters * count1 / 100;
 
-		if (avgParameters >= 50 && !clue1count && count1 == 1) {
+		if (avgParameters >= 50 && clue1count == 0 && count1 == 1) {
 			clue1count = 1;
 		}
 
 		avgParameters = (actor->getHonesty() + actor->getIntelligence() + otherActor->getFriendlinessToOther(actorId)) / 3;
 		int clue2count = avgParameters * count2 / 100;
 
-		if (avgParameters >= 50 && !clue2count && count2 == 1) {
+		if (avgParameters >= 50 && clue2count == 0 && count2 == 1) {
 			clue2count = 1;
 		}
 
@@ -332,9 +334,9 @@ int ActorClues::findClueIndex(int clueId) const {
 
 void ActorClues::add(int actorId, int clueId, int weight, bool acquired, bool unknownFlag, int fromActorId) {
 	assert(_count < _maxCount);
-	//
+
 	//debug("Actor %d added clue: \"%s\" from %d", actorId, _vm->_crimesDatabase->getClueText(clueId), fromActorId);
-	//
+
 	_clues[_count].clueId = clueId;
 	_clues[_count].weight = weight;
 
@@ -352,7 +354,7 @@ bool ActorClues::exists(int clueId) const {
 
 void ActorClues::remove(int index) {
 	if (_vm->_crimesDatabase) {
-		//debug("Actor removed clue: \"%s\"", _vm->_crimesDatabase->getClueText(_clues[index].clueId));
+		debug("Actor removed clue: \"%s\"", _vm->_crimesDatabase->getClueText(_clues[index].clueId));
 	}
 
 	_clues[index].clueId      = -1;

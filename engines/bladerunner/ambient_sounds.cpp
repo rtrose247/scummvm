@@ -26,6 +26,7 @@
 #include "bladerunner/bladerunner.h"
 #include "bladerunner/game_info.h"
 #include "bladerunner/savefile.h"
+#include "bladerunner/time.h"
 
 #include "common/debug.h"
 #include "common/system.h"
@@ -116,6 +117,11 @@ void AmbientSounds::playSound(int sfxId, int volume, int panStart, int panEnd, i
 	_vm->_audioPlayer->playAud(_vm->_gameInfo->getSfxTrack(sfxId), volume * _ambientVolume / 100, panStart, panEnd, priority, kAudioPlayerOverrideVolume);
 }
 
+void AmbientSounds::playSpeech(int actorId, int sentenceId, int volume, int panStart, int panEnd, int priority) {
+	Common::String name = Common::String::format( "%02d-%04d%s.AUD", actorId, sentenceId, _vm->_languageCode.c_str());
+	_vm->_audioPlayer->playAud(name, volume * _ambientVolume / 100, panStart, panEnd, priority, kAudioPlayerOverrideVolume);
+}
+
 void AmbientSounds::addLoopingSound(int sfxId, int volume, int pan, int delay) {
 	const Common::String &name = _vm->_gameInfo->getSfxTrack(sfxId);
 	int32 hash = MIXArchive::getHash(name);
@@ -185,7 +191,7 @@ void AmbientSounds::removeAllLoopingSounds(int delay) {
 }
 
 void AmbientSounds::tick() {
-	uint32 now = g_system->getMillis();
+	uint32 now = _vm->_time->current();
 
 	for (int i = 0; i != kNonLoopingSounds; ++i) {
 		NonLoopingSound &track = _nonLoopingSounds[i];
@@ -303,7 +309,7 @@ void AmbientSounds::addSoundByName(
 
 	NonLoopingSound &track = _nonLoopingSounds[i];
 
-	uint32 now = _vm->getTotalPlayTime();
+	uint32 now = _vm->_time->current();
 
 	track.isActive = true;
 	track.name = name;
@@ -392,7 +398,7 @@ void AmbientSounds::load(SaveFileReadStream &f) {
 
 	f.skip(4); // TODO: _isDisabled
 
-	uint32 now = g_system->getMillis();
+	uint32 now = _vm->_time->getPauseStart();
 
 	for (int i = 0; i != kNonLoopingSounds; ++i) {
 		NonLoopingSound &track = _nonLoopingSounds[i];

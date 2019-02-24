@@ -206,7 +206,7 @@ bool Obstacles::mergePolygons(Polygon &polyA, Polygon &polyB) {
 			polyLine.end = polyPrimary->vertices[(vertIndex + 1) % polyPrimary->verticeCount];
 		else
 			polyLine.end = polyLine.start;
-
+		//----
 		// TODO(madmoose): How does this work when adding a new intersection point?
 		polyPrimaryType = polyPrimary->vertexType[vertIndex];
 
@@ -236,6 +236,7 @@ bool Obstacles::mergePolygons(Polygon &polyA, Polygon &polyB) {
 			SWAP(polyPrimary, polySecondary);
 
 			flagDidMergePolygons = true;
+		//----
 		} else {
 			//RTR 1.3.2019
 			//need to avoid the error:
@@ -244,6 +245,7 @@ bool Obstacles::mergePolygons(Polygon &polyA, Polygon &polyB) {
 			{ 
 				vertIndex = (vertIndex + 1) % polyPrimary->verticeCount;
 			}
+			//----
 			flagDidFindIntersection = false;
 		}
 		if (polyPrimary->vertices[vertIndex] == startingPolygon->vertices[0]) {
@@ -299,9 +301,17 @@ restart:
 			continue;
 		}
 
+		if (polyA.verticeCount == 0) {
+				continue;
+		}
+
 		for (int j = i+1; j < kPolygonCount; ++j) {
 			Polygon &polyB = _polygons[j];
 			if (!polyB.isPresent) {
+				continue;
+			}
+
+			if (polyB.verticeCount == 0) {
 				continue;
 			}
 

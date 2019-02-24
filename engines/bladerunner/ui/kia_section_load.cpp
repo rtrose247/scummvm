@@ -74,7 +74,7 @@ void KIASectionLoad::open() {
 	_scrollBox->addLine(_vm->_textOptions->getText(29), _newGameHardLineId, 0); // Hard
 
 	_hoveredLineId = -1;
-	_timeLast = _vm->getTotalPlayTime();
+	_timeLast = _vm->getTotalPlayTime(); // Original game is using system timer
 	_timeLeft = 800;
 }
 
@@ -108,7 +108,7 @@ void KIASectionLoad::draw(Graphics::Surface &surface){
 		_hoveredLineId = selectedLineId;
 	}
 
-	uint32 now = _vm->getTotalPlayTime();
+	uint32 now = _vm->getTotalPlayTime(); // Original game is using system timer
 	if (selectedLineId >= 0 && selectedLineId < (int)_saveList.size()) {
 		if (_timeLeft) {
 			uint32 timeDiff = now - _timeLast;
@@ -150,7 +150,7 @@ void KIASectionLoad::scrollBoxCallback(void *callbackData, void *source, int lin
 		} else if (lineData == self->_newGameHardLineId) {
 			self->_vm->newGame(2);
 		} else {
-			self->_vm->loadGameState(lineData);
+			self->_vm->loadGameState(self->_saveList[lineData].getSaveSlot());
 		}
 
 		self->_vm->_audioPlayer->playAud(self->_vm->_gameInfo->getSfxTrack(513), 90, 0, 0, 50, 0);
