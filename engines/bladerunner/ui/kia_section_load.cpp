@@ -27,6 +27,7 @@
 #include "bladerunner/game_info.h"
 #include "bladerunner/savefile.h"
 #include "bladerunner/text_resource.h"
+#include "bladerunner/time.h"
 #include "bladerunner/ui/kia.h"
 #include "bladerunner/ui/kia_shapes.h"
 #include "bladerunner/ui/ui_container.h"
@@ -41,6 +42,14 @@ KIASectionLoad::KIASectionLoad(BladeRunnerEngine *vm) : KIASectionBase(vm) {
 	_uiContainer = new UIContainer(_vm);
 	_scrollBox   = new UIScrollBox(_vm, scrollBoxCallback, this, 1025, 0, true, Common::Rect(155, 158, 461, 346), Common::Rect(506, 160, 506, 350));
 	_uiContainer->add(_scrollBox);
+
+	_timeLast = 0;
+	_timeLeft = 0;
+
+	_hoveredLineId = -1;
+	_newGameEasyLineId = -1;
+	_newGameMediumLineId = -1;
+	_newGameHardLineId = -1;
 }
 
 KIASectionLoad::~KIASectionLoad() {
@@ -74,7 +83,7 @@ void KIASectionLoad::open() {
 	_scrollBox->addLine(_vm->_textOptions->getText(29), _newGameHardLineId, 0); // Hard
 
 	_hoveredLineId = -1;
-	_timeLast = _vm->getTotalPlayTime(); // Original game is using system timer
+	_timeLast = _vm->_time->currentSystem();
 	_timeLeft = 800;
 }
 
@@ -108,7 +117,7 @@ void KIASectionLoad::draw(Graphics::Surface &surface){
 		_hoveredLineId = selectedLineId;
 	}
 
-	uint32 now = _vm->getTotalPlayTime(); // Original game is using system timer
+	uint32 now = _vm->_time->currentSystem();
 	if (selectedLineId >= 0 && selectedLineId < (int)_saveList.size()) {
 		if (_timeLeft) {
 			uint32 timeDiff = now - _timeLast;

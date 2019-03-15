@@ -76,6 +76,13 @@ void SceneScriptUG07::SceneLoaded() {
 	Unobstacle_Object("BOX FOR WALL LEFT11", true);
 	Unobstacle_Object("BOX FOR WALL LEFT12", true);
 	Unobstacle_Object("BOX FOR WALL LEFT13", true);
+	//RTR 3.3.2019
+	//from InitalizeScene()
+	//always enable=>
+	Scene_Exit_Add_2D_Exit(0, 0, 192, 51, 334, 0);
+	Scene_Exit_Add_2D_Exit(1, 226, 224, 314, 396, 1);
+	Scene_Exit_Add_2D_Exit(2, 60, 440, 460, 479, 2);
+	//----
 }
 
 bool SceneScriptUG07::MouseClick(int x, int y) {
@@ -175,13 +182,17 @@ void SceneScriptUG07::ActorChangedGoal(int actorId, int newGoal, int oldGoal, bo
 }
 
 void SceneScriptUG07::PlayerWalkedIn() {
-	if ( Global_Variable_Query(kVariableChapter) == 4
-	 && !Game_Flag_Query(kFlagUG07Empty)
-	) {
-		Actor_Set_Goal_Number(kActorOfficerLeary, 307);
-		Actor_Set_Goal_Number(kActorOfficerGrayford, 307);
-	}
+	//RTR 3.3.2019
+	//officer 'ack(s):
+	//maybe:
+	//if ( Global_Variable_Query(kVariableChapter) == 4
+	// && !Game_Flag_Query(kFlagUG07Empty)
+	//) {
 
+	//	Actor_Set_Goal_Number(kActorOfficerLeary, 307);
+	//	Actor_Set_Goal_Number(kActorOfficerGrayford, 307);
+	//}
+	//----
 	if (Game_Flag_Query(kFlagUG08toUG07)) {
 		Loop_Actor_Walk_To_XYZ(kActorMcCoy, 62.0f, -12.21f, -274.0f, 0, false, false, 0);
 		Game_Flag_Reset(kFlagUG08toUG07);

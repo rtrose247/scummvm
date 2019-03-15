@@ -59,9 +59,6 @@ Actor::Actor(BladeRunnerEngine *vm, int actorId) {
 
 	_friendlinessToOther.resize(_vm->_gameInfo->getActorCount());
 
-	_mustReachWalkDestination = false;
-	_damageAnimIfMoving       = false;
-
 	setup(actorId);
 }
 
@@ -86,6 +83,7 @@ void Actor::setup(int actorId) {
 	_fps            = 15;
 	_frameMs       = 1000 / _fps;
 
+	_mustReachWalkDestination = false;	// Original's _inWalkLoop. Moved here from our constructor, since it's here in the original's init()
 	_isMoving            = false;
 	_isTarget            = false;
 	_inCombat            = false;
@@ -108,6 +106,7 @@ void Actor::setup(int actorId) {
 		_timersLeft[i] = 0;
 		_timersLast[i] = _vm->_time->current();
 	}
+	_timersLeft[4] = _timer4RemainDefault; // This was in original code. We need to init this timer in oder to kick off periodic updates for acquireCluesByRelations
 
 	_honesty              = 50;
 	_intelligence         = 50;
@@ -116,6 +115,9 @@ void Actor::setup(int actorId) {
 
 	_currentHP  = 50;
 	_maxHP      = 50;
+
+	_damageAnimIfMoving       = true;	// Set to true (like in original). And moved here from our constructor, since it's here in the original's init().
+
 	_goalNumber = -1;
 
 	_movementTrackPaused         = false;
@@ -140,6 +142,39 @@ void Actor::setup(int actorId) {
 	_movementTrack->flush();
 
 	_actorSpeed = Vector3();
+
+	switch (_id) {
+		case kActorMcCoy:
+			_sitcomRatio = 50;
+			break;
+
+		case kActorGordo:
+			_sitcomRatio = 0;
+			break;
+
+		case kActorGuzza:
+		case kActorChew:
+		case kActorVoiceOver:
+			_sitcomRatio = 75;
+			break;
+
+		case kActorCrazylegs:
+		case kActorBulletBob:
+		case kActorRunciter:
+		case kActorZuben:
+		case kActorLeon:
+			_sitcomRatio = 90;
+			break;
+
+		case kActorGrigorian:
+		case kActorMoraji:
+			_sitcomRatio = 100;
+			break;
+
+		default:
+			_sitcomRatio = 33;
+			break;
+	}
 }
 
 void Actor::changeAnimationMode(int animationMode, bool force) {
@@ -251,7 +286,6 @@ void Actor::timerUpdate(int timerId) {
 
 void Actor::movementTrackNext(bool omitAiScript) {
 	bool hasNextMovement;
-	int waypointSetId;
 	bool running;
 	int angle;
 	int delay;
@@ -268,7 +302,7 @@ void Actor::movementTrackNext(bool omitAiScript) {
 		if (angle == -1) {
 			angle = 0;
 		}
-		waypointSetId = _vm->_waypoints->getSetId(waypointId);
+		int waypointSetId = _vm->_waypoints->getSetId(waypointId);
 		_vm->_waypoints->getXYZ(waypointId, &waypointPosition.x, &waypointPosition.y, &waypointPosition.z);
 		if (_setId == waypointSetId && waypointSetId == _vm->_actors[0]->_setId) {
 			stopWalking(false);
@@ -511,8 +545,8 @@ bool Actor::loopWalkToSceneObject(const Common::String &objectName, int proximit
 	if (d < closestDistance) {
 		closestX = x0;
 		closestZ = z1;
-		closestDistance = d;
 	}
+
 	bool inWalkbox;
 	float y = _vm->_scene->_set->getAltitudeAtXZ(closestX, closestZ, &inWalkbox);
 	Vector3 destination(closestX, y, closestZ);
@@ -694,7 +728,9 @@ bool Actor::draw(Common::Rect *screenRect) {
 	float drawAngle = M_PI - _facing * (M_PI / 512.0f);
 	float drawScale = _scale;
 
-	// TODO: Handle SHORTY mode
+	if (_vm->_shortyMode) {
+		drawScale = 0.7f;
+	}
 
 	_vm->_sliceRenderer->drawInWorld(_animationId, _animationFrame, drawPosition, drawAngle, drawScale, _vm->_surfaceFront, _vm->_zbuffer->getData());
 	_vm->_sliceRenderer->getScreenRectangle(screenRect, _animationId, _animationFrame, drawPosition, drawAngle, drawScale);
@@ -969,6 +1005,10 @@ bool Actor::getFlagDamageAnimIfMoving() const {
 	return _damageAnimIfMoving;
 }
 
+int Actor::getSitcomRatio() const {
+	return _sitcomRatio;
+}
+
 void Actor::retire(bool retired, int width, int height, int retiredByActorId) {
 	_isRetired = retired;
 	_retiredWidth = MAX(width, 0);
@@ -1018,7 +1058,7 @@ void Actor::combatModeOn(int initialState, bool rangedAttack, int enemyId, int w
 	_animationModeCombatWalk = animationModeCombatWalk;
 	_animationModeCombatRun = animationModeCombatRun;
 	_inCombat = true;
-	if (_id != kActorMcCoy) {
+	if (_id != kActorMcCoy && enemyId != -1) {
 		_combatInfo->combatOn(_id, initialState, rangedAttack, enemyId, waypointType, fleeRatio, coverRatio, attackRatio, damage, range, unstoppable);
 	}
 	stopWalking(false);
@@ -1102,19 +1142,16 @@ int Actor::getGoal() const {
 void Actor::speechPlay(int sentenceId, bool voiceOver) {
 	Common::String name = Common::String::format( "%02d-%04d%s.AUD", _id, sentenceId, _vm->_languageCode.c_str());
 
-	int balance = 0;
+	int pan = 0;
 	if (!voiceOver && _id != BladeRunnerEngine::kActorVoiceOver) {
-		// Vector3 pos = _vm->_view->_frameViewMatrix * _position;
-		int screenX = 320; //, screenY = 0;
-		//TODO: transform to screen space using fov;
-		balance = 127 * (2 * screenX - 640) / 640;
-		balance = CLIP<int>(balance, -127, 127);
+		Vector3 screenPosition = _vm->_view->calculateScreenPosition(_position);
+		pan = (75 * (2 *  CLIP<int>(screenPosition.x, 0, 640) - 640)) / 640; // map [0..640] to [-75..75]
 	}
 
 	_vm->_subtitles->getInGameSubsText(_id, sentenceId);
 	_vm->_subtitles->show();
 
-	_vm->_audioSpeech->playSpeech(name, balance);
+	_vm->_audioSpeech->playSpeech(name, pan);
 }
 
 void Actor::speechStop() {
@@ -1177,12 +1214,12 @@ void Actor::acquireCluesByRelations() {
 
 int Actor::soundVolume() const {
 	float dist = distanceFromView(_vm->_view);
-	return 35.0f * CLIP(1.0f - (dist / 1200.0f), 0.0f, 1.0f);
+	return (35 * CLIP<int>(100 - (dist / 12), 0, 100)) / 100; // map [0..1200] to [35..0]
 }
 
-int Actor::soundBalance() const {
+int Actor::soundPan() const {
 	Vector3 screenPosition = _vm->_view->calculateScreenPosition(_position);
-	return 35.0f * (CLIP(screenPosition.x / 640.0f, 0.0f, 1.0f) * 2.0f - 1.0f);
+	return (35 * (2 * CLIP<int>(screenPosition.x, 0, 640) - 640)) / 640; // map [0..640] to [-35..35]
 }
 
 bool Actor::isObstacleBetween(const Vector3 &target) {
@@ -1325,8 +1362,8 @@ void Actor::save(SaveFileWriteStream &f) {
 	f.writeInt(_retiredWidth);
 	f.writeInt(_retiredHeight);
 	f.writeInt(_damageAnimIfMoving);
-	f.writeInt(0); // TODO: _actorFieldU6
-	f.writeInt(0); // TODO: _actorFieldU7
+	f.writeInt(0);
+	f.writeInt(0);
 	f.writeFloat(_scale);
 
 	for (int i = 0; i < 7; ++i) {
@@ -1404,12 +1441,17 @@ void Actor::load(SaveFileReadStream &f) {
 	_retiredWidth = f.readInt();
 	_retiredHeight = f.readInt();
 	_damageAnimIfMoving = f.readInt();
-	f.skip(4); // TODO: _actorFieldU6
-	f.skip(4); // TODO: _actorFieldU7
+	f.skip(4);
+	f.skip(4);
 	_scale = f.readFloat();
 
 	for (int i = 0; i < 7; ++i) {
 		_timersLeft[i] = f.readInt();
+	}
+	// Bugfix: Special initialization case for timer 4 when it's value is restored as 0
+	// This should be harmless, but will remedy any broken save-games where the timer 4 was saved as 0.
+	if (_timersLeft[4] == 0) {
+		_timersLeft[4] = _timer4RemainDefault;
 	}
 
 	uint32 now = _vm->_time->getPauseStart();

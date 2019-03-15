@@ -27,7 +27,9 @@ namespace BladeRunner {
 SceneScript::SceneScript(BladeRunnerEngine *vm)
 	: _vm(vm)
 	, _inScriptCounter(0)
-	, _currentScript(nullptr) {}
+	, _currentScript(nullptr)
+	, _mouseX(0)
+	, _mouseY(0) {}
 
 SceneScript::~SceneScript() {
 	delete _currentScript;
@@ -35,6 +37,7 @@ SceneScript::~SceneScript() {
 
 bool SceneScript::open(const Common::String &name) {
 	delete _currentScript;
+	_currentScript = nullptr;
 
 	if (name == "AR01") { _currentScript = new SceneScriptAR01(_vm); return true; }
 	if (name == "AR02") { _currentScript = new SceneScriptAR02(_vm); return true; }
@@ -251,7 +254,6 @@ void SceneScript::sceneFrameAdvanced(int frame) {
 
 void SceneScript::actorChangedGoal(int actorId, int newGoal, int oldGoal, bool currentSet) {
 	_inScriptCounter++;
-	//TODO remove this check
 	if(_currentScript)
 		_currentScript->ActorChangedGoal(actorId, newGoal, oldGoal, currentSet);
 	_inScriptCounter--;

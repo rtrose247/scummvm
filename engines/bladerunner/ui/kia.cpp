@@ -73,14 +73,14 @@ KIA::KIA(BladeRunnerEngine *vm) {
 	_currentSectionId = kKIASectionNone;
 	_lastSectionIdKIA = kKIASectionCrimes;
 	_lastSectionIdOptions = kKIASectionSettings;
-	_playerVqaTimeLast = _vm->getTotalPlayTime();
+	_playerVqaTimeLast = _vm->_time->currentSystem();
 	_playerVqaFrame = 0;
 	_playerVisualizerState = 0;
 	_playerPhotographId = -1;
 	_playerPhotograph = nullptr;
 	_playerSliceModelId = -1;
 	_playerSliceModelAngle = 0.0f;
-	_timeLast = _vm->getTotalPlayTime();
+	_timeLast = _vm->_time->currentSystem();
 	_playerActorDialogueQueuePosition = 0;
 	_playerActorDialogueQueueSize = 0;
 	_playerActorDialogueState = 0;
@@ -110,6 +110,10 @@ KIA::KIA(BladeRunnerEngine *vm) {
 }
 
 KIA::~KIA() {
+	if (isOpen()) {
+		unload();
+	}
+
 	_thumbnail.free();
 	delete _crimesSection;
 	delete _suspectsSection;
@@ -150,7 +154,7 @@ void KIA::open(KIASections sectionId) {
 		return;
 	}
 
-	if (!sectionId) {
+	if (sectionId == kKIASectionNone) {
 		unload();
 		return;
 	}
@@ -223,7 +227,7 @@ void KIA::tick() {
 		return;
 	}
 
-	int timeNow = _vm->getTotalPlayTime();
+	int timeNow = _vm->_time->currentSystem();
 	int timeDiff = timeNow - _timeLast;
 
 	if (_playerActorDialogueQueueSize == _playerActorDialogueQueuePosition) {
@@ -311,7 +315,7 @@ void KIA::tick() {
 			_shapes->get(39)->draw(_vm->_surfaceFront, 583, 342);
 		}
 	}
-	//TODO: implement frame loading after seek, then advanceFrame can be removed
+
 	_playerVqaPlayer->seekToFrame(_playerVqaFrame);
 	_playerVqaPlayer->update(true, true);
 
@@ -366,7 +370,7 @@ void KIA::tick() {
 			_shapes->get(47)->draw(_vm->_surfaceFront, 182, 446);
 		}
 	}
-	_vm->_mainFont->drawColor("1.00", _vm->_surfaceFront, 438, 471, 0x1CE7); // TODO: 1.01 for DVD version
+	_vm->_mainFont->drawColor("1.00", _vm->_surfaceFront, 438, 471, 0x1CE7); // 1.01 is DVD version, but only cd handling routines were changed, no game logic
 	if (!_transitionId) {
 		_buttons->drawTooltip(_vm->_surfaceFront, mouse.x, mouse.y);
 	}
@@ -520,13 +524,12 @@ void KIA::handleKeyDown(const Common::KeyState &kbd) {
 
 void KIA::playerReset() {
 	if (_playerActorDialogueQueueSize != _playerActorDialogueQueuePosition) {
-		if (_playerActorDialogueQueueSize != _playerActorDialogueQueuePosition) {
-			int actorId = _playerActorDialogueQueue[_playerActorDialogueQueuePosition].actorId;
-			if (_vm->_actors[actorId]->isSpeeching()) {
-				_vm->_actors[actorId]->speechStop();
-			}
+		int actorId = _playerActorDialogueQueue[_playerActorDialogueQueuePosition].actorId;
+		if (_vm->_actors[actorId]->isSpeeching()) {
+			_vm->_actors[actorId]->speechStop();
 		}
 	}
+
 	_playerActorDialogueQueueSize = _playerActorDialogueQueuePosition;
 	_playerSliceModelId = -1;
 	if (_playerPhotographId != -1) {
@@ -650,8 +653,8 @@ void KIA::init() {
 
 	playerReset();
 	_playerVqaFrame = 0;
-	_playerVqaTimeLast = _vm->getTotalPlayTime();
-	_timeLast = _vm->getTotalPlayTime();
+	_playerVqaTimeLast = _vm->_time->currentSystem();
+	_timeLast = _vm->_time->currentSystem();
 
 	if (_vm->_gameFlags->query(kFlagKIAPrivacyAddon) && !_vm->_gameFlags->query(kFlagKIAPrivacyAddonIntro)) {
 		_vm->_gameFlags->set(kFlagKIAPrivacyAddonIntro);

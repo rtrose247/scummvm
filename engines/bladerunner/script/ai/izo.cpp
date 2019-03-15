@@ -192,7 +192,7 @@ void AIScriptIzo::OtherAgentExitedThisScene(int otherActorId) {
 
 void AIScriptIzo::OtherAgentEnteredCombatMode(int otherActorId, int combatMode) {
 	if (Actor_Query_Goal_Number(kActorIzo) == kGoalIzoRC03Walk) {
-		Game_Flag_Query(kFlagIzoIsReplicant);
+		Game_Flag_Query(kFlagIzoIsReplicant); // bug in the game?
 	}
 	return; //false;
 }
@@ -558,7 +558,7 @@ bool AIScriptIzo::UpdateAnimation(int *animation, int *frame) {
 		if (Actor_Query_Goal_Number(kActorIzo) == kGoalIzoWaitingAtRC03
 		 && _animationFrame == 6
 		) {
-			Actor_Change_Animation_Mode(kActorMcCoy, 20);
+			Actor_Change_Animation_Mode(kActorMcCoy, kAnimationModeDodge);
 		}
 		Actor_Query_Goal_Number(kActorIzo);
 		if (_animationFrame >= Slice_Animation_Query_Number_Of_Frames(*animation)) {

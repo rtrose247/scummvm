@@ -57,7 +57,7 @@ class Obstacles {
 		Vector2    vertices[kPolygonVertexCount];
 		VertexType vertexType[kPolygonVertexCount];
 
-		Polygon() : isPresent(false), verticeCount(0)
+		Polygon() : isPresent(false), verticeCount(0), vertexType()
 		{}
 	};
 
@@ -98,6 +98,9 @@ public:
 	void clearPath();
 	int  buildNegativePath(int polyIndex, int vertStartIndex, Vector2 startPos, int vertEndIndex, Vector2 endPos, Vector2 *path, int pathCapacity, bool *pathBlocked);
 	int  buildPositivePath(int polyIndex, int vertStartIndex, Vector2 startPos, int vertEndIndex, Vector2 endPos, Vector2 *path, int pathCapacity, bool *pathBlocked);
+
+	bool verticesCanIntersect(int lineType0, int lineType1, float x0, float y0, float x1, float y1) const;
+	bool findFarthestAvailablePathVertex(Vector2 *path, int pathSize, Vector3 start, Vector3 *next) const;
 
 	void backup();
 	void restore();

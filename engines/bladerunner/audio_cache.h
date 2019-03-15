@@ -20,44 +20,44 @@
  *
  */
 
-#ifndef BLADERUNNER_AUDIO_SPEECH_H
-#define BLADERUNNER_AUDIO_SPEECH_H
+#ifndef BLADERUNNER_AUDIO_CACHE_H
+#define BLADERUNNER_AUDIO_CACHE_H
 
-#include "common/str.h"
-#include "common/types.h"
+#include "common/array.h"
+#include "common/mutex.h"
 
 namespace BladeRunner {
 
-class BladeRunnerEngine;
+/*
+ * This is a poor imitation of Bladerunner's resource cache
+ */
+class AudioCache {
+	struct cacheItem {
+		int32   hash;
+		int     refs;
+		uint    lastAccess;
+		byte   *data;
+		uint32  size;
+	};
 
-class AudioSpeech {
-	static const int kBufferSize = 200000;
-	static const int kSpeechSamples[];
+	Common::Mutex            _mutex;
+	Common::Array<cacheItem> _cacheItems;
 
-	BladeRunnerEngine *_vm;
-
-	int   _speechVolume;
-	bool  _isActive;
-	int   _channel;
-	byte *_data;
+	uint32 _totalSize;
+	uint32 _maxSize;
+	uint32 _accessCounter;
 
 public:
-	AudioSpeech(BladeRunnerEngine *vm);
-	~AudioSpeech();
+	AudioCache();
+	~AudioCache();
 
-	bool playSpeech(const Common::String &name, int pan = 0);
-	void stopSpeech();
-	bool isPlaying() const;
+	bool  canAllocate(uint32 size) const;
+	bool  dropOldest();
+	byte *findByHash(int32 hash);
+	void  storeByHash(int32 hash, Common::SeekableReadStream *stream);
 
-	bool playSpeechLine(int actorId, int sentenceId, int volume, int a4, int priority);
-
-	void setVolume(int volume);
-	int getVolume() const;
-	void playSample();
-
-private:
-	void ended();
-	static void mixerChannelEnded(int channel, void *data);
+	void  incRef(int32 hash);
+	void  decRef(int32 hash);
 };
 
 } // End of namespace BladeRunner

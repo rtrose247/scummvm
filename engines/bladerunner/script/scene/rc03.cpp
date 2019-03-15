@@ -222,7 +222,7 @@ void SceneScriptRC03::SceneFrameAdvanced(int frame) {
 void SceneScriptRC03::ActorChangedGoal(int actorId, int newGoal, int oldGoal, bool currentSet) {
 }
 
-void SceneScriptRC03::sub_402834() {
+void SceneScriptRC03::talkWithSteele() {
 	Actor_Face_Actor(kActorSteele, kActorMcCoy, true);
 	Actor_Says(kActorSteele, 1820, 3);
 	Actor_Face_Actor(kActorMcCoy, kActorSteele, true);
@@ -258,7 +258,7 @@ void SceneScriptRC03::PlayerWalkedIn() {
 			if (Game_Flag_Query(kFlagIzoIsReplicant) ) {
 				Actor_Set_Goal_Number(kActorSteele, kGoalSteeleApprehendIzo);
 			}
-			Actor_Change_Animation_Mode(kActorMcCoy, 20);
+			Actor_Change_Animation_Mode(kActorMcCoy, kAnimationModeDodge);
 			Loop_Actor_Walk_To_XYZ(kActorIzo, 180.0f, -4.0f, 184.0f, 0, false, false, 0);
 			Actor_Change_Animation_Mode(kActorIzo, 6);
 			if (!Game_Flag_Query(kFlagIzoIsReplicant)) {
@@ -284,7 +284,7 @@ void SceneScriptRC03::PlayerWalkedIn() {
 		} else {
 			Actor_Set_At_Waypoint(kActorSteele, 203, 0);
 		}
-		sub_402834();
+		talkWithSteele();
 		Async_Actor_Walk_To_Waypoint(kActorSteele, 174, 0, 0);
 		Actor_Set_Goal_Number(kActorIzo, 200);
 		Player_Gains_Control();

@@ -68,6 +68,7 @@ bool SceneScriptRC04::MouseClick(int x, int y) {
 bool SceneScriptRC04::ClickedOn3DObject(const char *objectName, bool a2) {
 	return false;
 }
+
 void SceneScriptRC04::dialogueWithBulletBob() {
 	Dialogue_Menu_Clear_List();
 	if ( Actor_Clue_Query(kActorMcCoy, kClueLabShellCasings)

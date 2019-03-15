@@ -115,6 +115,8 @@ private:
 
 	Vector3 _actorSpeed;
 
+	int _sitcomRatio;
+
 public:
 	Actor(BladeRunnerEngine *_vm, int actorId);
 	~Actor();
@@ -227,6 +229,8 @@ public:
 	void setFlagDamageAnimIfMoving(bool value);
 	bool getFlagDamageAnimIfMoving() const;
 
+	int getSitcomRatio() const;
+
 	void retire(bool isRetired, int width, int height, int retiredByActorId);
 
 	void combatModeOn(int initialState, bool rangedAttack, int enemyId, int waypointType, int animationModeCombatIdle, int animationModeCombatWalk, int animationModeCombatRun, int fleeRatio, int coverRatio, int attackRatio, int damage, int range, bool unstoppable);
@@ -251,7 +255,7 @@ public:
 	void acquireCluesByRelations();
 
 	int soundVolume() const;
-	int soundBalance() const;
+	int soundPan() const;
 
 	bool isObstacleBetween(const Vector3 &target);
 

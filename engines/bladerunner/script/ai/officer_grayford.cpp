@@ -21,7 +21,6 @@
  */
 
 #include "bladerunner/script/ai_script.h"
-
 namespace BladeRunner {
 
 AIScriptOfficerGrayford::AIScriptOfficerGrayford(BladeRunnerEngine *vm) : AIScriptBase(vm) {
@@ -420,8 +419,14 @@ void AIScriptOfficerGrayford::ShotAtAndMissed() {
 }
 
 bool AIScriptOfficerGrayford::ShotAtAndHit() {
-	if (Actor_Query_Goal_Number(kActorOfficerGrayford) == 307)
-		Actor_Set_Health(kActorOfficerGrayford, 50, 50);
+	//RTR 3.3.2019
+	//officer 'ack:
+	//if (Actor_Query_Goal_Number(kActorOfficerGrayford) == 307)
+	//	Actor_Set_Health(kActorOfficerGrayford, 50, 50);
+	//
+	Actor_Set_Health(kActorOfficerGrayford, 0, 50);
+	Retired(kActorMcCoy);
+	//----
 
 	return false;
 }
@@ -535,7 +540,7 @@ bool AIScriptOfficerGrayford::GoalChanged(int currentGoalNumber, int newGoalNumb
 
 		Player_Gains_Control();
 
-		if (Actor_Query_Goal_Number(kActorMoraji) == 23) {
+		if (Actor_Query_Goal_Number(kActorMoraji) == kGoalMorajiDead) {
 			Actor_Face_Actor(kActorOfficerGrayford, kActorMoraji, 1);
 		} else {
 			Actor_Face_Waypoint(kActorOfficerGrayford, 97, 1);
@@ -578,7 +583,7 @@ bool AIScriptOfficerGrayford::GoalChanged(int currentGoalNumber, int newGoalNumb
 		Actor_Face_Actor(kActorOfficerGrayford, kActorMcCoy, true);
 		Actor_Says(kActorOfficerGrayford, 180, 18);
 		Actor_Set_Goal_Number(kActorOfficerGrayford, currentGoalNumber);
-		break;
+		return true; // possible bugfix: was break;
 
 	case 110:
 		AI_Movement_Track_Flush(kActorOfficerGrayford);

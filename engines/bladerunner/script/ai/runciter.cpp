@@ -59,7 +59,7 @@ bool AIScriptRunciter::Update() {
 	//RTR 10.23.2018
 	//always set targetable
 	Actor_Set_Targetable(kActorRunciter, true);
-	//---
+	//----
 	if (Actor_Query_Goal_Number(kActorRunciter) == kGoalRunciterDefault
 	 && Game_Flag_Query(kFlagRC01PoliceDone)
 	) {
@@ -239,6 +239,8 @@ bool AIScriptRunciter::ShotAtAndHit() {
 	Actor_Voice_Over(2080, kActorVoiceOver);
 	Actor_Voice_Over(2090, kActorVoiceOver);
 	//}
+	//
+	//always set targetable
 
 	Actor_Modify_Friendliness_To_Other(kActorClovis, kActorMcCoy, 3);
 	//
@@ -246,11 +248,14 @@ bool AIScriptRunciter::ShotAtAndHit() {
 	//
 	Retired(kActorMcCoy);
 	//----
-	return false;	
+	return false;
 }
 
 void AIScriptRunciter::Retired(int byActorId) {
+	//RTR 10.23.2018
+	//cancel targetable
 	Actor_Set_Targetable(kActorRunciter, false);	
+	//----
 }
 
 int AIScriptRunciter::GetFriendlinessModifierIfGetsClue(int otherActorId, int clueId) {

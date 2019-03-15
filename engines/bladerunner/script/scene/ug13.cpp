@@ -79,15 +79,23 @@ void SceneScriptUG13::SceneLoaded() {
 	Clickable_Object("BASKET");
 	Clickable_Object("BOLLARD");
 	Unclickable_Object("BASKET");
-	if ( Global_Variable_Query(kVariableChapter) >= 3
-	 && !Actor_Clue_Query(kActorMcCoy, kClueOriginalRequisitionForm)
-	 &&  Game_Flag_Query(kFlagCT04HomelessKilledByMcCoy)
-	 &&  (Actor_Clue_Query(kActorMcCoy, kClueShippingForm)
-	  ||  Actor_Clue_Query(kActorMcCoy, kClueWeaponsOrderForm)
-	 )
-	) {
+	//RTR 3.3.2019
+	//if not already found,
+	//always add kItemWeaponsOrderForm=>
+	//
+	//if ( Global_Variable_Query(kVariableChapter) >= 3
+	// && !Actor_Clue_Query(kActorMcCoy, kClueOriginalRequisitionForm)
+	// &&  Game_Flag_Query(kFlagCT04HomelessKilledByMcCoy)
+	// &&  (Actor_Clue_Query(kActorMcCoy, kClueShippingForm)
+	//  ||  Actor_Clue_Query(kActorMcCoy, kClueWeaponsOrderForm)
+	// )
+	//) {
+	if (!Actor_Clue_Query(kActorMcCoy, kClueOriginalRequisitionForm))
+	{
 		Item_Add_To_World(kItemWeaponsOrderForm, 958, 85, -209.01f, 70.76f, -351.79f, 0, 16, 12, false, true, false, true);
 	}
+	//}
+	//----
 }
 
 bool SceneScriptUG13::MouseClick(int x, int y) {

@@ -180,7 +180,7 @@ bool SceneScriptRC02::ClickedOn3DObject(const char *objectName, bool a2) {
 			Actor_Face_Actor(kActorRunciter, kActorMcCoy, true);
 			Actor_Says(kActorRunciter, 30, 23);
 			Actor_Says(kActorMcCoy, 4555, 18);
-			Actor_Clue_Acquire(kActorMcCoy, kClueRuncitersVideo, 1, kActorRunciter);
+			Actor_Clue_Acquire(kActorMcCoy, kClueRuncitersVideo, true, kActorRunciter);
 			//RTR 1.14.2019
 			Unclickable_Object("SCRTY CA03");
 			//----

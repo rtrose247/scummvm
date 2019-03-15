@@ -76,22 +76,34 @@ void SceneScriptUG18::SceneLoaded() {
 	Unobstacle_Object("OBSTACLE1", true);
 	Clickable_Object("MACHINE_01");
 	Unclickable_Object("MACHINE_01");
-
-	if (Game_Flag_Query(kFlagUG18GuzzaScene)) {
-		Actor_Put_In_Set(kActorGuzza, kSetFreeSlotI);
+	//RTR 3.3.2019
+	//always Guzza=>
+	if (true) { //(Game_Flag_Query(kFlagUG18GuzzaScene)) {
+		Actor_Put_In_Set(kActorGuzza, kSetUG18); //kSetFreeSlotI);
 		Actor_Set_At_Waypoint(kActorGuzza, 41, 0);
 		if (Actor_Query_Which_Set_In(kActorSadik) == kSetUG18) {
-			Actor_Put_In_Set(kActorSadik, kSetFreeSlotA);
+			Actor_Put_In_Set(kActorSadik, kSetUG18); //kSetFreeSlotA);
 			Actor_Set_At_Waypoint(kActorSadik, 33, 0);
+			//?
+			Actor_Put_In_Set(kActorClovis, kSetUG18); //kSetFreeSlotA);
+			Actor_Set_At_Waypoint(kActorClovis, 33, 0);
+			//
 		}
 	}
+	//----
 
-	if ( Game_Flag_Query(kFlagCallWithGuzza)
-	 && !Game_Flag_Query(kFlagUG18GuzzaScene)
-	 &&  Global_Variable_Query(kVariableChapter) == 4
-	) {
+	//RTR 3.3.2019
+	//always Guzza=>
+	//always briefcase=>
+	//if ( Game_Flag_Query(kFlagCallWithGuzza)
+	// && !Game_Flag_Query(kFlagUG18GuzzaScene)
+	// &&  Global_Variable_Query(kVariableChapter) == 4
+	//) {
+	if (!Game_Flag_Query(kFlagUG18BriefcaseTaken))
+	{
 		Item_Add_To_World(kItemBriefcase, 987, kSetUG18, -55.21f, 0.0f, -302.17f, 0, 12, 12, false, true, false, true);
 	}
+	//----
 }
 
 bool SceneScriptUG18::MouseClick(int x, int y) {
@@ -141,6 +153,10 @@ void SceneScriptUG18::SceneFrameAdvanced(int frame) {
 }
 
 void SceneScriptUG18::ActorChangedGoal(int actorId, int newGoal, int oldGoal, bool currentSet) {
+	//RTR 3.3.2019
+	//always enable
+	Scene_Exits_Enable();
+	//----
 	if (actorId == kActorGuzza) {
 		switch (newGoal) {
 		case kGoalGuzzaUG18HitByMcCoy:
@@ -211,11 +227,13 @@ void SceneScriptUG18::ActorChangedGoal(int actorId, int newGoal, int oldGoal, bo
 
 void SceneScriptUG18::PlayerWalkedIn() {
 	Loop_Actor_Walk_To_XYZ(kActorMcCoy, -488.71f, 0.0f, 123.59f, 0, false, false, 0);
-
-	if ( Game_Flag_Query(kFlagCallWithGuzza)
-	 && !Game_Flag_Query(kFlagUG18GuzzaScene)
-	 &&  Actor_Query_Is_In_Current_Set(kActorGuzza)
-	) {
+	//RTR 3.3.2019
+	//always=>Guzza
+	//if ( Game_Flag_Query(kFlagCallWithGuzza)
+	// && !Game_Flag_Query(kFlagUG18GuzzaScene)
+	// &&  Actor_Query_Is_In_Current_Set(kActorGuzza)) 
+	if (!Game_Flag_Query(kFlagUG18GuzzaScene))
+	{
 		Scene_Exits_Disable();
 		talkWithGuzza();
 		talkWithClovis();

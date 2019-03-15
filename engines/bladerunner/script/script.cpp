@@ -96,8 +96,6 @@ bool ScriptBase::Region_Check(int left, int top, int right, int down) {
 		&& _vm->_sceneScript->_mouseY >= top
 		&& _vm->_sceneScript->_mouseX <= right
 		&& _vm->_sceneScript->_mouseY <= down;
-
-	return false;
 }
 
 bool ScriptBase::Object_Query_Click(const char *objectName1, const char *objectName2) {
@@ -318,9 +316,11 @@ void ScriptBase::Actor_Says_With_Pause(int actorId, int sentenceId, float pause,
 	}
 	Player_Loses_Control();
 	while (_vm->_gameIsRunning) {
-		_vm->_speechSkipped = false;
+		_vm->_actorIsSpeaking = true;
+		_vm->_actorSpeakStopIsRequested = false;
 		_vm->gameTick();
-		if (_vm->_speechSkipped || !actor->isSpeeching()) {
+		_vm->_actorIsSpeaking = false;
+		if (_vm->_actorSpeakStopIsRequested || !actor->isSpeeching()) {
 			actor->speechStop();
 			break;
 		}
@@ -329,19 +329,17 @@ void ScriptBase::Actor_Says_With_Pause(int actorId, int sentenceId, float pause,
 		actor->changeAnimationMode(kAnimationModeIdle, false);
 	}
 
-	//TODO: sitcom
-	//if (_vm->isSitcom)
-	//{
-	//	int rnd = _vm->random(1, 100);
-	//	if (rnd <= actor::get_unknown3(actor))
-	//	{
-	//		int soundId = _vm->random(319, 327);
-	//		_vm->_audioPlayer->play(soundId, 40, 0, 0, 50);
-	//	}
-	//}
-	if(pause > 0.0f && !_vm->_speechSkipped) {
+	if (_vm->_sitcomMode) {
+		int rnd = Random_Query(1, 100);
+		if (rnd <= actor->getSitcomRatio()) {
+			Sound_Play(Random_Query(319, 327), 40, 0, 0, 50);
+		}
+	}
+
+	if (pause > 0.0f && !_vm->_actorSpeakStopIsRequested) {
 		Delay(pause * 1000);
 	}
+
 	Player_Gains_Control();
 }
 
@@ -357,10 +355,12 @@ void ScriptBase::Actor_Voice_Over(int sentenceId, int actorId) {
 
 	actor->speechPlay(sentenceId, true);
 	Player_Loses_Control();
-	while(_vm->_gameIsRunning) {
-		_vm->_speechSkipped = false;
+	while (_vm->_gameIsRunning) {
+		_vm->_actorIsSpeaking = true;
+		_vm->_actorSpeakStopIsRequested = false;
 		_vm->gameTick();
-		if(_vm->_speechSkipped || !actor->isSpeeching()) {
+		_vm->_actorIsSpeaking = false;
+		if (_vm->_actorSpeakStopIsRequested || !actor->isSpeeching()) {
 			actor->speechStop();
 			break;
 		}
@@ -963,7 +963,7 @@ void ScriptBase::Sound_Left_Footstep_Walk(int actorId) {
 
 	_vm->_walkSoundId = _vm->_scene->_set->getWalkboxSoundWalkLeft(walkboxId);
 	_vm->_walkSoundVolume = _vm->_actors[actorId]->soundVolume();
-	_vm->_walkSoundBalance = _vm->_actors[actorId]->soundBalance();
+	_vm->_walkSoundPan = _vm->_actors[actorId]->soundPan();
 }
 
 void ScriptBase::Sound_Right_Footstep_Walk(int actorId) {
@@ -975,7 +975,7 @@ void ScriptBase::Sound_Right_Footstep_Walk(int actorId) {
 
 	_vm->_walkSoundId = _vm->_scene->_set->getWalkboxSoundWalkRight(walkboxId);
 	_vm->_walkSoundVolume = _vm->_actors[actorId]->soundVolume();
-	_vm->_walkSoundBalance = _vm->_actors[actorId]->soundBalance();
+	_vm->_walkSoundPan = _vm->_actors[actorId]->soundPan();
 }
 
 void ScriptBase::Sound_Left_Footstep_Run(int actorId) {
@@ -987,7 +987,7 @@ void ScriptBase::Sound_Left_Footstep_Run(int actorId) {
 
 	_vm->_walkSoundId = _vm->_scene->_set->getWalkboxSoundRunLeft(walkboxId);
 	_vm->_walkSoundVolume = _vm->_actors[actorId]->soundVolume();
-	_vm->_walkSoundBalance = _vm->_actors[actorId]->soundBalance();
+	_vm->_walkSoundPan = _vm->_actors[actorId]->soundPan();
 }
 
 void ScriptBase::Sound_Right_Footstep_Run(int actorId) {
@@ -999,7 +999,7 @@ void ScriptBase::Sound_Right_Footstep_Run(int actorId) {
 
 	_vm->_walkSoundId = _vm->_scene->_set->getWalkboxSoundRunRight(walkboxId);
 	_vm->_walkSoundVolume = _vm->_actors[actorId]->soundVolume();
-	_vm->_walkSoundBalance = _vm->_actors[actorId]->soundBalance();
+	_vm->_walkSoundPan = _vm->_actors[actorId]->soundPan();
 }
 
 // ScriptBase::Sound_Walk_Shuffle_Stop
@@ -1546,8 +1546,6 @@ bool ScriptBase::Game_Over() {
 void ScriptBase::Autosave_Game(int textId) {
 	debugC(kDebugScript, "Autosave_Game(%d)", textId);
 	_vm->_gameAutoSave = textId;
-	// TODO
-	warning("Autosave not yet implemented");
 }
 
 void ScriptBase::I_Sez(const char *str) {

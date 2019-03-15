@@ -37,7 +37,8 @@ AmbientSounds::AmbientSounds(BladeRunnerEngine *vm) {
 	_vm = vm;
 	_nonLoopingSounds = new NonLoopingSound[kNonLoopingSounds];
 	_loopingSounds = new LoopingSound[kLoopingSounds];
-	_ambientVolume = 65;
+
+	_ambientVolume = BLADERUNNER_ORIGINAL_SETTINGS ? 65 : 100;
 
 	for (int i = 0; i != kNonLoopingSounds; ++i) {
 		NonLoopingSound &track = _nonLoopingSounds[i];
@@ -119,7 +120,7 @@ void AmbientSounds::playSound(int sfxId, int volume, int panStart, int panEnd, i
 
 void AmbientSounds::playSpeech(int actorId, int sentenceId, int volume, int panStart, int panEnd, int priority) {
 	Common::String name = Common::String::format( "%02d-%04d%s.AUD", actorId, sentenceId, _vm->_languageCode.c_str());
-	_vm->_audioPlayer->playAud(name, volume * _ambientVolume / 100, panStart, panEnd, priority, kAudioPlayerOverrideVolume);
+	_vm->_audioPlayer->playAud(name, volume * _ambientVolume / 100, panStart, panEnd, priority, kAudioPlayerOverrideVolume, Audio::Mixer::kSpeechSoundType);
 }
 
 void AmbientSounds::addLoopingSound(int sfxId, int volume, int pan, int delay) {
@@ -357,7 +358,7 @@ void AmbientSounds::removeLoopingSoundByIndex(int index, int delay) {
 }
 
 void AmbientSounds::save(SaveFileWriteStream &f) {
-	f.writeBool(false); // TODO: _isDisabled
+	f.writeBool(false); // _isDisabled - not used
 
 	for (int i = 0; i != kNonLoopingSounds; ++i) {
 		// 73 bytes per non-looping sound
@@ -396,7 +397,7 @@ void AmbientSounds::load(SaveFileReadStream &f) {
 	removeAllLoopingSounds(0);
 	removeAllNonLoopingSounds(true);
 
-	f.skip(4); // TODO: _isDisabled
+	f.skip(4); // _isDisabled - not used
 
 	uint32 now = _vm->_time->getPauseStart();
 
