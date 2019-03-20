@@ -422,6 +422,11 @@ void SceneScriptCT01::PlayerWalkedIn() {
 		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -314.0f, -6.5f, 326.0f, 0, false, false, 0);
 		if (!Game_Flag_Query(kFlagCT01Visited)) {
 			Game_Flag_Set(kFlagCT01Visited);
+			//RTR 3.19.2019
+			//assist with Zuben logic CT06
+			//=>McCoy has not met Zuben (yet)
+			Actor_Clue_Lose(kActorMcCoy, kClueZubenRunsAway);
+			//----
 			//RTR 1.26.2019
 			//maybe:unconditional voice over on CT01 if not already visited:
 			if (true) { //(!Game_Flag_Query(kFlagDirectorsCut)) {

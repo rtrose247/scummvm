@@ -70,11 +70,13 @@ void SceneScriptCT06::SceneLoaded() {
 	//RTR 1.14.2019
 	//zuben roll=>put in set
 	//e.g., maybe:
-	if (Random_Query(1, 99) <= 90 && !Actor_Clue_Query(kActorZuben, kClueMcCoyShotZubenInTheBack) && Global_Variable_Query(kVariableChapter) < 3)
+	if (Random_Query(1, 99) <= 90 &&  !Actor_Clue_Query(kActorMcCoy, kClueMcCoyShotZubenInTheBack) && Global_Variable_Query(kVariableChapter) < 3)
 	{
 		Actor_Put_In_Set(kActorZuben, kSetCT06);
 		//change goal
 		Actor_Set_Goal_Number(kActorZuben, 11);
+		//McCoy has met Zuben CT06
+		Actor_Clue_Acquire(kActorMcCoy, kClueMcCoyShotZubenInTheBack, true, -1);
 	}
 	//continue with original logic
 	//----

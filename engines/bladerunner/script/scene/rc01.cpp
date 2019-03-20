@@ -71,7 +71,7 @@ void SceneScriptRC01::InitializeScene() {
 	Actor_Clue_Acquire(kActorMcCoy, kClueCrowdInterviewB, true, kActorOfficerLeary);
 	Actor_Clue_Acquire(kActorMcCoy, kClueOfficersStatement, true, kActorOfficerLeary);
 	Actor_Clue_Acquire(kActorMcCoy, kClueChromeDebris, true, -1);
-	//----
+
 	if (!Game_Flag_Query(kFlagIntroPlayed)) {
 		Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 		Ambient_Sounds_Remove_All_Looping_Sounds(1);
