@@ -69,7 +69,10 @@ void SceneScriptMA02::InitializeScene() {
 
 	if ( Global_Variable_Query(kVariableChapter) == 5
 	 &&  Game_Flag_Query(kFlagMcCoyIsHelpingReplicants)
-	 && !Actor_Clue_Query(kActorMcCoy, kClueCrystalsCigarette)
+	//RTR 3.24.2019
+	//Omit
+	//&& !Actor_Clue_Query(kActorMcCoy, kClueCrystalsCigarette)
+	//----
 	) {
 		Overlay_Play("MA02OVER", 0, 1, 0, 0);
 	}
@@ -168,6 +171,16 @@ void SceneScriptMA02::ActorChangedGoal(int actorId, int newGoal, int oldGoal, bo
 }
 
 void SceneScriptMA02::PlayerWalkedIn() {
+	//RTR 3.24.2019
+	//Rajif talk
+	if (Global_Variable_Query(kVariableChapter) >=1 
+		&& !Game_Flag_Query(kFlagMA02RajifTalk) 
+		) {
+		Game_Flag_Set(kFlagUG07Empty);
+		Game_Flag_Set(kFlagMA02RajifTalk);
+		talkWithRajif();
+	}
+	//----
 	if (Game_Flag_Query(kFlagMA06ToMA02)) {
 		selectNextTvNews();
 	}

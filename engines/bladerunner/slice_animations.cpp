@@ -95,12 +95,15 @@ bool SliceAnimations::openCoreAnim() {
 }
 
 bool SliceAnimations::openFrames(int fileNumber) {
+
 	if (_framesPageFile._fileNumber == -1) { // Running for the first time, need to probe
 		// First, try HDFRAMES.DAT
 		if (_framesPageFile.open("HDFRAMES.DAT")) {
 			_framesPageFile._fileNumber = 0;
 
 			return true;
+		} else {
+			warning("SliceAnimations::openFrames: HDFRAMES.DAT resource not found. Falling back to using CDFRAMESx.DAT files instead...");
 		}
 	}
 
@@ -112,10 +115,16 @@ bool SliceAnimations::openFrames(int fileNumber) {
 
 	_framesPageFile.close();
 
-	if (fileNumber == 1 && _framesPageFile.open("CDFRAMES.DAT")) // For Chapter1 we try both CDFRAMES.DAT and CDFRAMES1.DAT
-		return true;
+	_framesPageFile._fileNumber = fileNumber;
 
-	return _framesPageFile.open(Common::String::format("CDFRAMES%d.DAT", fileNumber));
+	if (fileNumber == 1 && _framesPageFile.open("CDFRAMES.DAT")) {// For Chapter1 we try both CDFRAMES.DAT and CDFRAMES1.DAT
+		return true;
+	}
+
+	if (_framesPageFile.open(Common::String::format("CDFRAMES%d.DAT", fileNumber))) {
+		return true;
+	}
+	return false;
 }
 
 bool SliceAnimations::PageFile::open(const Common::String &name) {
@@ -198,18 +207,22 @@ void *SliceAnimations::getFramePtr(uint32 animation, uint32 frame) {
 //	assert(frame < _animations[animation].frameCount);
 //#endif // BLADERUNNER_ORIGINAL_BUGS
 //----
+
 	uint32 frameOffset = _animations[animation].offset + frame * _animations[animation].frameSize;
 	uint32 page        = frameOffset / _pageSize;
 	uint32 pageOffset  = frameOffset % _pageSize;
 
-	if (!_pages[page]._data)
-		_pages[page]._data = _coreAnimPageFile.loadPage(page);
+	if (_pages[page]._data == nullptr) {                          // if not cached already
+		_pages[page]._data = _coreAnimPageFile.loadPage(page);    // look in COREANIM first
 
-	if (!_pages[page]._data)
-		_pages[page]._data = _framesPageFile.loadPage(page);
+		if (_pages[page]._data == nullptr) {                      // if not in COREAMIM
+			_pages[page]._data = _framesPageFile.loadPage(page);  // Look in CDFRAMES or HDFRAMES loaded data
 
-	if (!_pages[page]._data)
-		error("Unable to locate page %d for animation %d frame %d", page, animation, frame);
+			if (_pages[page]._data == nullptr) {
+				error("Unable to locate page %d for animation %d frame %d", page, animation, frame);
+			}
+		}
+	}
 
 	_pages[page]._lastAccess = _vm->_time->currentSystem();
 

@@ -167,6 +167,61 @@ bool SceneScriptMA04::ClickedOn2DRegion(int region) {
 		return true;
 	}
 	if (region == kMA04RegionPhone) {
+		//return false;
+		//RTR 3.24.2019
+		//"phone calls for free":
+		//
+		if (Global_Variable_Query(kVariableChapter) >= 5
+			&& !Game_Flag_Query(kFlagMA04PhoneMessageFromLucy)
+			) {
+			if (isPhoneRinging()) {
+				Actor_Says(kActorMcCoy, 2680, 0);
+				Ambient_Sounds_Remove_Sound(403, true);
+				//
+				phoneCallWithDektora();
+				//
+				Ambient_Sounds_Add_Sound(403, 3, 3, 100, 100, 0, 0, 0, 0, 99, 0);
+				Delay(2000);
+				Actor_Says(kActorMcCoy, 2680, 0);
+				Ambient_Sounds_Remove_Sound(403, true);
+				//
+				phoneCallWithLucy();
+				//
+				Ambient_Sounds_Add_Sound(403, 3, 3, 100, 100, 0, 0, 0, 0, 99, 0);
+				Delay(2000);
+				Actor_Says(kActorMcCoy, 2680, 0);
+				Ambient_Sounds_Remove_Sound(403, true);
+				//
+				phoneCallWithClovis();
+				//
+				Ambient_Sounds_Add_Sound(403, 3, 3, 100, 100, 0, 0, 0, 0, 99, 0);
+				Delay(2000);
+				Actor_Says(kActorMcCoy, 2680, 0);
+				Ambient_Sounds_Remove_Sound(403, true);
+				//
+				phoneCallWithSteele();
+				//
+				Ambient_Sounds_Add_Sound(403, 3, 3, 100, 100, 0, 0, 0, 0, 99, 0);
+				Delay(2000);
+				Actor_Says(kActorMcCoy, 2680, 0);
+				Ambient_Sounds_Remove_Sound(403, true);
+				//from ClickedOn2DRegion|kMA04RegionPhone
+				Sound_Play(123, 100, 0, 0, 50);
+				Overlay_Remove("MA04OVER");
+				Delay(500);
+				Actor_Says(kActorLucy, 500, 3);
+				Actor_Says(kActorLucy, 510, 3);
+				//if (!Game_Flag_Query(kFlagDirectorsCut) && Global_Variable_Query(kVariableChapter) < 3) {
+				Actor_Voice_Over(1330, kActorVoiceOver);
+				Actor_Voice_Over(1340, kActorVoiceOver);
+				Actor_Voice_Over(1350, kActorVoiceOver);
+				//}
+				Actor_Says(kActorMcCoy, 2445, 13);
+				Sound_Play(123, 100, 0, 0, 50);
+				Game_Flag_Set(kFlagMA04PhoneMessageFromLucy);
+			}
+		}
+		//----
 		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -7176.0f, 954.0f, 1806.0f, 0, true, false, 0)) {
 			Actor_Face_Heading(kActorMcCoy, 256, false);
 			if (isPhoneRinging()) {
@@ -295,7 +350,6 @@ void SceneScriptMA04::PlayerWalkedIn() {
 			Actor_Set_At_Waypoint(kActorOfficerLeary, 35, 0);
 			Autosave_Game(0);
 		}
-		//return false;
 		return;
 	}
 	if ((Game_Flag_Query(kFlagZubenRetired) || Game_Flag_Query(kFlagZubenSpared)) && !Game_Flag_Query(kFlagChapter1Ending)) {
@@ -420,29 +474,33 @@ void SceneScriptMA04::phoneCallWithLucy() {
 	Actor_Says(kActorLucy, 570, 3);
 	Actor_Says(kActorMcCoy, 2560, 17);
 	Actor_Says(kActorLucy, 580, 3);
-	if (Game_Flag_Query(kFlagCrazylegsArrested)
-	 || Actor_Query_Goal_Number(kActorCrazylegs) == 2
-	) {
-		Actor_Says(kActorLucy, 630, 3);
-		Actor_Says_With_Pause(kActorMcCoy, 2575, 0.0f, 15);
-		if (!Game_Flag_Query(kFlagDirectorsCut)) {
-			Actor_Says(kActorLucy, 640, 3);
-		}
-		Actor_Clue_Acquire(kActorMcCoy, kCluePhoneCallLucy2, true, -1);
-	} else {
-		Actor_Says(kActorLucy, 590, 3);
-		Actor_Says(kActorMcCoy, 2565, 12);
-		Actor_Says(kActorLucy, 600, 3);
-		Actor_Says(kActorLucy, 610, 3);
-		Actor_Says(kActorLucy, 620, 3);
-		Actor_Says(kActorMcCoy, 2570, 13);
-		Actor_Says_With_Pause(kActorLucy, 630, 0.0f, 3);
-		Actor_Says_With_Pause(kActorMcCoy, 2575, 0.0f, 15);
-		if (!Game_Flag_Query(kFlagDirectorsCut)) {
-			Actor_Says(kActorLucy, 640, 3);
-		}
-		Actor_Clue_Acquire(kActorMcCoy, kCluePhoneCallLucy1, true, -1);
-	}
+//RTR 3.26.2019
+//if (Game_Flag_Query(kFlagCrazylegsArrested)
+// || Actor_Query_Goal_Number(kActorCrazylegs) == 2
+//) {
+	Actor_Says(kActorLucy, 630, 3);
+	Actor_Says_With_Pause(kActorMcCoy, 2575, 0.0f, 15);
+	//if (!Game_Flag_Query(kFlagDirectorsCut)) {
+	Actor_Says(kActorLucy, 640, 3);
+	//}
+	Actor_Clue_Acquire(kActorMcCoy, kCluePhoneCallLucy2, true, -1);
+//} else {
+	Actor_Says(kActorLucy, 590, 3);
+	Actor_Says(kActorMcCoy, 2565, 12);
+	Actor_Says(kActorLucy, 600, 3);
+	Actor_Says(kActorLucy, 610, 3);
+	Actor_Says(kActorLucy, 620, 3);
+	Actor_Says(kActorMcCoy, 2570, 13);
+	Actor_Says_With_Pause(kActorLucy, 630, 0.0f, 3);
+	Actor_Says_With_Pause(kActorMcCoy, 2575, 0.0f, 15);
+//----
+//RTR 3.25.2019
+//if (!Game_Flag_Query(kFlagDirectorsCut)) {
+	Actor_Says(kActorLucy, 640, 3);
+	//}
+	Actor_Clue_Acquire(kActorMcCoy, kCluePhoneCallLucy1, true, -1);
+	//}
+//----
 	Sound_Play(123, 100, 0, 0, 50);
 }
 

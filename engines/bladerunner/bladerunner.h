@@ -39,6 +39,8 @@
 #define BLADERUNNER_DEBUG_CONSOLE 0
 #define BLADERUNNER_ORIGINAL_SETTINGS 0
 #define BLADERUNNER_ORIGINAL_BUGS 0
+#define BLADERUNNER_RESTORED_CUT_CONTENT 1
+
 
 namespace Common {
 struct Event;
@@ -107,14 +109,15 @@ class ZBuffer;
 
 class BladeRunnerEngine : public Engine {
 public:
-	static const int kArchiveCount = 11; // +1 to original value (10) to accommodate for SUBTITLES.MIX resource
+	static const int kArchiveCount = 12; // +2 to original value (10) to accommodate for SUBTITLES.MIX and one extra resource file, to allow for capability of loading all VQAx.MIX and the MODE.MIX file (debug purposes)
 	static const int kActorCount = 100;
 	static const int kActorVoiceOver = kActorCount - 1;
 
 	bool           _gameIsRunning;
 	bool           _windowIsActive;
 	int            _playerLosesControlCounter;
-	Common::String _languageCode;
+	Common::String   _languageCode;
+	Common::Language _language;
 
 	ActorDialogueQueue *_actorDialogueQueue;
 	ScreenEffects      *_screenEffects;

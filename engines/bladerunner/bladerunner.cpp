@@ -83,6 +83,7 @@
 #include "common/savefile.h"
 #include "common/system.h"
 #include "common/debug-channels.h"
+#include "gui/message.h"
 
 #include "engines/util.h"
 #include "engines/advancedDetector.h"
@@ -130,6 +131,7 @@ BladeRunnerEngine::BladeRunnerEngine(OSystem *syst, const ADGameDescription *des
 
 	_crimesDatabase = nullptr;
 
+	_language = desc->language;
 	switch (desc->language) {
 	case Common::EN_ANY:
 		_languageCode = "E";
@@ -144,7 +146,7 @@ BladeRunnerEngine::BladeRunnerEngine(OSystem *syst, const ADGameDescription *des
 		_languageCode = "I";
 		break;
 	case Common::RU_RUS:
-		_languageCode = "R";
+		_languageCode = "E"; // Russian version is built on top of English one
 		break;
 	case Common::ES_ESP:
 		_languageCode = "S";
@@ -846,7 +848,12 @@ void BladeRunnerEngine::gameTick() {
 	}
 
 	if (!_kia->isOpen() && !_sceneScript->isInsideScript() && !_aiScripts->isInsideScript()) {
-		_settings->openNewScene();
+		if (!_settings->openNewScene()) {
+			Common::Error runtimeError = Common::Error(Common::kUnknownError, "A required game resource was not found");
+			GUI::MessageDialog dialog(runtimeError.getDesc());
+			dialog.runModal();
+			return;
+		}
 	}
 
 	if (_gameAutoSave >= 0) {
