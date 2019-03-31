@@ -26,6 +26,10 @@ namespace BladeRunner {
 
 static int kPoliceMazePS13TargetCount = 20;
 
+int SceneScriptPS13::getPoliceMazePS13TargetCount() {
+	return kPoliceMazePS13TargetCount;
+}
+
 void SceneScriptPS13::InitializeScene() {
 	Police_Maze_Set_Pause_State(true);
 	if (Game_Flag_Query(kFlagPS12toPS13)) {
@@ -59,10 +63,14 @@ void SceneScriptPS13::InitializeScene() {
 	Ambient_Sounds_Add_Sound(308,  5, 100, 17, 27, -100, 100, -101, -101, 0, 0);
 }
 
-static const int *getPoliceMazePS13TrackData46() {
+static const int *getPoliceMazePS13TrackData46() {  // Enemy (kItemPS13Target1) - Starts activated
 	static int trackData[] = {
 		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
 		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target1, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleReset,   kItemPS13Target1,
 		kPMTIFacing,          960,
 		kPMTIPosition,        0,
@@ -78,6 +86,10 @@ static const int *getPoliceMazePS13TrackData46() {
 		kPMTIWait,            500,
 		kPMTIMove,            0,
 		kPMTIObstacleReset,   kItemPS13Target1,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target1, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIPausedReset1of2, kItemPS13Target14, kItemPS13Target15,
 		kPMTIPausedSet,       kItemPS13Target1,
 		kPMTIRestart
@@ -85,14 +97,22 @@ static const int *getPoliceMazePS13TrackData46() {
 	return trackData;
 }
 
-static const int *getPoliceMazePS13TrackData47() {
+static const int *getPoliceMazePS13TrackData47() {  // Enemy (kItemPS13Target2) - Starts activated
 	static int trackData[] = {
 		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
 		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target2, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleReset,   kItemPS13Target2,
 		kPMTIFacing,          823,
 		kPMTIPosition,        0,
+#if BLADERUNNER_ORIGINAL_BUGS
 		kPMTIWaitRandom,      5000, 5000,
+#else
+		kPMTIWaitRandom,      5000, 6000,
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleSet,     kItemPS13Target2,
 		kPMTIPlaySound,       33, 33,
 		kPMTITargetSet,       kItemPS13Target2, 1,
@@ -102,6 +122,10 @@ static const int *getPoliceMazePS13TrackData47() {
 		kPMTIShoot,           27, 33,
 		kPMTIMove,            0,
 		kPMTIObstacleReset,   kItemPS13Target2,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target2, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIPausedReset1of2, kItemPS13Target5, kItemPS13Target7,
 		kPMTIPausedSet,       kItemPS13Target2,
 		kPMTIRestart
@@ -109,14 +133,22 @@ static const int *getPoliceMazePS13TrackData47() {
 	return trackData;
 }
 
-static const int *getPoliceMazePS13TrackData48() {
+static const int *getPoliceMazePS13TrackData48() {  // Innocent (kItemPS13Target3) - Starts activated
 	static int trackData[] = {
 		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
 		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target3, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleReset,   kItemPS13Target3,
 		kPMTIFacing,          823,
 		kPMTIPosition,        0,
+#if BLADERUNNER_ORIGINAL_BUGS
 		kPMTIWaitRandom,      2000, 2000,
+#else
+		kPMTIWaitRandom,      2000, 3000,
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleSet,     kItemPS13Target3,
 		kPMTIPlaySound,       33, 33,
 		kPMTITargetSet,       kItemPS13Target3, 1,
@@ -126,6 +158,10 @@ static const int *getPoliceMazePS13TrackData48() {
 		kPMTILeave,
 		kPMTIMove,            0,
 		kPMTIObstacleReset,   kItemPS13Target3,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target3, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIPausedReset1of2, kItemPS13Target8, kItemPS13Target6,
 		kPMTIPausedSet,       kItemPS13Target3,
 		kPMTIRestart
@@ -133,10 +169,14 @@ static const int *getPoliceMazePS13TrackData48() {
 	return trackData;
 }
 
-static const int *getPoliceMazePS13TrackData49() {
+static const int *getPoliceMazePS13TrackData49() {  // Enemy (kItemPS13Target4)
 	static int trackData[] = {
 		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
 		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target4, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleReset,   kItemPS13Target4,
 		kPMTIFacing,          922,
 		kPMTIPosition,        0,
@@ -150,6 +190,10 @@ static const int *getPoliceMazePS13TrackData49() {
 		kPMTIShoot,           27, 33,
 		kPMTIMove,            0,
 		kPMTIObstacleReset,   kItemPS13Target4,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target4, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIPausedReset1of2, kItemPS13Target9, kItemPS13Target10,
 		kPMTIPausedSet,       kItemPS13Target4,
 		kPMTIPosition,        0,
@@ -158,10 +202,14 @@ static const int *getPoliceMazePS13TrackData49() {
 	return trackData;
 }
 
-static const int *getPoliceMazePS13TrackData50() {
+static const int *getPoliceMazePS13TrackData50() {  // Innocent (kItemPS13Target5)
 	static int trackData[] = {
 		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
 		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target5, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleReset,   kItemPS13Target5,
 		kPMTIFacing,          823,
 		kPMTIPosition,        0,
@@ -175,6 +223,10 @@ static const int *getPoliceMazePS13TrackData50() {
 		kPMTIMove,            0,
 		kPMTILeave,
 		kPMTIObstacleReset,   kItemPS13Target5,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target5, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIPausedReset1of2, kItemPS13Target2, kItemPS13Target7,
 		kPMTIPausedSet,       kItemPS13Target5,
 		kPMTIRestart
@@ -182,14 +234,22 @@ static const int *getPoliceMazePS13TrackData50() {
 	return trackData;
 }
 
-static const int *getPoliceMazePS13TrackData51() {
+static const int *getPoliceMazePS13TrackData51() {  // Enemy (kItemPS13Target6)
 	static int trackData[] = {
 		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
 		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target6, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleReset,   kItemPS13Target6,
 		kPMTIFacing,          823,
 		kPMTIPosition,        0,
+#if BLADERUNNER_ORIGINAL_BUGS
 		kPMTIWaitRandom,      2000, 2000,
+#else
+		kPMTIWaitRandom,      2000, 3000,
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleSet,     kItemPS13Target6,
 		kPMTIPlaySound,       33, 33,
 		kPMTITargetSet,       kItemPS13Target6, 1,
@@ -200,6 +260,10 @@ static const int *getPoliceMazePS13TrackData51() {
 		kPMTIWait,            500,
 		kPMTIMove,            0,
 		kPMTIObstacleReset,   kItemPS13Target6,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target6, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIPausedReset1of2, kItemPS13Target8, kItemPS13Target3,
 		kPMTIPausedSet,       kItemPS13Target6,
 		kPMTIRestart
@@ -207,10 +271,14 @@ static const int *getPoliceMazePS13TrackData51() {
 	return trackData;
 }
 
-static const int *getPoliceMazePS13TrackData52() {
+static const int *getPoliceMazePS13TrackData52() {  // Enemy (kItemPS13Target7) - Rotating reveal
 	static int trackData[] = {
 		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
 		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target7, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleReset,   kItemPS13Target7,
 		kPMTIFacing,          305,
 		kPMTIPosition,        0,
@@ -221,7 +289,7 @@ static const int *getPoliceMazePS13TrackData52() {
 		kPMTIEnemyReset,      kItemPS13Target7,
 		kPMTIMove,            9,
 		kPMTIWait,            500,
-		kPMTIEnemySet,        kItemPS13Target7,
+		kPMTIEnemySet,        kItemPS13Target7,     // rotate - reveal
 		kPMTIRotate,          555, 80,
 		kPMTIWait,            0,
 		kPMTIRotate,          833, 80,
@@ -229,6 +297,10 @@ static const int *getPoliceMazePS13TrackData52() {
 		kPMTIShoot,           27, 33,
 		kPMTIMove,            0,
 		kPMTIObstacleReset,   kItemPS13Target7,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target7, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIPausedReset1of2, kItemPS13Target2, kItemPS13Target5,
 		kPMTIPausedSet,       kItemPS13Target7,
 		kPMTIRestart
@@ -236,20 +308,28 @@ static const int *getPoliceMazePS13TrackData52() {
 	return trackData;
 }
 
-static const int *getPoliceMazePS13TrackData53() {
+static const int *getPoliceMazePS13TrackData53() {  // Enemy (kItemPS13Target8) - Rotating reveal
 	static int trackData[] = {
 		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
 		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target8, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleReset,   kItemPS13Target8,
 		kPMTIFacing,          356,
 		kPMTIPosition,        0,
+#if BLADERUNNER_ORIGINAL_BUGS
 		kPMTIWaitRandom,      3000, 3000,
+#else
+		kPMTIWaitRandom,      3000, 4000,
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleSet,     kItemPS13Target8,
 		kPMTIPlaySound,       33, 33,
 		kPMTITargetSet,       kItemPS13Target8, 1,
 		kPMTIEnemyReset,      kItemPS13Target8,
 		kPMTIMove,            5,
-		kPMTIEnemySet,        kItemPS13Target8,
+		kPMTIEnemySet,        kItemPS13Target8,     // rotate - reveal
 		kPMTIRotate,          868, 200,
 		kPMTIWait,            1000,
 		kPMTIShoot,           27, 33,
@@ -257,6 +337,10 @@ static const int *getPoliceMazePS13TrackData53() {
 		kPMTIWait,            1000,
 		kPMTIMove,            0,
 		kPMTIObstacleReset,   kItemPS13Target8,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target8, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIPausedReset1of2, kItemPS13Target3, kItemPS13Target6,
 		kPMTIPausedSet,       kItemPS13Target8,
 		kPMTIRestart
@@ -264,12 +348,20 @@ static const int *getPoliceMazePS13TrackData53() {
 	return trackData;
 }
 
-static const int *getPoliceMazePS13TrackData54() {
+static const int *getPoliceMazePS13TrackData54() {  // Enemy (kItemPS13Target9) - Rotating reveal
 	static int trackData[] = {
 		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
 		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target9, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleReset,   kItemPS13Target9,
-		kPMTIFacing,          512,
+#if BLADERUNNER_ORIGINAL_BUGS
+		kPMTIFacing,          512,                  // fix starting orientation
+#else
+		kPMTIFacing,          250,                  // must have concealed weapon since starting as innocent
+#endif
 		kPMTIPosition,        0,
 		kPMTIWaitRandom,      10000, 20000,
 		kPMTIObstacleSet,     kItemPS13Target9,
@@ -278,12 +370,16 @@ static const int *getPoliceMazePS13TrackData54() {
 		kPMTIEnemyReset,      kItemPS13Target9,
 		kPMTIMove,            3,
 		kPMTIWait,            500,
-		kPMTIEnemySet,        kItemPS13Target9,
+		kPMTIEnemySet,        kItemPS13Target9,     // rotate - reveal
 		kPMTIRotate,          768, 80,
 		kPMTIWait,            1000,
 		kPMTIShoot,           27, 33,
 		kPMTIMove,            0,
 		kPMTIObstacleReset,   kItemPS13Target9,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target9, 0,  // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIPausedReset1of2, kItemPS13Target13, kItemPS13Target10,
 		kPMTIPausedSet,       kItemPS13Target9,
 		kPMTIRestart
@@ -291,58 +387,86 @@ static const int *getPoliceMazePS13TrackData54() {
 	return trackData;
 }
 
-static const int *getPoliceMazePS13TrackData55() {
+static const int *getPoliceMazePS13TrackData55() {  // Enemy linked series (kItemPS13Target10, kItemPS13Target11, kItemPS13Target12) - Rotating reveal
 	static int trackData[] = {
-		kPMTIActivate,      kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
-		kPMTIVariableInc,   kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
-		kPMTIObstacleReset, kItemPS13Target10,
-		kPMTIObstacleReset, kItemPS13Target11,
-		kPMTIObstacleReset, kItemPS13Target12,
-		kPMTITargetSet,     kItemPS13Target10, 1,
-		kPMTITargetSet,     kItemPS13Target11, 1,
-		kPMTITargetSet,     kItemPS13Target12, 1,
-		kPMTIFacing,        327,
-		kPMTIPosition,      0,
-		kPMTIWaitRandom,    1000, 1000,
-		kPMTIPlaySound,     33, 33,
-		kPMTIEnemyReset,    kItemPS13Target10,
-		kPMTIObstacleSet,   kItemPS13Target10,
-		kPMTIMove,          14,
-		kPMTIWait,          1000,
-		kPMTIPausedReset,   kItemPS13Target11,
-		kPMTIObstacleReset, kItemPS13Target10,
-		kPMTIObstacleSet,   kItemPS13Target11,
-		kPMTIPausedSet,     kItemPS13Target10,
-		kPMTIPosition,      0,
-		kPMTIRestart
-	};
-	return trackData;
-}
-
-static const int *getPoliceMazePS13TrackData56() {
-	static int trackData[] = {
-		kPMTIFacing,        327,
-		kPMTIPosition,      0,
-		kPMTIObstacleSet,   kItemPS13Target11,
-		kPMTIEnemyReset,    kItemPS13Target11,
-		kPMTIMove,          14,
-		kPMTIWait,          1000,
-		kPMTIPausedReset,   kItemPS13Target12,
-		kPMTIObstacleReset, kItemPS13Target11,
-		kPMTIObstacleSet,   kItemPS13Target12,
-		kPMTIPausedSet,     kItemPS13Target11,
-		kPMTIPosition,      0,
-		kPMTIRestart
-	};
-	return trackData;
-}
-
-static const int *getPoliceMazePS13TrackData57() {
-	static int trackData[] = {
-		kPMTIEnemySet,        kItemPS13Target12,
+		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target10, 0,  // remove target-able here - redundant here though
+		kPMTITargetSet,       kItemPS13Target11, 0,  // remove target-able here - redundant here though
+		kPMTITargetSet,       kItemPS13Target12, 0,  // remove target-able here - redundant here though
+#endif // BLADERUNNER_ORIGINAL_BUGS
+		kPMTIObstacleReset,   kItemPS13Target10,
+		kPMTIObstacleReset,   kItemPS13Target11,
+		kPMTIObstacleReset,   kItemPS13Target12,
+		kPMTITargetSet,       kItemPS13Target10, 1,
+		kPMTITargetSet,       kItemPS13Target11, 1,
+		kPMTITargetSet,       kItemPS13Target12, 1,
 		kPMTIFacing,          327,
 		kPMTIPosition,        0,
+#if BLADERUNNER_ORIGINAL_BUGS
+		kPMTIWaitRandom,      1000, 1000,
+#else
+		kPMTIWaitRandom,      1000, 2000,
+#endif // BLADERUNNER_ORIGINAL_BUGS
+		kPMTIPlaySound,       33, 33,
+		kPMTIEnemyReset,      kItemPS13Target10,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTIEnemyReset,      kItemPS13Target11,    // set the others in the series as non-enemies here too
+		kPMTIEnemyReset,      kItemPS13Target12,    // set the others in the series as non-enemies here too
+#endif // BLADERUNNER_ORIGINAL_BUGS
+		kPMTIObstacleSet,     kItemPS13Target10,
+		kPMTIMove,            14,
+		kPMTIWait,            1000,
+		kPMTIPausedReset,     kItemPS13Target11,
+		kPMTIObstacleReset,   kItemPS13Target10,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target10, 0, // remove target-able here - only for kItemPS13Target10 item
+#endif // BLADERUNNER_ORIGINAL_BUGS
+		kPMTIObstacleSet,     kItemPS13Target11,
+		kPMTIPausedSet,       kItemPS13Target10,
+		kPMTIPosition,        0,
+		kPMTIRestart
+	};
+	return trackData;
+}
+
+static const int *getPoliceMazePS13TrackData56() {  // Enemy linked series (kItemPS13Target10, kItemPS13Target11, kItemPS13Target12) - Rotating reveal
+	static int trackData[] = {
+		kPMTIFacing,          327,
+		kPMTIPosition,        0,
+		kPMTIObstacleSet,     kItemPS13Target11,    // redundant (original)
+		kPMTIEnemyReset,      kItemPS13Target11,    // [redundant after bug fix] target 10-11-12 still is not revealed as enemy
+		kPMTIMove,            14,
+		kPMTIWait,            1000,
+		kPMTIPausedReset,     kItemPS13Target12,
+		kPMTIObstacleReset,   kItemPS13Target11,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target11, 0, // remove target-able here - only for kItemPS13Target11 item
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleSet,     kItemPS13Target12,
+		kPMTIPausedSet,       kItemPS13Target11,
+		kPMTIPosition,        0,
+		kPMTIRestart
+	};
+	return trackData;
+}
+
+static const int *getPoliceMazePS13TrackData57() {  // Enemy linked series (kItemPS13Target10, kItemPS13Target11, kItemPS13Target12) - Rotating reveal
+	static int trackData[] = {
+		kPMTIEnemySet,        kItemPS13Target12,    // rotate - reveal
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTIEnemySet,        kItemPS13Target10, // set all other targets in linked series as enemies here too for consistency
+		kPMTIEnemySet,        kItemPS13Target11, // set all other targets in linked series as enemies here too for consistency
+#endif // BLADERUNNER_ORIGINAL_BUGS
+		kPMTIFacing,          327,
+		kPMTIPosition,        0,
+		kPMTIObstacleSet,     kItemPS13Target12,    // redundant (original)
 		kPMTIRotate,          516, 80,
 		kPMTIWait,            0,
 		kPMTIRotate,          843, 80,
@@ -351,6 +475,10 @@ static const int *getPoliceMazePS13TrackData57() {
 		kPMTIWait,            500,
 		kPMTIMove,            14,
 		kPMTIObstacleReset,   kItemPS13Target12,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target12, 0, // remove target-able here - only for kItemPS13Target12 item
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIPausedReset1of2, kItemPS13Target13, kItemPS13Target9,
 		kPMTIPausedSet,       kItemPS13Target12,
 		kPMTIPosition,        0,
@@ -359,53 +487,73 @@ static const int *getPoliceMazePS13TrackData57() {
 	return trackData;
 }
 
-static const int *getPoliceMazePS13TrackData58() {
+static const int *getPoliceMazePS13TrackData58() {  // Special (kItemPS13Target13) - Starts activated - Innocent x2
 	static int trackData[] = {
-		kPMTIActivate,      kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
-		kPMTIVariableInc,   kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
-		kPMTIObstacleReset, kItemPS13Target13,
-		kPMTIFacing,        922,
-		kPMTIPosition,      0,
-		kPMTIWaitRandom,    3000, 3000,
-		kPMTIObstacleSet,   kItemPS13Target13,
-		kPMTIPlaySound,     33, 33,
-		kPMTITargetSet,     kItemPS13Target13, 1,
-		kPMTIEnemyReset,    kItemPS13Target13,
-		kPMTIMove,          9,
-		kPMTIWait,          200,
-		kPMTIMove,          0,
-		kPMTILeave,
-		kPMTITargetSet,     kItemPS13Target13, 1,
-		kPMTIEnemyReset,    kItemPS13Target13,
-		kPMTIWait,          200,
-		kPMTIMove,          9,
-		kPMTIWait,          200,
-		kPMTIMove,          0,
-		kPMTILeave,
-		kPMTIObstacleReset, kItemPS13Target13,
-		kPMTIPausedReset,   kItemPS13Target4,
-		kPMTIPausedSet,     kItemPS13Target13,
-		kPMTIPosition,      0,
+		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target13, 0, // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
+		kPMTIObstacleReset,   kItemPS13Target13,
+		kPMTIFacing,          922,
+		kPMTIPosition,        0,
+#if BLADERUNNER_ORIGINAL_BUGS
+		kPMTIWaitRandom,      3000, 3000,
+#else
+		kPMTIWaitRandom,      3000, 4000,
+#endif // BLADERUNNER_ORIGINAL_BUGS
+		kPMTIObstacleSet,     kItemPS13Target13,
+		kPMTIPlaySound,       33, 33,
+		kPMTITargetSet,       kItemPS13Target13, 1,
+		kPMTIEnemyReset,      kItemPS13Target13,
+		kPMTIMove,            9,
+		kPMTIWait,            200,
+		kPMTIMove,            0,
+		kPMTILeave,                                 // intended: special: credit for "first" innocent escaping
+		kPMTITargetSet,       kItemPS13Target13, 1, // intended: special: "second" innocent (re-using the target of the track)
+		kPMTIEnemyReset,      kItemPS13Target13,    // intended: special: "second" innocent (re-using the target of the track)
+		kPMTIWait,            200,
+		kPMTIMove,            9,
+		kPMTIWait,            200,
+		kPMTIMove,            0,
+		kPMTILeave,                                 // credit for "second" / final innocent
+		kPMTIObstacleReset,   kItemPS13Target13,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target13, 0, // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
+		kPMTIPausedReset,     kItemPS13Target4,
+		kPMTIPausedSet,       kItemPS13Target13,
+		kPMTIPosition,        0,
 		kPMTIRestart
 	};
 	return trackData;
 }
 
-static const int *getPoliceMazePS13TrackData62() {
+static const int *getPoliceMazePS13TrackData62() {  // Enemy (kItemPS13Target14) - Rotating reveal
 	static int trackData[] = {
 		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
 		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target14, 0, // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleReset,   kItemPS13Target14,
 		kPMTIFacing,          465,
 		kPMTIPosition,        0,
+#if BLADERUNNER_ORIGINAL_BUGS
 		kPMTIWaitRandom,      3000, 3000,
+#else
+		kPMTIWaitRandom,      3000, 4000,
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleSet,     kItemPS13Target14,
 		kPMTIPlaySound,       33, 33,
 		kPMTITargetSet,       kItemPS13Target14, 1,
 		kPMTIEnemyReset,      kItemPS13Target14,
 		kPMTIMove,            14,
 		kPMTIWait,            1000,
-		kPMTIEnemySet,        kItemPS13Target14,
+		kPMTIEnemySet,        kItemPS13Target14,    // rotate - reveal
 		kPMTIRotate,          650, 80,
 		kPMTIWait,            0,
 		kPMTIRotate,          937, 80,
@@ -417,6 +565,10 @@ static const int *getPoliceMazePS13TrackData62() {
 		kPMTIRotate,          465, 80,
 		kPMTIMove,            0,
 		kPMTIObstacleReset,   kItemPS13Target14,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target14, 0, // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIPausedReset1of2, kItemPS13Target1, kItemPS13Target15,
 		kPMTIPausedSet,       kItemPS13Target14,
 		kPMTIRestart
@@ -424,10 +576,14 @@ static const int *getPoliceMazePS13TrackData62() {
 	return trackData;
 }
 
-static const int *getPoliceMazePS13TrackData63() {
+static const int *getPoliceMazePS13TrackData63() {  // Enemy (kItemPS13Target15) - Rotating reveal
 	static int trackData[] = {
 		kPMTIActivate,        kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
 		kPMTIVariableInc,     kVariablePoliceMazePS13TargetCounter, kPoliceMazePS13TargetCount,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target15, 0, // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIObstacleReset,   kItemPS13Target15,
 		kPMTIFacing,          465,
 		kPMTIPosition,        0,
@@ -438,7 +594,7 @@ static const int *getPoliceMazePS13TrackData63() {
 		kPMTIEnemyReset,      kItemPS13Target15,
 		kPMTIMove,            9,
 		kPMTIWait,            1000,
-		kPMTIEnemySet,        kItemPS13Target15,
+		kPMTIEnemySet,        kItemPS13Target15,    // rotate - reveal
 		kPMTIRotate,          710, 80,
 		kPMTIWait,            0,
 		kPMTIRotate,          960, 80,
@@ -450,6 +606,10 @@ static const int *getPoliceMazePS13TrackData63() {
 		kPMTIRotate,          460, 80,
 		kPMTIMove,            0,
 		kPMTIObstacleReset,   kItemPS13Target15,
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		kPMTITargetSet,       kItemPS13Target15, 0, // remove target-able here
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		kPMTIPausedReset1of2, kItemPS13Target1, kItemPS13Target14,
 		kPMTIPausedSet,       kItemPS13Target15,
 		kPMTIRestart
@@ -479,21 +639,27 @@ void SceneScriptPS13::SceneLoaded() {
 	Unclickable_Object("PARKMETR16");
 
 	if (!Query_System_Currently_Loading_Game()) {
-		Item_Add_To_World(kItemPS13Target1,  443, kSetPS10_PS11_PS12_PS13, -372.0f,   -9.0f,  1509.0f, 960, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target2,  443, kSetPS10_PS11_PS12_PS13, 291.61f,  -0.66f,  1610.3f, 823, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target3,  447, kSetPS10_PS11_PS12_PS13,  -25.0f,  102.0f,  1625.0f, 823, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target4,  449, kSetPS10_PS11_PS12_PS13, -45.51f,   -8.8f,  1676.0f, 922, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target5,  447, kSetPS10_PS11_PS12_PS13, 291.61f,  -0.66f,  1610.3f, 823, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target6,  443, kSetPS10_PS11_PS12_PS13,  -24.0f,  102.0f,  1625.0f, 823, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target7,  449, kSetPS10_PS11_PS12_PS13,  180.0f,  -72.7f,  1605.0f, 305, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target8,  443, kSetPS10_PS11_PS12_PS13, 127.79f,  14.56f, 1703.03f, 356, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target9,  443, kSetPS10_PS11_PS12_PS13, 136.37f,  -6.84f, 1425.43f, 512, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target10, 441, kSetPS10_PS11_PS12_PS13,  77.83f,  -79.8f,  1520.5f, 327, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target11, 441, kSetPS10_PS11_PS12_PS13,  77.83f,   -7.8f,  1520.5f, 327, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target12, 443, kSetPS10_PS11_PS12_PS13,  -88.0f,   -8.8f,  1520.5f, 327, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target13, 447, kSetPS10_PS11_PS12_PS13, -45.51f,   -8.8f,  1676.0f, 922, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target14, 445, kSetPS10_PS11_PS12_PS13, -300.0f, -79.75f,  1543.0f, 465, 72, 36, true, false, false, true);
-		Item_Add_To_World(kItemPS13Target15, 449, kSetPS10_PS11_PS12_PS13, -325.0f,  -7.75f,  1543.0f, 465, 72, 36, true, false, false, true);
+		bool targetStateMZ = true;
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+// every maze target begins as NON-targetable
+		targetStateMZ = false;
+#endif // BLADERUNNER_ORIGINAL_BUGS
+		Item_Add_To_World(kItemPS13Target1,  443, kSetPS10_PS11_PS12_PS13, -372.0f,   -9.0f,  1509.0f, 960, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target2,  443, kSetPS10_PS11_PS12_PS13, 291.61f,  -0.66f,  1610.3f, 823, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target3,  447, kSetPS10_PS11_PS12_PS13,  -25.0f,  102.0f,  1625.0f, 823, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target4,  449, kSetPS10_PS11_PS12_PS13, -45.51f,   -8.8f,  1676.0f, 922, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target5,  447, kSetPS10_PS11_PS12_PS13, 291.61f,  -0.66f,  1610.3f, 823, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target6,  443, kSetPS10_PS11_PS12_PS13,  -24.0f,  102.0f,  1625.0f, 823, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target7,  449, kSetPS10_PS11_PS12_PS13,  180.0f,  -72.7f,  1605.0f, 305, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target8,  443, kSetPS10_PS11_PS12_PS13, 127.79f,  14.56f, 1703.03f, 356, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target9,  443, kSetPS10_PS11_PS12_PS13, 136.37f,  -6.84f, 1425.43f, 512, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target10, 441, kSetPS10_PS11_PS12_PS13,  77.83f,  -79.8f,  1520.5f, 327, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target11, 441, kSetPS10_PS11_PS12_PS13,  77.83f,   -7.8f,  1520.5f, 327, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target12, 443, kSetPS10_PS11_PS12_PS13,  -88.0f,   -8.8f,  1520.5f, 327, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target13, 447, kSetPS10_PS11_PS12_PS13, -45.51f,   -8.8f,  1676.0f, 922, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target14, 445, kSetPS10_PS11_PS12_PS13, -300.0f, -79.75f,  1543.0f, 465, 72, 36, targetStateMZ, false, false, true);
+		Item_Add_To_World(kItemPS13Target15, 449, kSetPS10_PS11_PS12_PS13, -325.0f,  -7.75f,  1543.0f, 465, 72, 36, targetStateMZ, false, false, true);
 	}
 
 	Police_Maze_Target_Track_Add(kItemPS13Target1,  -372.0f,   -9.0f,  1509.0f, -345.0f,   -9.0f,  1509.0f,  6, getPoliceMazePS13TrackData46(),  true);
@@ -528,74 +694,58 @@ bool SceneScriptPS13::ClickedOnActor(int actorId) {
 bool SceneScriptPS13::ClickedOnItem(int itemId, bool a2) {
 	if (Player_Query_Combat_Mode()) {
 		switch (itemId) {
-		case kItemPS13Target3:
-			Sound_Play(4, 50, 0, 0, 50);
-			break;
+		case kItemPS13Target3:             // fall-through
 		case kItemPS13Target5:
-			Sound_Play(4, 50, 0, 0, 50);
+			Sound_Play(4, 50, 0, 0, 50);   // FEMHURT2
 			break;
-		case kItemPS13Target10:
-			Sound_Play(555, 50, 0, 0, 50);
-			break;
+		case kItemPS13Target10:            // fall-through
 		case kItemPS13Target11:
-			Sound_Play(555, 50, 0, 0, 50);
+			Sound_Play(555, 50, 0, 0, 50); // MALEHURT
 			break;
 		default:
-			Sound_Play(2, 12, 0, 0, 50);
+			Sound_Play(2, 12, 0, 0, 50);   // SPINNY1
 			break;
 		}
+#if BLADERUNNER_ORIGINAL_BUGS
 		Item_Spin_In_World(itemId);
-		Item_Flag_As_Non_Target(itemId);
-		if (itemId == kItemPS13Target1) {
-			Item_Flag_As_Non_Target(kItemPS13Target1);
-		}
-		if (itemId == kItemPS13Target2) {
-			Item_Flag_As_Non_Target(kItemPS13Target2);
-		}
-		if (itemId == kItemPS13Target3) {
-			Item_Flag_As_Non_Target(kItemPS13Target3);
-		}
-		if (itemId == kItemPS13Target4) {
-			Item_Flag_As_Non_Target(kItemPS13Target4);
-		}
-		if (itemId == kItemPS13Target5) {
-			Item_Flag_As_Non_Target(kItemPS13Target5);
-		}
-		if (itemId == kItemPS13Target6) {
-			Item_Flag_As_Non_Target(kItemPS13Target6);
-		}
-		if (itemId == kItemPS13Target7) {
-			Item_Flag_As_Non_Target(kItemPS13Target7);
-		}
-		if (itemId == kItemPS13Target8) {
-			Item_Flag_As_Non_Target(kItemPS13Target8);
-		}
-		if (itemId == kItemPS13Target9) {
-			Item_Flag_As_Non_Target(kItemPS13Target9);
-		}
-		if (itemId == kItemPS13Target10) {
+#endif // BLADERUNNER_ORIGINAL_BUGS
+		switch (itemId) {
+		case kItemPS13Target10:            // fall-through
+		case kItemPS13Target11:            // fall-through
+		case kItemPS13Target12:
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+			if (Item_Query_Visible(kItemPS13Target10)) { // without this check, the wrong target might get the spinning while the visible stays put
+				Item_Spin_In_World(kItemPS13Target10);
+			} else if (Item_Query_Visible(kItemPS13Target11)) {
+				Item_Spin_In_World(kItemPS13Target11);
+			} else {
+				Item_Spin_In_World(kItemPS13Target12);
+			}
+#endif // BLADERUNNER_ORIGINAL_BUGS
 			Item_Flag_As_Non_Target(kItemPS13Target10);
 			Item_Flag_As_Non_Target(kItemPS13Target11);
 			Item_Flag_As_Non_Target(kItemPS13Target12);
-		}
-		if (itemId == kItemPS13Target11) {
-			Item_Flag_As_Non_Target(kItemPS13Target10);
-			Item_Flag_As_Non_Target(kItemPS13Target11);
-			Item_Flag_As_Non_Target(kItemPS13Target12);
-		}
-		if (itemId == kItemPS13Target12) {
-			Item_Flag_As_Non_Target(kItemPS13Target10);
-			Item_Flag_As_Non_Target(kItemPS13Target11);
-			Item_Flag_As_Non_Target(kItemPS13Target12);
-		}
-		if (itemId == kItemPS13Target13) {
-			Item_Flag_As_Non_Target(kItemPS13Target13);
-		}
-		if (itemId == kItemPS13Target14) {
-			Item_Flag_As_Non_Target(kItemPS13Target14);
-		}
-		if (itemId == kItemPS13Target15) {
-			Item_Flag_As_Non_Target(kItemPS13Target15);
+			break;
+		case kItemPS13Target1:             // fall-through
+		case kItemPS13Target2:             // fall-through
+		case kItemPS13Target3:             // fall-through
+		case kItemPS13Target4:             // fall-through
+		case kItemPS13Target5:             // fall-through
+		case kItemPS13Target6:             // fall-through
+		case kItemPS13Target7:             // fall-through
+		case kItemPS13Target8:             // fall-through
+		case kItemPS13Target9:             // fall-through
+		case kItemPS13Target13:            // fall-through
+		case kItemPS13Target14:            // fall-through
+		case kItemPS13Target15:            // fall-through
+		default:
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+			Item_Spin_In_World(itemId);
+#endif // BLADERUNNER_ORIGINAL_BUGS
+			Item_Flag_As_Non_Target(itemId);
+			break;
 		}
 		return true;
 	}
@@ -619,13 +769,17 @@ bool SceneScriptPS13::ClickedOnExit(int exitId) {
 			Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 			Ambient_Sounds_Remove_All_Looping_Sounds(1);
 			removeTargets();
-			Global_Variable_Decrement(kVariablePoliceMazeScore, kPoliceMazePS13TargetCount - Global_Variable_Query(kVariablePoliceMazePS13TargetCounter));
-			Set_Score(kActorMcCoy, Global_Variable_Query(kVariablePoliceMazeScore));
+//			Global_Variable_Decrement(kVariablePoliceMazeScore, kPoliceMazePS13TargetCount - Global_Variable_Query(kVariablePoliceMazePS13TargetCounter));
+			Police_Maze_Decrement_Score(kPoliceMazePS13TargetCount - Global_Variable_Query(kVariablePoliceMazePS13TargetCounter));
+			Set_Score(kActorMcCoy, Police_Maze_Query_Score());
+//			Common::String scoreString = Common::String::format("Final: %03d", Global_Variable_Query(kVariablePoliceMazeScore)); // Display final score as subtitles
+//			Set_Subtitle_Text_On_Screen(scoreString); // Display final score as subtitles
 			Global_Variable_Reset(kVariablePoliceMazePS10TargetCounter);
 			Global_Variable_Reset(kVariablePoliceMazePS11TargetCounter);
 			Global_Variable_Reset(kVariablePoliceMazePS12TargetCounter);
 			Global_Variable_Reset(kVariablePoliceMazePS13TargetCounter);
-			Global_Variable_Reset(kVariablePoliceMazeScore);
+//			Global_Variable_Reset(kVariablePoliceMazeScore);
+			Police_Maze_Zero_Score();
 			Set_Enter(kSetPS05, kScenePS05);
 		}
 		return true;

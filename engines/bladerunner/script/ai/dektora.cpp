@@ -194,14 +194,14 @@ void AIScriptDektora::ReceivedClue(int clueId, int fromActorId) {
 void AIScriptDektora::ClickedByPlayer() {
 	if (Actor_Query_Goal_Number(kActorDektora) == kGoalDektoraGone) {
 		Actor_Face_Actor(0, kActorDektora, true);
-		Actor_Says(kActorMcCoy, 8630, 12);
+		Actor_Says(kActorMcCoy, 8630, 12);  // What a waste
 
 		return; //true;
 	}
 
 	if (Actor_Query_Goal_Number(kActorDektora) < kGoalDektoraStartChapter3) {
 		Actor_Face_Actor(kActorMcCoy, kActorDektora, true);
-		Actor_Says(kActorMcCoy, 8590, 13);
+		Actor_Says(kActorMcCoy, 8590, 13);  // Not the talkative type
 	}
 
 	if (Actor_Query_Goal_Number(kActorDektora) == kGoalDektoraNR08Dance) {
@@ -294,10 +294,10 @@ void AIScriptDektora::Retired(int byActorId) {
 	}
 
 	if (Actor_Query_In_Set(kActorDektora, kSetKP07)) {
-		Global_Variable_Decrement(kVariableReplicants, 1);
+		Global_Variable_Decrement(kVariableReplicantsSurvivorsAtMoobus, 1);
 		Actor_Set_Goal_Number(kActorDektora, kGoalDektoraGone);
 
-		if (Global_Variable_Query(kVariableReplicants) == 0) {
+		if (Global_Variable_Query(kVariableReplicantsSurvivorsAtMoobus) == 0) {
 			Player_Loses_Control();
 			Delay(2000);
 			Player_Set_Combat_Mode(false);
@@ -307,7 +307,6 @@ void AIScriptDektora::Retired(int byActorId) {
 			Game_Flag_Set(kFlagKP07toKP06);
 			Game_Flag_Reset(kFlagMcCoyIsHelpingReplicants);
 			Set_Enter(kSetKP05_KP06, kSceneKP06);
-
 			return; //true;
 		}
 	}

@@ -144,12 +144,14 @@ bool SceneScriptDR01::ClickedOnExit(int exitId) {
 		}
 		return true;
 	}
-	//RTR 1.19.2019
-	//Ensure McCoy can walk to spinner and choose a destination (* on Windows)
+//RTR 1.19.2019
+//Ensure McCoy can walk to spinner and choose a destination (* on Windows)
+
 	if (exitId == 2) {
 		if (true) { //(Loop_Actor_Walk_To_XYZ(kActorMcCoy, -372.0f, -0.04f, -82.0f, 0, 1, false, 0)) {
 		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -372.0f, -0.04f, -82.0f, 0, true, false, 0)) {
-			}
+//----
+
 			Game_Flag_Reset(kFlagMcCoyInChinaTown);
 			Game_Flag_Reset(kFlagMcCoyInRunciters);
 			Game_Flag_Reset(kFlagMcCoyInMcCoyApartment);
@@ -159,7 +161,6 @@ bool SceneScriptDR01::ClickedOnExit(int exitId) {
 			Game_Flag_Reset(kFlagMcCoyInDNARow);
 			Game_Flag_Reset(kFlagMcCoyInBradburyBuilding);
 			int spinnerDest = Spinner_Interface_Choose_Dest(-1, false);
-			//----
 			switch (spinnerDest) {
 			case kSpinnerDestinationPoliceStation:
 				Game_Flag_Set(kFlagMcCoyInPoliceStation);

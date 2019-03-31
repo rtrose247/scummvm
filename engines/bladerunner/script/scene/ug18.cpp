@@ -231,7 +231,7 @@ void SceneScriptUG18::PlayerWalkedIn() {
 	//always=>Guzza
 	//if ( Game_Flag_Query(kFlagCallWithGuzza)
 	// && !Game_Flag_Query(kFlagUG18GuzzaScene)
-	// &&  Actor_Query_Is_In_Current_Set(kActorGuzza)) 
+	// &&  Actor_Query_Is_In_Current_Set(kActorGuzza))
 	if (!Game_Flag_Query(kFlagUG18GuzzaScene))
 	{
 		Scene_Exits_Disable();

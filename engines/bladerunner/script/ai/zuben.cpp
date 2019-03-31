@@ -306,12 +306,16 @@ void AIScriptZuben::Retired(int byActorId) {
 	Actor_Clue_Lose(kActorZuben, kClueMcCoyLetZubenEscape);
 	//----
 	if (!Actor_Query_In_Set(kActorZuben, kSetKP07)) {
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		Actor_Set_Goal_Number(kActorZuben, kGoalZubenDiesInChapter1);
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		// return false;
 		return;
 	}
-	Global_Variable_Decrement(kVariableReplicants, 1);
+	Global_Variable_Decrement(kVariableReplicantsSurvivorsAtMoobus, 1);
 	Actor_Set_Goal_Number(kActorZuben, kGoalZubenGone);
-	if (Global_Variable_Query(kVariableReplicants) == 0) {
+	if (Global_Variable_Query(kVariableReplicantsSurvivorsAtMoobus) == 0) {
 		Player_Loses_Control();
 		Delay(2000);
 		Player_Set_Combat_Mode(false);
@@ -579,7 +583,7 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		AI_Movement_Track_Repeat(kActorZuben);
 		return false;
 
-	case 99:
+	case kGoalZubenDiesInChapter1:
 		//RTR 2.10.2019
 		//
 		Actor_Set_Targetable(kActorZuben, true);
@@ -588,9 +592,15 @@ bool AIScriptZuben::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		//
 		Scene_Exits_Enable();
 		//----	
+#if BLADERUNNER_ORIGINAL_BUGS
 		AI_Movement_Track_Flush(kActorZuben);
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		Scene_Exits_Enable();
 		Music_Stop(2);
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		Actor_Set_Goal_Number(kActorZuben, kGoalZubenDie);
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		return false;
 
 	case 100:
@@ -1083,7 +1093,9 @@ bool AIScriptZuben::UpdateAnimation(int *animation, int *frame) {
 			Sound_Play(207, 30, 0, 0, 50);
 		}
 		if (_animationFrame >= Slice_Animation_Query_Number_Of_Frames(*animation)) {
+#if BLADERUNNER_ORIGINAL_BUGS
 			Actor_Set_Goal_Number(kActorZuben, kGoalZubenDie);
+#endif // BLADERUNNER_ORIGINAL_BUGS
 			_animationState = 15;
 			_animationFrame = Slice_Animation_Query_Number_Of_Frames(*animation) - 1;
 			Actor_Set_Targetable(kActorZuben, false);
@@ -1097,7 +1109,9 @@ bool AIScriptZuben::UpdateAnimation(int *animation, int *frame) {
 			Sound_Play(207, 30, 0, 0, 50);
 		}
 		if (_animationFrame >= Slice_Animation_Query_Number_Of_Frames(*animation)) {
+#if BLADERUNNER_ORIGINAL_BUGS
 			Actor_Set_Goal_Number(kActorZuben, kGoalZubenDie);
+#endif // BLADERUNNER_ORIGINAL_BUGS
 			_animationState = 16;
 			_animationFrame = Slice_Animation_Query_Number_Of_Frames(*animation) - 1;
 			Actor_Set_Targetable(kActorZuben, false);
@@ -1107,7 +1121,11 @@ bool AIScriptZuben::UpdateAnimation(int *animation, int *frame) {
 	case 15:
 		*animation = 405;
 		_animationFrame = Slice_Animation_Query_Number_Of_Frames(*animation) - 1;
+#if BLADERUNNER_ORIGINAL_BUGS
+		// This enables exits when it should not at the moonbus massacre
+		// but it was also used to enable the exits when Zuben is retired at McCoy's roof top.
 		Scene_Exits_Enable();
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		break;
 
 	case 16:

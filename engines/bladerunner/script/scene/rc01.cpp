@@ -71,7 +71,7 @@ void SceneScriptRC01::InitializeScene() {
 	Actor_Clue_Acquire(kActorMcCoy, kClueCrowdInterviewB, true, kActorOfficerLeary);
 	Actor_Clue_Acquire(kActorMcCoy, kClueOfficersStatement, true, kActorOfficerLeary);
 	Actor_Clue_Acquire(kActorMcCoy, kClueChromeDebris, true, -1);
-
+	//----
 	if (!Game_Flag_Query(kFlagIntroPlayed)) {
 		Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 		Ambient_Sounds_Remove_All_Looping_Sounds(1);
@@ -280,10 +280,24 @@ bool SceneScriptRC01::ClickedOn3DObject(const char *objectName, bool a2) {
 				Actor_Says(kActorOfficerLeary, 0, 12);
 				Actor_Says(kActorMcCoy, 4495, 13);
 				Actor_Clue_Acquire(kActorMcCoy, kClueDoorForced2, true, kActorOfficerLeary);
-			} else {
+			}
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+			else if (!Actor_Clue_Query(kActorMcCoy, kClueDoorForced2) && !Actor_Clue_Query(kActorMcCoy, kClueDoorForced1) && !Actor_Query_In_Set(kActorOfficerLeary, kSetRC01) && Global_Variable_Query(kVariableChapter) == 1) {
+#if BLADERUNNER_RESTORED_CUT_CONTENT
+				Actor_Voice_Over(1870, kActorVoiceOver);
+#else
+				Actor_Says(kActorMcCoy, 8570, 14);
+#endif // BLADERUNNER_RESTORED_CUT_CONTENT
+				Actor_Clue_Acquire(kActorMcCoy, kClueDoorForced1, true, -1);
+			}
+#endif // BLADERUNNER_ORIGINAL_BUGS
+			else {
 				Actor_Says(kActorMcCoy, 8570, 14);
 			}
+#if BLADERUNNER_ORIGINAL_BUGS
 			Actor_Clue_Acquire(kActorMcCoy, kClueDoorForced1, true, -1);
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		}
 		return true;
 	}

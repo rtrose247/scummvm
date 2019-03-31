@@ -127,8 +127,12 @@ void ESPER::close() {
 	// CD-changing logic has been removed
 	delete _script;
 	_script = nullptr;
+	
+	//RTR 3.31.2019
+	//_vm->_audioPlayer->playAud(_vm->_gameInfo->getSfxTrack(425), 25, 0, 0, 50, 0);
+	//----
 
-	_vm->_audioPlayer->playAud(_vm->_gameInfo->getSfxTrack(425), 25, 0, 0, 50, 0);
+	_vm->_audioPlayer->playAud(_vm->_gameInfo->getSfxTrack(424), 25, 0, 0, 50, 0);
 
 	unloadPhotos();
 	_shapesPhotos.clear();
