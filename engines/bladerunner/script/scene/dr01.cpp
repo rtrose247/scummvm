@@ -150,6 +150,7 @@ bool SceneScriptDR01::ClickedOnExit(int exitId) {
 	if (exitId == 2) {
 		if (true) { //(Loop_Actor_Walk_To_XYZ(kActorMcCoy, -372.0f, -0.04f, -82.0f, 0, 1, false, 0)) {
 		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -372.0f, -0.04f, -82.0f, 0, true, false, 0)) {
+		}
 //----
 
 			Game_Flag_Reset(kFlagMcCoyInChinaTown);
