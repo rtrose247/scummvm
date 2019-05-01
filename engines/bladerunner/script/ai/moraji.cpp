@@ -46,8 +46,8 @@ bool AIScriptMoraji::Update() {
 	 &&  Player_Query_Current_Scene() == kSceneDR05
 	 && !Game_Flag_Query(kFlagDR05BombActivated)
 	) {
-		AI_Countdown_Timer_Reset(kActorMoraji, 2);
-		AI_Countdown_Timer_Start(kActorMoraji, 2, 30);
+		AI_Countdown_Timer_Reset(kActorMoraji, kActorTimerAIScriptCustomTask2);
+		AI_Countdown_Timer_Start(kActorMoraji, kActorTimerAIScriptCustomTask2, 30);
 		Game_Flag_Set(kFlagDR05BombActivated);
 		return true;
 	}
@@ -63,8 +63,8 @@ bool AIScriptMoraji::Update() {
 }
 
 void AIScriptMoraji::TimerExpired(int timer) {
-	if (timer == 2) {
-		AI_Countdown_Timer_Reset(kActorMoraji, 2);
+	if (timer == kActorTimerAIScriptCustomTask2) {
+		AI_Countdown_Timer_Reset(kActorMoraji, kActorTimerAIScriptCustomTask2);
 
 		if (Actor_Query_Goal_Number(kActorMoraji) != kGoalMorajiJump
 		 && Actor_Query_Goal_Number(kActorMoraji) != kGoalMorajiLayDown
@@ -80,7 +80,7 @@ void AIScriptMoraji::TimerExpired(int timer) {
 
 void AIScriptMoraji::CompletedMovementTrack() {
 	if (Actor_Query_Goal_Number(kActorMoraji) == kGoalMorajiRunOut) {
-		AI_Countdown_Timer_Reset(kActorMoraji, 2);
+		AI_Countdown_Timer_Reset(kActorMoraji, kActorTimerAIScriptCustomTask2);
 		Game_Flag_Set(kFlagDR05BombWillExplode);
 		_animationState = 3;
 
@@ -153,7 +153,7 @@ bool AIScriptMoraji::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		// applies only when shot inside the Dermo Design Lab
 		Actor_Set_Targetable(kActorMoraji, false);
 #if BLADERUNNER_ORIGINAL_BUGS
-		Sound_Play(4, 100, 0, 0, 50);	// Original code has female scream here (FEMHURT2)
+		Sound_Play(kSfxFEMHURT2, 100, 0, 0, 50);	// Original code has female scream here (FEMHURT2)
 #else
 		Sound_Play_Speech_Line(kActorMoraji, 9020, 50, 0, 50); // fix: Use Moraji's death SPCHSFX, also lower volume
 #endif // BLADERUNNER_ORIGINAL_BUGS
@@ -315,7 +315,7 @@ bool AIScriptMoraji::UpdateAnimation(int *animation, int *frame) {
 			Actor_Set_Goal_Number(kActorMoraji, kGoalMorajiScream);
 		}
 		if (_animationFrame == 6) {
-			Ambient_Sounds_Play_Sound(488, 69, 0, 0, 20);
+			Ambient_Sounds_Play_Sound(kSfxCHAINBRK, 69, 0, 0, 20);
 		}
 		break;
 
@@ -476,7 +476,7 @@ void AIScriptMoraji::SetAnimationState(int animationState, int animationFrame, i
 
 bool AIScriptMoraji::ReachedMovementTrackWaypoint(int waypointId) {
 	if (waypointId == 96)
-		AI_Countdown_Timer_Reset(kActorMoraji, 2);
+		AI_Countdown_Timer_Reset(kActorMoraji, kActorTimerAIScriptCustomTask2);
 
 	return true;
 }

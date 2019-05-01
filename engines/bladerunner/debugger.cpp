@@ -49,6 +49,13 @@
 #include "bladerunner/vqa_player.h"
 #include "bladerunner/waypoints.h"
 #include "bladerunner/zbuffer.h"
+#include "bladerunner/chapters.h"
+#include "bladerunner/ui/kia.h"
+#include "bladerunner/ui/esper.h"
+#include "bladerunner/ui/spinner.h"
+#include "bladerunner/ui/elevator.h"
+#include "bladerunner/ui/vk.h"
+#include "bladerunner/ui/scores.h"
 #include "bladerunner/overlays.h"
 #include "bladerunner/subtitles.h"
 
@@ -79,6 +86,7 @@ Debugger::Debugger(BladeRunnerEngine *vm) : GUI::Debugger() {
 
 	registerCmd("anim", WRAP_METHOD(Debugger, cmdAnimation));
 	registerCmd("draw", WRAP_METHOD(Debugger, cmdDraw));
+	registerCmd("list", WRAP_METHOD(Debugger, cmdList));
 	registerCmd("flag", WRAP_METHOD(Debugger, cmdFlag));
 	registerCmd("goal", WRAP_METHOD(Debugger, cmdGoal));
 	registerCmd("loop", WRAP_METHOD(Debugger, cmdLoop));
@@ -725,51 +733,213 @@ bool Debugger::cmdSave(int argc, const char **argv) {
 	return false;
 }
 
+const struct OverlayAndScenesVQAsList {
+	int resourceId;
+	const char *name;
+	bool isOverlayVQA; // else it is a scene VQA
+} overlaysList[] = {
+	{ 1, "MA04OVR2", true }, { 1, "PS10", false },    { 1, "MA01", false },    { 1, "RC01", false },    { 1, "PS01", false },
+	{ 1, "CT01", false },    { 1, "PS11", false },    { 1, "RC51", false },    { 1, "MA02", false },    { 1, "RC02", false },
+	{ 1, "PS02", false },    { 1, "CT02", false },    { 1, "PS12", false },    { 1, "CT12", false },    { 1, "PS03", false },
+	{ 1, "CT03", false },    { 1, "PS13", false },    { 1, "MA04", false },    { 1, "PS04", false },    { 1, "CT04", false },
+	{ 1, "PS14", false },    { 1, "CT01SPNR", true }, { 1, "MA05", false },    { 1, "PS05", false },    { 1, "CT05", false },
+	{ 1, "PS15", false },    { 1, "MA06", false },    { 1, "PS06", false },    { 1, "CT06", false },    { 1, "MA02OVER", true },
+	{ 1, "CT02OVER", true }, { 1, "MA07", false },    { 1, "PS07", false },    { 1, "CT07", false },    { 1, "PS09", false },
+	{ 1, "MA04OVER", true }, { 1, "PS05OVER", true }, { 1, "CT05OVER", true },
+
+	{ 2, "BB10OVR1", true }, { 2, "BB10OVR2", true }, { 2, "BB10OVR3", true }, { 2, "BB10OVR4", true }, { 2, "BB10OVR5", true },
+	{ 2, "BB10_2", false },  { 2, "UG10_2", false },  { 2, "NR10_2", false },  { 2, "PS10_2", false },  { 2, "CT10_2", false },
+	{ 2, "MA01_2", false },  { 2, "BB01_2", false },  { 2, "HC01_2", false },  { 2, "RC01_2", false },  { 2, "HF01_2", false },
+	{ 2, "UG01_2", false },  { 2, "AR01_2", false },  { 2, "DR01_2", false },  { 2, "NR01_2", false },  { 2, "PS01_2", false },
+	{ 2, "CT01_2", false },  { 2, "BB11_2", false },  { 2, "NR11_2", false },  { 2, "PS11_2", false },  { 2, "CT11_2", false },
+	{ 2, "BB51_2", false },  { 2, "CT51_2", false },  { 2, "MA02_2", false },  { 2, "BB02_2", false },  { 2, "TB02_2", false },
+	{ 2, "HC02_2", false },  { 2, "HF02_2", false },  { 2, "UG02_2", false },  { 2, "AR02_2", false },  { 2, "DR02_2", false },
+	{ 2, "NR02_2", false },  { 2, "PS02_2", false },  { 2, "CT02_2", false },  { 2, "BB12_2", false },  { 2, "PS12_2", false },
+	{ 2, "CT12_2", false },  { 2, "MA04OVR2", true }, { 2, "BB03_2", false },  { 2, "HC03_2", false },  { 2, "RC03_2", false },
+	{ 2, "HF03_2", false },  { 2, "UG03_2", false },  { 2, "DR03_2", false },  { 2, "NR03_2", false },  { 2, "PS03_2", false },
+	{ 2, "CT03_2", false },  { 2, "PS13_2", false },  { 2, "MA04_2", false },  { 2, "BB04_2", false },  { 2, "HC04_2", false },
+	{ 2, "RC04_2", false },  { 2, "HF04_2", false },  { 2, "UG04_2", false },  { 2, "DR04_2", false },  { 2, "NR04_2", false },
+	{ 2, "PS04_2", false },  { 2, "CT04_2", false },  { 2, "PS14_2", false },  { 2, "DR06OVR2", true }, { 2, "MA05_2", false },
+	{ 2, "BB05_2", false },  { 2, "TB05_2", false },  { 2, "HF05_2", false },  { 2, "DR05_2", false },  { 2, "NR05_2", false },
+	{ 2, "PS05_2", false },  { 2, "CT05_2", false },  { 2, "PS15_2", false },  { 2, "MA06_2", false },  { 2, "BB06_2", false },
+	{ 2, "TB06_2", false },  { 2, "HF06_2", false },  { 2, "UG06_2", false },  { 2, "DR06_2", false },  { 2, "NR06_2", false },
+	{ 2, "PS06_2", false },  { 2, "CT06_2", false },  { 2, "MA07_2", false },  { 2, "BB07_2", false },  { 2, "TB07_2", false },
+	{ 2, "NR07_2", false },  { 2, "PS07_2", false },  { 2, "BB08_2", false },  { 2, "NR08_2", false },  { 2, "CT08_2", false },
+	{ 2, "BB09_2", false },  { 2, "NR09_2", false },  { 2, "PS09_2", false },  { 2, "CT09_2", false },  { 2, "NR11OVER", true },
+	{ 2, "CT01SPNR", true }, { 2, "MA02OVER", true }, { 2, "CT02OVER", true }, { 2, "BB12OVER", true }, { 2, "MA04OVER", true },
+	{ 2, "DR04OVER", true }, { 2, "NR04OVER", true }, { 2, "BB05OVER", true }, { 2, "DR05OVER", true }, { 2, "PS05OVER", true },
+	{ 2, "CT05OVER", true }, { 2, "BB06OVER", true }, { 2, "DR06OVER", true }, { 2, "BB07OVER", true }, { 2, "BB08OVER", true },
+
+	{ 3, "UG10_3", false },  { 3, "NR10_3", false },  { 3, "CT10_3", false },  { 3, "BB01_3", false },  { 3, "HC01_3", false },
+	{ 3, "RC01_3", false },  { 3, "HF01_3", false },  { 3, "UG01_3", false },  { 3, "KP01_3", false },  { 3, "AR01_3", false },
+	{ 3, "DR01_3", false },  { 3, "NR01_3", false },  { 3, "CT01_3", false },  { 3, "NR11_3", false },  { 3, "CT11_3", false },
+	{ 3, "BB51_3", false },  { 3, "RC51_3", false },  { 3, "CT51_3", false },  { 3, "MA02_3", false },  { 3, "BB02_3", false },
+	{ 3, "TB02_3", false },  { 3, "HC02_3", false },  { 3, "RC02_3", false },  { 3, "HF02_3", false },  { 3, "UG02_3", false },
+	{ 3, "KP02_3", false },  { 3, "AR02_3", false },  { 3, "DR02_3", false },  { 3, "NR02_3", false },  { 3, "CT02_3", false },
+	{ 3, "UG12_3", false },  { 3, "CT12_3", false },  { 3, "MA04OVR2", true }, { 3, "BB03_3", false },  { 3, "TB03_3", false },
+	{ 3, "HC03_3", false },  { 3, "RC03_3", false },  { 3, "HF03_3", false },  { 3, "UG03_3", false },  { 3, "KP03_3", false },
+	{ 3, "DR03_3", false },  { 3, "NR03_3", false },  { 3, "CT03_3", false },  { 3, "UG13_3", false },  { 3, "MA04_3", false },
+	{ 3, "BB04_3", false },  { 3, "HC04_3", false },  { 3, "RC04_3", false },  { 3, "HF04_3", false },  { 3, "UG04_3", false },
+	{ 3, "KP04_3", false },  { 3, "DR04_3", false },  { 3, "NR04_3", false },  { 3, "CT04_3", false },  { 3, "UG14_3", false },
+	{ 3, "PS14_3", false },  { 3, "DR06OVR2", true }, { 3, "MA05_3", false },  { 3, "HF05_3", false },  { 3, "UG05_3", false },
+	{ 3, "KP05_3", false },  { 3, "DR05_3", false },  { 3, "NR05_3", false },  { 3, "CT05_3", false },  { 3, "UG15_3", false },
+	{ 3, "MA06_3", false },  { 3, "HF06_3", false },  { 3, "UG06_3", false },  { 3, "KP06_3", false },  { 3, "DR06_3", false },
+	{ 3, "NR06_3", false },  { 3, "CT06_3", false },  { 3, "UG16_3", false },  { 3, "UG18OVR2", true }, { 3, "UG19OVR1", true },
+	{ 3, "MA07_3", false },  { 3, "TB07_3", false },  { 3, "HF07_3", false },  { 3, "UG07_3", false },  { 3, "KP07_3", false },
+	{ 3, "NR07_3", false },  { 3, "UG17_3", false },  { 3, "UG08_3", false },  { 3, "NR08_3", false },  { 3, "CT08_3", false },
+	{ 3, "UG18_3", false },  { 3, "UG09_3", false },  { 3, "NR09_3", false },  { 3, "PS09_3", false },  { 3, "CT09_3", false },
+	{ 3, "UG19_3", false },  { 3, "NR11OVER", true }, { 3, "CT01SPNR", true }, { 3, "MA02OVER", true }, { 3, "CT02OVER", true },
+	{ 3, "MA04OVER", true }, { 3, "DR04OVER", true }, { 3, "NR04OVER", true }, { 3, "UG14OVER", true }, { 3, "DR05OVER", true },
+	{ 3, "CT05OVER", true }, { 3, "UG15OVER", true }, { 3, "DR06OVER", true }, { 3, "UG17OVER", true }, { 3, "UG18OVER", true },
+
+	{ 6, "VKLUCY", true },   { 6, "VKRUNC", true },   { 6, "KIA_CLUE", false },{ 6, "KIA_INGM", false }, { 6, "KIA_CRIM", false },
+	{ 6, "KIA_SUSP", false },{ 6, "HC01ESP1", false },{ 6, "HC01ESP2", false },{ 6, "HC01ESP3", false }, { 6, "RC02ESP1", false },
+	{ 6, "HC02ESP2", false },{ 6, "RC02ESP2", false },{ 6, "HC02ESP3", false },{ 6, "RC02ESP3", false }, { 6, "HC02ESP4", false },
+	{ 6, "RC02ESP4", false },{ 6, "HC02ESP5", false },{ 6, "RC02ESP5", false },{ 6, "RC02ESP6", false }, { 6, "RC02ESP7", false },
+	{ 6, "TB06ESP1", false },{ 6, "KP06ESP1", false },{ 6, "NR06ESP1", false },{ 6, "TB06ESP2", false }, { 6, "KP06ESP2", false },
+	{ 6, "NR06ESP2", false },{ 6, "TB06ESP3", false },{ 6, "KP06ESP3", false },{ 6, "NR07ESP1", false }, { 6, "TB06ESP4", false },
+	{ 6, "KP06ESP4", false },{ 6, "NR07ESP2", false },{ 6, "SPINNER", false }, { 6, "KIAOVER", false },  { 6, "VK", false },
+	{ 6, "VKKASH", true },   { 6, "PS02ELEV", false },{ 6, "ESPER", false },   { 6, "VKDEKT", true },   { 6, "MA06ELEV", false },
+	{ 6, "VKBOB", true },    { 6, "SCORE", false },
+
+	{ 0, NULL, false }
+};
+
 /**
 * Will use overlay videos that the game has loaded for the scene
 * at the time of running the command
-* or otherwise will attempt to load the specified overlay to the scene.
+* or otherwise will attempt to load the specified overlay to the scene,
+* if it exists in the currently loaded (VQAx, MODE) MIX resources.
+* Use "overlay reset" to clear up all loaded overlays (and/or custom scene video)
+*
+* Note: Loading MODE.MIX here (and a VQA from it) may lead to buggy results,
+*       if the player then invokes and closes an actual game mode (KIA, ESPER, GPS etc).
+*       This is because the game itself will unload MODE.MIX when closing the game mode
+*       and that can lead to a assertion fault for a missing file handle.
+*       A viable solution would be to have MODE.MIX loaded all the time,
+*       but that is unnecessary since a developer could just uncomment a few lines below
+*       (look for "force-load MODE.MIX") and make use of it with caution, if needed.
 */
 bool Debugger::cmdOverlay(int argc, const char **argv) {
 	bool invalidSyntax = false;
+	bool modeMixOverlaysAvailableFlg = false;
+	int chapterIdOverlaysAvailableInt = -1;
+
+	if (_vm->_kia->isOpen()
+		|| _vm->_esper->isOpen()
+		|| _vm->_spinner->isOpen()
+		|| _vm->_elevator->isOpen()
+		|| _vm->_vk->isOpen()
+		|| _vm->_scores->isOpen()
+	) {
+		debugPrintf("Sorry, playing custom overlays in KIA, ESPER, Voigt-Kampff, Spinner GPS,\nScores or Elevator mode is not supported\n");
+		return true;
+	}
 
 	if (argc != 1 && argc != 2 && argc != 3 && argc != 5) {
 		invalidSyntax = true;
 	}
 
-	// Make sure all MIX with VQAs are loaded (including MODE.MIX)
-	if (!_vm->openArchive("MODE.MIX")) {
-		debugPrintf("Error: Could not load resource MODE.MIX\n");
+	if (_vm->_chapters->hasOpenResources()) {
+		chapterIdOverlaysAvailableInt = MIN(_vm->_chapters->currentResourceId(), 3);
 	}
-	if (!_vm->openArchive("VQA1.MIX")) {
-		debugPrintf("Error: Could not load resource VQA1.MIX\n");
+	if (chapterIdOverlaysAvailableInt == -1) {
+		debugPrintf("No available open resources to load VQAs from.\n Giving up.\n");
+		return true;
 	}
-	if (!_vm->openArchive("VQA2.MIX")) {
-		debugPrintf("Error: Could not load resource VQA2.MIX\n");
-	}
-	if (!_vm->openArchive("VQA3.MIX")) {
-		debugPrintf("Error: Could not load resource VQA3.MIX\n");
+
+	// Normally, don't force-load the MODE.MIX resource
+	if (!_vm->isArchiveOpen("MODE.MIX")) {
+//		if (_vm->openArchive("MODE.MIX") { // Note: This will force-load MODE.MIX. Use with caution!
+//			debugPrintf("Warning: MODE.MIX resources were force-loaded.\n Please, don't use game's menu modes (KIA, ESPER, Voigt-Kampff, Spinner GPS, Scores or Elevator) before executing an \"%s reset\" from the debugger!\n", argv[0]);
+//			modeMixOverlaysAvailableFlg = true;
+//		}
+	} else {
+		modeMixOverlaysAvailableFlg = true;
 	}
 
 	if (argc == 1) {
 		// print info for all overlays loaded for the scene
+		uint8 countOfLoadedOverlaysInScene = 0;
 		debugPrintf("name animationId startFrame endFrame\n");
+
 		for (int i = 0; i < _vm->_overlays->kOverlayVideos; ++i) {
 			if (_vm->_overlays->_videos[i].loaded) {
+				countOfLoadedOverlaysInScene++;
 				VQADecoder::LoopInfo &loopInfo =_vm->_overlays->_videos[i].vqaPlayer->_decoder._loopInfo;
 				for (int j = 0; j < loopInfo.loopCount; ++j) {
 					debugPrintf("%s %2d %4d %4d\n", _vm->_overlays->_videos[i].name.c_str(), j, loopInfo.loops[j].begin, loopInfo.loops[j].end);
 				}
 			}
 		}
+
+		if ( countOfLoadedOverlaysInScene > 0) {
+			debugPrintf("  ** %d overlays are loaded in scene **\n", countOfLoadedOverlaysInScene);
+		} else {
+			debugPrintf("  ** No overlays loaded in scene **\n");
+		}
+
 		return true;
 	}
 
 	if (argc == 2) {
-		// Check if we need to reset (remove) the overlays loaded for the scene
 		Common::String argName = argv[1];
+
 		if (argName == "reset") {
+		// Reset (remove) the overlays loaded for the scene
 			_vm->_overlays->removeAll();
+			// And return to original VQA for this scene
+			const Common::String origSceneName = _vm->_gameInfo->getSceneName(_vm->_scene->_sceneId);
+
+			Common::String origVqaName;
+			if (chapterIdOverlaysAvailableInt == 1) {
+				origVqaName = Common::String::format("%s.VQA", origSceneName.c_str());
+			} else {
+				origVqaName = Common::String::format("%s_%d.VQA", origSceneName.c_str(), chapterIdOverlaysAvailableInt);
+			}
+
+			if (_vm->_scene->_vqaPlayer != nullptr) {
+				delete _vm->_scene->_vqaPlayer;
+			}
+
+			_vm->_scene->_vqaPlayer = new VQAPlayer(_vm, &_vm->_surfaceBack, origVqaName);
+			if (!_vm->_scene->_vqaPlayer->open()) {
+				debugPrintf("Error: Could not open player while reseting\nto scene VQA named: %s!\n", (origVqaName + ".VQA").c_str());
+				return true;
+			}
+			_vm->_scene->startDefaultLoop();
+			_vm->_scene->advanceFrame();
+
+
+		} else if (argName == "avail") {
+		// List the available overlays in the loaded resources
+			const uint dispColCount = 5;
+			uint colCountIter = 0;
+			uint16 itemIter = 0;
+
+			debugPrintf("Available overlays in the loaded resources:\n");
+			for (itemIter = 0; overlaysList[itemIter].resourceId != 0; ++itemIter) {
+				if ( (overlaysList[itemIter].resourceId == chapterIdOverlaysAvailableInt)
+					|| ( modeMixOverlaysAvailableFlg && overlaysList[itemIter].resourceId == 6)
+				) {
+					debugPrintf("%s ", overlaysList[itemIter].name);
+					colCountIter = (colCountIter + 1) % dispColCount;
+					if ( colCountIter == 0) {
+						debugPrintf("\n");
+					}
+				}
+			}
+			// final new line if needed
+			if ( colCountIter % dispColCount != 0) {
+				debugPrintf("\n");
+			}
+			if (!modeMixOverlaysAvailableFlg) {
+				debugPrintf("Note: MODE.MIX resources are currently not loaded.\n");
+			}
+
+		} else if (argName.size() > 12) {
+			debugPrintf("The specified name is too long. It should be up to 12 characters.\n");
+			invalidSyntax = true;
 		} else {
 			debugPrintf("Invalid command usage\n");
 			invalidSyntax = true;
@@ -778,6 +948,8 @@ bool Debugger::cmdOverlay(int argc, const char **argv) {
 
 	if (argc == 3 || argc == 5) {
 		Common::String overlayName = argv[1];
+		overlayName.toUppercase();
+
 		int overlayAnimationId = atoi(argv[2]);
 		bool loopForever = false;
 		LoopSetModes startNowFlag = kLoopSetModeEnqueue;
@@ -794,33 +966,79 @@ bool Debugger::cmdOverlay(int argc, const char **argv) {
 			debugPrintf("Animation id value must be >= 0!\n");
 			return true;
 		}
-		//
-		// Attempt to load the overlay even if not already loaded for the scene (in _vm->_overlays->_videos)
-		int overlayVideoIdx = _vm->_overlays->play(overlayName, overlayAnimationId, loopForever, startNowFlag, 0);
-		if( overlayVideoIdx == -1 ) {
-			debugPrintf("Could not load the overlay animation: %s in this scene. Try reseting overlays first to free up slots!\n", overlayName.c_str());
-		} else {
-			debugPrintf("Loading overlay animation: %s...\n", overlayName.c_str());
-			VQADecoder::LoopInfo &loopInfo =_vm->_overlays->_videos[overlayVideoIdx].vqaPlayer->_decoder._loopInfo;
-			int overlayAnimationLoopCount = loopInfo.loopCount;
-			if (overlayAnimationLoopCount == 0) {
-				debugPrintf("Error: No valid loops were found for overlay animation named: %s!\n", overlayName.c_str());
-				_vm->_overlays->remove(overlayName.c_str());
-			} else if (overlayAnimationId >= overlayAnimationLoopCount) {
-				debugPrintf("Invalid loop id: %d for overlay animation: %s. Try from 0 to %d.\n",  overlayAnimationId, overlayName.c_str(), overlayAnimationLoopCount-1);
+
+		// Check if specified overlay name exists AND is available
+		uint16 itemIter = 0;
+		for (itemIter = 0; overlaysList[itemIter].resourceId != 0; ++itemIter) {
+			if ( (overlaysList[itemIter].resourceId == chapterIdOverlaysAvailableInt)
+				|| ( modeMixOverlaysAvailableFlg && overlaysList[itemIter].resourceId == 6)
+			) {
+				if (strcmp(overlaysList[itemIter].name, overlayName.c_str()) == 0){
+					break;
+				}
+			}
+		}
+		if (overlaysList[itemIter].resourceId == 0 ) {
+			debugPrintf("No available resource was found by that name!\nPerhaps it exists in another chapter.\n");
+			return true;
+		}
+
+		if (overlaysList[itemIter].isOverlayVQA) {
+			//
+			// Attempt to load the overlay in an empty slot
+			// even if it's not already loaded for the scene (in _vm->_overlays->_videos)
+			int overlayVideoIdx = _vm->_overlays->play(overlayName, overlayAnimationId, loopForever, startNowFlag, 0);
+			if( overlayVideoIdx == -1 ) {
+				debugPrintf("Could not load the overlay animation: %s in this scene. Try reseting overlays first to free up slots!\n", overlayName.c_str());
 			} else {
-				// print info about available loops too
-				debugPrintf("Animation: %s loaded. Running loop %d...\n", overlayName.c_str(), overlayAnimationId);
-				for (int j = 0; j < overlayAnimationLoopCount; ++j) {
-					debugPrintf("%s %2d %4d %4d\n", _vm->_overlays->_videos[overlayVideoIdx].name.c_str(), j, loopInfo.loops[j].begin, loopInfo.loops[j].end);
+				debugPrintf("Loading overlay animation: %s...\n", overlayName.c_str());
+
+				VQADecoder::LoopInfo &loopInfo =_vm->_overlays->_videos[overlayVideoIdx].vqaPlayer->_decoder._loopInfo;
+				int overlayAnimationLoopCount = loopInfo.loopCount;
+				if (overlayAnimationLoopCount == 0) {
+					debugPrintf("Error: No valid loops were found for overlay animation named: %s!\n", overlayName.c_str());
+					_vm->_overlays->remove(overlayName.c_str());
+				} else if (overlayAnimationId >= overlayAnimationLoopCount) {
+					debugPrintf("Invalid loop id: %d for overlay animation: %s. Try from 0 to %d.\n",  overlayAnimationId, overlayName.c_str(), overlayAnimationLoopCount-1);
+				} else {
+					// print info about available loops too
+					debugPrintf("Animation: %s loaded. Running loop %d...\n", overlayName.c_str(), overlayAnimationId);
+					for (int j = 0; j < overlayAnimationLoopCount; ++j) {
+						debugPrintf("%s %2d %4d %4d\n", _vm->_overlays->_videos[overlayVideoIdx].name.c_str(), j, loopInfo.loops[j].begin, loopInfo.loops[j].end);
+					}
+				}
+			}
+		} else {
+			if (_vm->_scene->_vqaPlayer != nullptr) {
+				delete _vm->_scene->_vqaPlayer;
+			}
+			_vm->_scene->_vqaPlayer = new VQAPlayer(_vm, &_vm->_surfaceBack, overlayName + ".VQA");
+			if (!_vm->_scene->_vqaPlayer->open()) {
+				debugPrintf("Error: Could not open player for scene VQA named: %s!\n", (overlayName + ".VQA").c_str());
+				return true;
+			}
+
+			VQADecoder::LoopInfo &loopInfo =_vm->_scene->_vqaPlayer->_decoder._loopInfo;
+			int sceneAnimationLoopCount = loopInfo.loopCount;
+			if (sceneAnimationLoopCount == 0) {
+				debugPrintf("Error: No valid loops were found for scene animation named: %s!\n", (overlayName + ".VQA").c_str());
+			} else if (overlayAnimationId >= sceneAnimationLoopCount) {
+				debugPrintf("Invalid loop id: %d for scene animation: %s. Try from 0 to %d.\n",  overlayAnimationId, overlayName.c_str(), sceneAnimationLoopCount-1);
+			} else {
+				// ignore the specified loopForever and startNow flags
+				// just do a kSceneLoopModeOnce, without immediate start
+				_vm->_scene->loopStartSpecial(kSceneLoopModeOnce, overlayAnimationId, false);
+				debugPrintf("Scene animation: %s loaded. Running loop %d...\n", overlayName.c_str(), overlayAnimationId);
+				for (int j = 0; j < sceneAnimationLoopCount; ++j) {
+					debugPrintf("%s %2d %4d %4d\n", overlayName.c_str(), j, loopInfo.loops[j].begin, loopInfo.loops[j].end);
 				}
 			}
 		}
 	}
 
 	if (invalidSyntax) {
-		debugPrintf("Load, list or play loaded overlay animations. Values for loopForever and startNow are boolean.\n");
-		debugPrintf("Usage: %s [[<name> <animationId> [<loopForever> <startNow>]] | reset ]\n", argv[0]);
+		debugPrintf("Load, list, play or reset (clear) loaded overlay animations.\nValues for loopForever and startNow are boolean.\n");
+		debugPrintf("Usage: %s [[<name> <animationId> [<loopForever> <startNow>]] | avail | reset ]\n", argv[0]);
 	}
 	return true;
 }
@@ -852,6 +1070,187 @@ bool Debugger::cmdSubtitle(int argc, const char **argv) {
 	}
 	return true;
 
+}
+
+/**
+*
+* Similar to draw but only list items instead of drawing
+* Maybe keep this separate from the draw command, even though some code gets repeated here
+* DONE: Provide more info (bbox or position)
+* DONE: For actors show current goal too.
+* TODO: For items provide friendly name (enum in constants!)
+* DONE: Split items in items, actors and objects?
+*/
+bool Debugger::cmdList(int argc, const char **argv) {
+	if (argc != 2) {
+		debugPrintf("Enables debug listing of actors, scene objects, items, waypoints, regions, lights, fogs and walk-boxes.\n");
+		debugPrintf("Usage: %s (act | obj | items | way | reg | lit | fog | walk )\n", argv[0]);
+		return true;
+	}
+
+	Common::String arg = argv[1];
+	if (arg == "act") {
+		debugPrintf("Listing scene actors: \n");
+		int count = 0;
+		for (int i = 0; i < _vm->_sceneObjects->_count; i++) {
+			SceneObjects::SceneObject *sceneObject = &_vm->_sceneObjects->_sceneObjects[_vm->_sceneObjects->_sceneObjectsSortedByDistance[i]];
+
+			if (sceneObject->type == kSceneObjectTypeActor) {
+				debugPrintf("%02d. %s (Clk: %s, Trg: %s, Prs: %s, Obs: %s, Mvg: %s), Goal: %d, Pos(%02.2f,%02.2f,%02.2f)\n",
+				             count, _vm->_textActorNames->getText(sceneObject->id - kSceneObjectOffsetActors),
+				             sceneObject->isClickable? "T" : "F",
+				             sceneObject->isTarget?    "T" : "F",
+				             sceneObject->isPresent?   "T" : "F",
+				             sceneObject->isObstacle?  "T" : "F",
+				             sceneObject->isMoving?    "T" : "F",
+				             _vm->_actors[sceneObject->id - kSceneObjectOffsetActors]->getGoal(),
+				             _vm->_actors[sceneObject->id - kSceneObjectOffsetActors]->getPosition().x,
+				             _vm->_actors[sceneObject->id - kSceneObjectOffsetActors]->getPosition().y,
+				             _vm->_actors[sceneObject->id - kSceneObjectOffsetActors]->getPosition().z);
+				++count;
+			}
+		}
+		debugPrintf("%d actors were found in scene.\n", count);
+	} else if (arg == "obj") {
+		debugPrintf("Listing scene objects: \n");
+		int count = 0;
+		for (int i = 0; i < _vm->_sceneObjects->_count; i++) {
+			SceneObjects::SceneObject *sceneObject = &_vm->_sceneObjects->_sceneObjects[_vm->_sceneObjects->_sceneObjectsSortedByDistance[i]];
+			const BoundingBox &bbox = sceneObject->boundingBox;
+			Vector3 a, b;
+			bbox.getXYZ(&a.x, &a.y, &a.z, &b.x, &b.y, &b.z);
+			Vector3 pos = _vm->_view->calculateScreenPosition(0.5 * (a + b));
+
+			if (sceneObject->type == kSceneObjectTypeUnknown) {
+				debugPrintf("%02d. Unknown object type\n", count);
+				++count;
+			} else if (sceneObject->type == kSceneObjectTypeObject) {
+				debugPrintf("%02d. %s (Clk: %s, Trg: %s, Prs: %s, Obs: %s, Mvg: %s), Pos(%02.2f,%02.2f,%02.2f)\n     Bbox(%02.2f,%02.2f,%02.2f) ~ (%02.2f,%02.2f,%02.2f)\n",
+				             count, _vm->_scene->objectGetName(sceneObject->id - kSceneObjectOffsetObjects).c_str(),
+				             sceneObject->isClickable? "T" : "F",
+				             sceneObject->isTarget?    "T" : "F",
+				             sceneObject->isPresent?   "T" : "F",
+				             sceneObject->isObstacle?  "T" : "F",
+				             sceneObject->isMoving?    "T" : "F",
+				             pos.x, pos.y, pos.z,
+				             a.x, a.y, a.z, b.x, b.y, b.z);
+				++count;
+			}
+		}
+		debugPrintf("%d objects were found in scene.\n", count);
+	} else if (arg == "items") {
+		debugPrintf("Listing scene items: \n");
+		int count = 0;
+		for (int i = 0; i < _vm->_sceneObjects->_count; i++) {
+			SceneObjects::SceneObject *sceneObject = &_vm->_sceneObjects->_sceneObjects[_vm->_sceneObjects->_sceneObjectsSortedByDistance[i]];
+
+			if (sceneObject->type == kSceneObjectTypeItem) {
+				const BoundingBox &bbox = sceneObject->boundingBox;
+				Vector3 a, b;
+				bbox.getXYZ(&a.x, &a.y, &a.z, &b.x, &b.y, &b.z);
+				Vector3 pos = _vm->_view->calculateScreenPosition(0.5 * (a + b));
+				char itemText[40];
+				sprintf(itemText, "item %i", sceneObject->id - kSceneObjectOffsetItems);
+				debugPrintf("%02d. %s (Clk: %s, Trg: %s, Prs: %s, Obs: %s, Mvg: %s), Pos(%02.2f,%02.2f,%02.2f)\n    Bbox(%02.2f,%02.2f,%02.2f) ~ (%02.2f,%02.2f,%02.2f)\n",
+				             count, itemText,
+				             sceneObject->isClickable? "T" : "F",
+				             sceneObject->isTarget?    "T" : "F",
+				             sceneObject->isPresent?   "T" : "F",
+				             sceneObject->isObstacle?  "T" : "F",
+				             sceneObject->isMoving?    "T" : "F",
+				             pos.x, pos.y, pos.z,
+				             a.x, a.y, a.z, b.x, b.y, b.z);
+				++count;
+			}
+		}
+		debugPrintf("%d items were found in scene.\n", count);
+	} else if (arg == "reg") {
+		debugPrintf("Listing regions: \n");
+		int count = 0;
+		//list regions
+		for (int i = 0; i < 10; i++) {
+			Regions::Region *region = &_vm->_scene->_regions->_regions[i];
+			if (!region->present) continue;
+			debugPrintf("%02d. Region slot: %d\n", count, i);
+			++count;
+		}
+
+		//list exits
+		for (int i = 0; i < 10; i++) {
+			Regions::Region *region = &_vm->_scene->_exits->_regions[i];
+			if (!region->present) continue;
+			debugPrintf("%02d. Exit slot: %d\n", count, i);
+			++count;
+		}
+		debugPrintf("%d regions were found in scene.\n", count);
+	} else if (arg == "way") {
+		debugPrintf("Listing waypoints: \n");
+		int count = 0;
+		for (int i = 0; i < _vm->_waypoints->_count; i++) {
+			Waypoints::Waypoint *waypoint = &_vm->_waypoints->_waypoints[i];
+			if(waypoint->setId != _vm->_scene->getSetId()) {
+				continue;
+			}
+			char waypointText[40];
+			sprintf(waypointText, "waypoint %i", i);
+			debugPrintf("%02d. %s\n", count, waypointText);
+			++count;
+		}
+
+		// list combat cover waypoints
+		for (int i = 0; i < (int)_vm->_combat->_coverWaypoints.size(); i++) {
+			Combat::CoverWaypoint *cover = &_vm->_combat->_coverWaypoints[i];
+			if (cover->setId != _vm->_scene->getSetId()) {
+				continue;
+			}
+			char coverText[40];
+			sprintf(coverText, "cover %i", i);
+			debugPrintf("%02d. %s\n", count, coverText);
+			++count;
+		}
+
+		// list combat flee waypoints
+		for (int i = 0; i < (int)_vm->_combat->_fleeWaypoints.size(); i++) {
+			Combat::FleeWaypoint *flee = &_vm->_combat->_fleeWaypoints[i];
+			if (flee->setId != _vm->_scene->getSetId()) {
+				continue;
+			}
+			char fleeText[40];
+			sprintf(fleeText, "flee %i", i);
+			debugPrintf("%02d. %s\n", count, fleeText);
+			++count;
+		}
+		debugPrintf("%d waypoints were found in scene.\n", count);
+	} else if (arg == "walk") {
+		debugPrintf("Listing walkboxes: \n");
+		// list walkboxes
+		for (int i = 0; i < _vm->_scene->_set->_walkboxCount; i++) {
+			Set::Walkbox *walkbox = &_vm->_scene->_set->_walkboxes[i];
+
+			debugPrintf("%02d. Walkbox %s, vertices: %d\n", i, walkbox->name.c_str(), walkbox->vertexCount);
+		}
+		debugPrintf("%d walkboxes were found in scene.\n", _vm->_scene->_set->_walkboxCount);
+	} else if (arg == "fog") {
+		debugPrintf("Listing fogs: \n");
+		int count = 0;
+		for (Fog *fog = _vm->_scene->_set->_effects->_fogs; fog != nullptr; fog = fog->_next) {
+			debugPrintf("%02d. Fog %s\n", count, fog->_name.c_str());
+			++count;
+		}
+		debugPrintf("%d fogs were found in scene.\n", count);
+	} else if (arg == "lit") {
+		debugPrintf("Listing lights: \n");
+		// list lights
+		for (int i = 0; i < (int)_vm->_lights->_lights.size(); i++) {
+			Light *light = _vm->_lights->_lights[i];
+			debugPrintf("%02d. Light %s\n", i, light->_name.c_str());
+		}
+		debugPrintf("%d lights were found in scene.\n", (int)_vm->_lights->_lights.size());
+	} else {
+		debugPrintf("Invalid item type was specified.\n");
+	}
+
+	return true;
 }
 
 
@@ -912,13 +1311,13 @@ void Debugger::drawSceneObjects() {
 			case kSceneObjectTypeUnknown:
 				break;
 			case kSceneObjectTypeActor:
-				color = 0x7C00; // 11111 00000 00000;
+				color = _vm->_surfaceFront.format.RGBToColor(255, 0, 0);
 				drawBBox(a, b, _vm->_view, &_vm->_surfaceFront, color);
 				_vm->_surfaceFront.frameRect(sceneObject->screenRectangle, color);
 				_vm->_mainFont->drawColor(_vm->_textActorNames->getText(sceneObject->id - kSceneObjectOffsetActors), _vm->_surfaceFront, pos.x, pos.y, color);
 				break;
 			case kSceneObjectTypeItem:
-				color = 0x03E0; // 00000 11111 00000
+				color = _vm->_surfaceFront.format.RGBToColor(0, 255, 0);
 				char itemText[40];
 				drawBBox(a, b, _vm->_view, &_vm->_surfaceFront, color);
 				sprintf(itemText, "item %i", sceneObject->id - kSceneObjectOffsetItems);
@@ -926,11 +1325,9 @@ void Debugger::drawSceneObjects() {
 				_vm->_mainFont->drawColor(itemText, _vm->_surfaceFront, pos.x, pos.y, color);
 				break;
 			case kSceneObjectTypeObject:
-				color = 0x3DEF; //01111 01111 01111;
-				//if (sceneObject->_isObstacle)
-				//	color += 0b100000000000000;
+				color = _vm->_surfaceFront.format.RGBToColor(127, 127, 127);
 				if (sceneObject->isClickable) {
-					color = 0x03E0; // 00000 11111 00000;
+					color = _vm->_surfaceFront.format.RGBToColor(0, 255, 0);
 				}
 				drawBBox(a, b, _vm->_view, &_vm->_surfaceFront, color);
 				_vm->_surfaceFront.frameRect(sceneObject->screenRectangle, color);
@@ -958,10 +1355,7 @@ void Debugger::drawLights() {
 		posTarget.z = -t;
 
 		Vector3 size = Vector3(5.0f, 5.0f, 5.0f);
-		int colorR = (light->_color.r * 31.0f);
-		int colorG = (light->_color.g * 31.0f);
-		int colorB = (light->_color.b * 31.0f);
-		int color = (colorR << 10) + (colorG << 5) + colorB;
+		int color = _vm->_surfaceFront.format.RGBToColor(light->_color.r * 255.0f, light->_color.g * 255.0f, light->_color.b * 255.0f);
 
 		drawBBox(posOrigin - size, posOrigin + size, _vm->_view, &_vm->_surfaceFront, color);
 
@@ -992,10 +1386,7 @@ void Debugger::drawFogs() {
 		posTarget.z = -t;
 
 		Vector3 size = Vector3(5.0f, 5.0f, 5.0f);
-		int colorR = (fog->_fogColor.r * 31.0f);
-		int colorG = (fog->_fogColor.g * 31.0f);
-		int colorB = (fog->_fogColor.b * 31.0f);
-		int color = (colorR << 10) + (colorG << 5) + colorB;
+		int color = _vm->_surfaceFront.format.RGBToColor(fog->_fogColor.r * 255.0f, fog->_fogColor.g * 255.0f, fog->_fogColor.b * 255.0f);
 
 		drawBBox(posOrigin - size, posOrigin + size, _vm->_view, &_vm->_surfaceFront, color);
 
@@ -1014,14 +1405,14 @@ void Debugger::drawRegions() {
 	for (int i = 0; i < 10; i++) {
 		Regions::Region *region = &_vm->_scene->_regions->_regions[i];
 		if (!region->present) continue;
-		_vm->_surfaceFront.frameRect(region->rectangle, 0x001F); // 00000 00000 11111
+		_vm->_surfaceFront.frameRect(region->rectangle, _vm->_surfaceFront.format.RGBToColor(0, 0, 255));
 	}
 
 	//draw exits
 	for (int i = 0; i < 10; i++) {
 		Regions::Region *region = &_vm->_scene->_exits->_regions[i];
 		if (!region->present) continue;
-		_vm->_surfaceFront.frameRect(region->rectangle, 0x7FFF); // 11111 11111 11111
+		_vm->_surfaceFront.frameRect(region->rectangle, _vm->_surfaceFront.format.RGBToColor(255, 255, 255));
 	}
 }
 
@@ -1034,7 +1425,7 @@ void Debugger::drawWaypoints() {
 		}
 		Vector3 pos = waypoint->position;
 		Vector3 size = Vector3(3.0f, 3.0f, 3.0f);
-		int color = 0x7FFF; // 11111 11111 11111
+		int color = _vm->_surfaceFront.format.RGBToColor(255, 255, 255);
 		drawBBox(pos - size, pos + size, _vm->_view, &_vm->_surfaceFront, color);
 		Vector3 spos = _vm->_view->calculateScreenPosition(pos);
 		char waypointText[40];
@@ -1050,7 +1441,7 @@ void Debugger::drawWaypoints() {
 		}
 		Vector3 pos = cover->position;
 		Vector3 size = Vector3(3.0f, 3.0f, 3.0f);
-		int color = 0x7C1F; // 11111 00000 11111
+		int color = _vm->_surfaceFront.format.RGBToColor(255, 0, 255);
 		drawBBox(pos - size, pos + size, _vm->_view, &_vm->_surfaceFront, color);
 		Vector3 spos = _vm->_view->calculateScreenPosition(pos);
 		char coverText[40];
@@ -1066,7 +1457,7 @@ void Debugger::drawWaypoints() {
 		}
 		Vector3 pos = flee->position;
 		Vector3 size = Vector3(3.0f, 3.0f, 3.0f);
-		int color = 0x03FF; // 00000 11111 11111
+		int color = _vm->_surfaceFront.format.RGBToColor(0, 255, 255);
 		drawBBox(pos - size, pos + size, _vm->_view, &_vm->_surfaceFront, color);
 		Vector3 spos = _vm->_view->calculateScreenPosition(pos);
 		char fleeText[40];
@@ -1083,9 +1474,9 @@ void Debugger::drawWalkboxes() {
 		for (int j = 0; j < walkbox->vertexCount; j++) {
 			Vector3 start = _vm->_view->calculateScreenPosition(walkbox->vertices[j]);
 			Vector3 end = _vm->_view->calculateScreenPosition(walkbox->vertices[(j + 1) % walkbox->vertexCount]);
-			_vm->_surfaceFront.drawLine(start.x, start.y, end.x, end.y, 0x7FE0); // 11111 11111 00000
+			_vm->_surfaceFront.drawLine(start.x, start.y, end.x, end.y, _vm->_surfaceFront.format.RGBToColor(255, 255, 0));
 			Vector3 pos = _vm->_view->calculateScreenPosition(0.5 * (start + end));
-			_vm->_mainFont->drawColor(walkbox->name, _vm->_surfaceFront, pos.x, pos.y, 0x7FE0); // 11111 11111 00000
+			_vm->_mainFont->drawColor(walkbox->name, _vm->_surfaceFront, pos.x, pos.y, _vm->_surfaceFront.format.RGBToColor(255, 255, 0));
 		}
 	}
 }
@@ -1100,19 +1491,16 @@ void Debugger::drawScreenEffects() {
 				Common::Rect r((entry.x + x) * 2, (entry.y + y) * 2, (entry.x + x) * 2 + 2, (entry.y + y) * 2 + 2);
 
 				int ec = entry.data[j++];
-				Color256 color = entry.palette[ec];
-				int bladeToScummVmConstant = 256 / 16;
+				const int bladeToScummVmConstant = 256 / 16;
 
-				Graphics::PixelFormat _pixelFormat = createRGB555();
-				int color555 = _pixelFormat.RGBToColor(
-					CLIP(color.r * bladeToScummVmConstant, 0, 255),
-					CLIP(color.g * bladeToScummVmConstant, 0, 255),
-					CLIP(color.b * bladeToScummVmConstant, 0, 255));
-				_vm->_surfaceFront.fillRect(r, color555);
+				int color = _vm->_surfaceFront.format.RGBToColor(
+					CLIP(entry.palette[ec].r * bladeToScummVmConstant, 0, 255),
+					CLIP(entry.palette[ec].g * bladeToScummVmConstant, 0, 255),
+					CLIP(entry.palette[ec].b * bladeToScummVmConstant, 0, 255));
+				_vm->_surfaceFront.fillRect(r, color);
 			}
 		}
 	}
 }
-
 
 } // End of namespace BladeRunner

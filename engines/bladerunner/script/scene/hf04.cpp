@@ -37,14 +37,14 @@ void SceneScriptHF04::InitializeScene() {
 
 	Scene_Exit_Add_2D_Exit(0, 602, 104, 639, 177, 1);
 
-	Ambient_Sounds_Add_Looping_Sound( 70, 35, 0, 1);
-	Ambient_Sounds_Add_Looping_Sound(109, 40, 0, 1);
-	Ambient_Sounds_Add_Sound( 72, 6, 70, 14, 20, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 73, 3, 70, 14, 20, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 74, 5, 70, 14, 20, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(303, 5, 70, 33, 50, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(304, 5, 70, 33, 50, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(305, 5, 70, 33, 50, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxBOOLOOP2, 35, 0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxBRBED3,   40, 0, 1);
+	Ambient_Sounds_Add_Sound(kSfxSWEEP2, 6, 70, 14, 20, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSWEEP3, 3, 70, 14, 20, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSWEEP4, 5, 70, 14, 20, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBBGRN1, 5, 70, 33, 50, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBBGRN2, 5, 70, 33, 50, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBBGRN3, 5, 70, 33, 50, -100, 100, -101, -101, 0, 0);
 
 	if (Game_Flag_Query(kFlagHF04DoorsClosed)) {
 		Scene_Loop_Set_Default(kHF04LoopMainDoorsClosed);
@@ -55,7 +55,7 @@ void SceneScriptHF04::InitializeScene() {
 
 void SceneScriptHF04::SceneLoaded() {
 	if (Game_Flag_Query(kFlagHF04DoorsClosed)) {
-		Unobstacle_Object("PIVOT_WALL#1", true);
+		Unobstacle_Object("PIVOT_WALL#1",  true);
 		Unobstacle_Object("PIVOT_WALL#02", true);
 		Unobstacle_Object("PIVOT_WALL#03", true);
 	} else {
@@ -110,11 +110,11 @@ bool SceneScriptHF04::ClickedOn2DRegion(int region) {
 
 void SceneScriptHF04::SceneFrameAdvanced(int frame) {
 	if (frame == 62) {
-		Sound_Play(359, Random_Query(43, 43), 0, 0, 50);
+		Sound_Play(kSfxSTONDOR1, Random_Query(43, 43), 0, 0, 50);
 	}
 
 	if (frame == 154) {
-		Sound_Play(360, Random_Query(43, 43), 0, 0, 50);
+		Sound_Play(kSfxSTONDOR2, Random_Query(43, 43), 0, 0, 50);
 	}
 
 	if (frame == 179
@@ -171,7 +171,7 @@ void SceneScriptHF04::PlayerWalkedIn() {
 	 || Actor_Query_Goal_Number(kActorLucy) == kGoalLucyHF04Run1
 	) {
 		Player_Set_Combat_Mode(true);
-		Music_Play(1, 60, 0, 2, -1, 0, 0);
+		Music_Play(kMusicBatl226M, 60, 0, 2, -1, 0, 0);
 	}
 	Loop_Actor_Walk_To_XYZ(kActorMcCoy, -45.0f, -0.31f, 307.0f, 0, false, true, 0);
 	Delay(2500);

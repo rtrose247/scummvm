@@ -34,12 +34,12 @@ void SceneScriptPS09::InitializeScene() {
 	Scene_Exit_Add_2D_Exit(0, 0, 0, 30, 479, 3);
 
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(0);
-	Ambient_Sounds_Add_Looping_Sound(138, 50, 0, 0);
-	Ambient_Sounds_Add_Looping_Sound(137, 30, 0, 0);
-	Ambient_Sounds_Add_Looping_Sound(124, 30, 0, 0);
-	Ambient_Sounds_Add_Sound(125, 15, 60, 7, 10, 100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(126, 25, 60, 7, 10, 100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(127, 25, 60, 7, 10, 100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxBRBED5X,  50, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxPRISAMB1, 30, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxPRISAMB3, 30, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxPRISSLM1, 15, 60, 7, 10, 100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxPRISSLM2, 25, 60, 7, 10, 100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxPRISSLM3, 25, 60, 7, 10, 100, 100, -101, -101, 0, 0);
 
 	if (!Game_Flag_Query(kFlagGrigorianArrested)) {
 		Actor_Put_In_Set(kActorGrigorian, kSetPS09);
@@ -254,7 +254,7 @@ void SceneScriptPS09::SceneFrameAdvanced(int frame) {
 	 || frame == 52
 	 || frame == 54
 	) {
-		Sound_Play(97, Random_Query(50, 33), 10, 10, 50);
+		Sound_Play(kSfxNEON7, Random_Query(50, 33), 10, 10, 50);
 	}
 	//return true;
 }

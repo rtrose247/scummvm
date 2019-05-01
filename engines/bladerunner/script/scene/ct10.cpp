@@ -30,10 +30,10 @@ void SceneScriptCT10::InitializeScene() {
 
 	Scene_Exit_Add_2D_Exit(0, 135, 74, 238, 340, 0);
 
-	Ambient_Sounds_Add_Looping_Sound(336, 28, 0, 1);
-	Ambient_Sounds_Add_Sound(375, 6, 180, 33, 33, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(376, 5, 180, 33, 33, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(377, 5, 180, 33, 33, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxFLORBUZZ, 28, 0, 1);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER2, 6, 180, 33, 33, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER3, 5, 180, 33, 33, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER4, 5, 180, 33, 33, 0, 0, -101, -101, 0, 0);
 }
 
 void SceneScriptCT10::SceneLoaded() {
@@ -68,12 +68,12 @@ void SceneScriptCT10::checkCabinet() {
 	if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 10.6f, 0.0f, -50.5f, 0, true, false, 0)) {
 		Player_Loses_Control();
 		Actor_Face_Heading(kActorMcCoy, 0, false);
-		Sound_Play(339, 100, 0, 0, 50);
+		Sound_Play(kSfxDRAWER1, 100, 0, 0, 50);
 		Delay(1000);
 		if (Actor_Clue_Query(kActorMcCoy, kClueHoldensBadge)) {
 			Actor_Voice_Over(3700, kActorVoiceOver);
 		} else {
-			Item_Pickup_Spin_Effect(931, 435, 258);
+			Item_Pickup_Spin_Effect(kModelAnimationBadge, 435, 258);
 			Actor_Clue_Acquire(kActorMcCoy, kClueHoldensBadge, true, -1);
 		}
 		Player_Gains_Control();
@@ -87,7 +87,7 @@ bool SceneScriptCT10::ClickedOn3DObject(const char *objectName, bool a2) {
 			Actor_Face_Heading(kActorMcCoy, 850, false);
 			Actor_Change_Animation_Mode(kActorMcCoy, 38);
 			Delay(1000);
-			Sound_Play(338, 33, 0, 0, 50);
+			Sound_Play(kSfxCURTAIN1, 33, 0, 0, 50);
 			Delay(3000);
 			if (Actor_Clue_Query(kActorMcCoy, kClueStrangeScale1)) {
 				Actor_Voice_Over(3700, kActorVoiceOver);

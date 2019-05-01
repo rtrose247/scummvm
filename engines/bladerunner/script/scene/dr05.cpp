@@ -36,7 +36,7 @@ void SceneScriptDR05::InitializeScene() {
 
 	Scene_Exit_Add_2D_Exit(0, 0, 38, 80, 467, 3);
 
-	Ambient_Sounds_Add_Looping_Sound(383, 25, 0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxSKINBED1, 25, 0, 1);
 
 	if (!Game_Flag_Query(kFlagDR05BombExploded)) {
 		Overlay_Play("DR05OVER", 0, true, false, 0);
@@ -55,9 +55,9 @@ void SceneScriptDR05::SceneLoaded() {
 	Clickable_Object("T2 DOORWAY");
 
 	if (!Game_Flag_Query(kFlagDR05BombExploded)) {
-		Item_Add_To_World(kItemBomb, 932, kSetDR05, -1.57f, 31.33f, 75.21f, 540, 16, 16, true, true, false, true);
+		Item_Add_To_World(kItemBomb, kModelAnimationBomb, kSetDR05, -1.57f, 31.33f, 75.21f, 540, 16, 16, true, true, false, true);
 		if (Actor_Query_Goal_Number(kActorMoraji) == kGoalMorajiDefault) {
-			Item_Add_To_World(kItemChain, 931, kSetDR05, 37.35f, 1.59f, 46.72f, 0, 20, 20, true, true, false, true);
+			Item_Add_To_World(kItemChain, kModelAnimationBadge, kSetDR05, 37.35f, 1.59f, 46.72f, 0, 20, 20, true, true, false, true); // TODO a bug? reusing still animation of kModelAnimationBadge
 		}
 	}
 }
@@ -117,7 +117,7 @@ bool SceneScriptDR05::ClickedOnItem(int itemId, bool a2) {
 		Item_Remove_From_World(kItemChain);
 		Game_Flag_Set(kFlagDR05ChainShot);
 		Actor_Set_Goal_Number(kActorMoraji, kGoalMorajiFreed);
-		Music_Play(18, 71, 0, 0, -1, 0, 2);
+		Music_Play(kMusicMoraji, 71, 0, 0, -1, 0, 2);
 		return true;
 	}
 	return false;
@@ -141,7 +141,7 @@ bool SceneScriptDR05::ClickedOn2DRegion(int region) {
 
 void SceneScriptDR05::SceneFrameAdvanced(int frame) {
 	if (frame == 49) {
-		Sound_Play(148, Random_Query(50, 50), 80, 80, 50);
+		Sound_Play(kSfxLABMISC3, Random_Query(50, 50), 80, 80, 50);
 	}
 
 	if (Game_Flag_Query(kFlagDR05BombWillExplode)) {

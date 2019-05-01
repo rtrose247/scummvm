@@ -49,18 +49,18 @@ void SceneScriptCT12::InitializeScene() {
 		Scene_Exit_Add_2D_Exit(4, 324, 150, 435, 340, 0);
 	}
 
-	Ambient_Sounds_Add_Looping_Sound(54, 33,    1, 1);
-	Ambient_Sounds_Add_Looping_Sound(55, 20, -100, 1);
-	Ambient_Sounds_Add_Looping_Sound(56, 20, -100, 1);
-	Ambient_Sounds_Add_Speech_Sound(60,  0, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60, 20, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60, 40, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60, 50, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Sound( 68, 60, 180, 20,  33, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 69, 60, 180, 16,  25, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(375, 60, 180, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(376, 50, 180, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(377, 50, 180, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTRAIN1, 33,    1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTAMBL1, 20, -100, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTAMBR1, 20, -100, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy,  0, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy, 20, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy, 40, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy, 50, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxSPIN2B,  60, 180, 20,  33, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN3A,  60, 180, 16,  25, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER2, 60, 180, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER3, 50, 180, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER4, 50, 180, 50, 100, 0, 0, -101, -101, 0, 0);
 
 	if (Global_Variable_Query(kVariableChapter) < 2
 	 && Actor_Query_Goal_Number(kActorGaff) == kGoalGaffCT12WaitForMcCoy
@@ -220,7 +220,7 @@ bool SceneScriptCT12::ClickedOn2DRegion(int region) {
 
 void SceneScriptCT12::SceneFrameAdvanced(int frame) {
 	if (((frame - 1) % 10) == 0) {
-		Sound_Play(Random_Query(59, 60), 10, -80, -80, 50);
+		Sound_Play(Random_Query(kSfxNEON5, kSfxNEON6), 10, -80, -80, 50);
 	}
 
 	if (frame == 160) {
@@ -228,15 +228,15 @@ void SceneScriptCT12::SceneFrameAdvanced(int frame) {
 	}
 
 	if (frame == 152) {
-		Sound_Play(116, 100, 40, 0, 50);
+		Sound_Play(kSfxSPINOPN4, 100, 40, 0, 50);
 	}
 
 	if (frame == 203) {
-		Sound_Play(119, 100, 40, 0, 50);
+		Sound_Play(kSfxSPINCLS1, 100, 40, 0, 50);
 	}
 
 	if (frame == 212) {
-		Sound_Play(117, 40, 0, 0, 50);
+		Sound_Play(kSfxCARUP3,    40, 0, 0, 50);
 	}
 
 	if (frame == 269) {

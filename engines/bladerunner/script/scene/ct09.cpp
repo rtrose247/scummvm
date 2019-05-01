@@ -37,10 +37,10 @@ void SceneScriptCT09::InitializeScene() {
 	Scene_Exit_Add_2D_Exit(1,   0,   0,  15, 479, 3);
 	Scene_Exit_Add_2D_Exit(2, 198, 177, 263, 311, 0);
 
-	Ambient_Sounds_Add_Looping_Sound(336, 28, 0, 1);
-	Ambient_Sounds_Add_Sound(375, 6, 180, 33, 33, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(376, 5, 180, 33, 33, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(377, 5, 180, 33, 33, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxFLORBUZZ, 28, 0, 1);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER2, 6, 180, 33, 33, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER3, 5, 180, 33, 33, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER4, 5, 180, 33, 33, 0, 0, -101, -101, 0, 0);
 }
 
 void SceneScriptCT09::SceneLoaded() {
@@ -59,7 +59,7 @@ bool SceneScriptCT09::ClickedOn3DObject(const char *objectName, bool a2) {
 		if (Actor_Query_Which_Set_In(kActorLeon) != kSetCT09) {
 			if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 229.0f, 348.52f, 851.0f, 36, true, false, 0)) {
 				Actor_Face_Object(kActorMcCoy, "BELL", true);
-				Sound_Play(337, 100, 0, 0, 50);
+				Sound_Play(kSfxDESKBELL, 100, 0, 0, 50);
 				if (!Actor_Query_Goal_Number(kActorDeskClerk)) {
 					Actor_Says(kActorDeskClerk, 160, kAnimationModeTalk);
 				}
@@ -155,7 +155,7 @@ void SceneScriptCT09::SceneFrameAdvanced(int frame) {
 	 || frame == 46
 	 || frame == 59
 	) {
-		Sound_Play(97, Random_Query(47, 47), 70, 70, 50);
+		Sound_Play(kSfxNEON7, Random_Query(47, 47), 70, 70, 50);
 	}
 }
 

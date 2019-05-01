@@ -45,22 +45,22 @@ void SceneScriptRC02::InitializeScene() {
 		Scene_Exit_Add_2D_Exit(kRC02ExitRC51, 265, 58, 346, 154, 0);
 	}
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(0);
-	Ambient_Sounds_Add_Looping_Sound( 71, 50,   1, 1);
-	Ambient_Sounds_Add_Looping_Sound( 75, 75,   1, 1);
-	Ambient_Sounds_Add_Looping_Sound(105, 30, 100, 1);
-	Ambient_Sounds_Add_Sound(73, 5, 20, 10, 10, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(74, 5, 20, 10, 10, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(76, 5, 40,  6,  6, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(77, 5, 40,  6,  6, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(78, 5, 40,  6,  6, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(79, 5, 40,  6,  6, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Speech_Sound(23, 250, 10, 60, 5, 5, 100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(23, 330, 10, 60, 5, 5, 100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(24, 380, 10, 60, 5, 5, 100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(24, 510, 10, 60, 5, 5, 100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(38,  80, 10, 60, 5, 5, 100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(38, 160, 10, 60, 5, 5, 100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Sound(87, 20, 80, 10, 20, 100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxBRBED5,   50,   1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxWINDLOP8, 75,   1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTRUNOFF, 30, 100, 1);
+	Ambient_Sounds_Add_Sound(kSfxSWEEP3,   5, 20, 10, 10, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSWEEP4,   5, 20, 10, 10, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxPETDEAD1, 5, 40,  6,  6, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxPETDEAD3, 5, 40,  6,  6, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxPETDEAD4, 5, 40,  6,  6, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxPETDEAD5, 5, 40,  6,  6, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerLeary,    250, 10, 60, 5, 5, 100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerLeary,    330, 10, 60, 5, 5, 100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerGrayford, 380, 10, 60, 5, 5, 100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerGrayford, 510, 10, 60, 5, 5, 100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorDispatcher,       80, 10, 60, 5, 5, 100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorDispatcher,      160, 10, 60, 5, 5, 100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxSIREN2,  20, 80, 10, 20,  100, 100, -101, -101, 0, 0);
 }
 
 void SceneScriptRC02::SceneLoaded() {
@@ -405,9 +405,9 @@ bool SceneScriptRC02::ClickedOnExit(int exitId) {
 		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -71.51f, -1238.89f, 108587.15f, 0, true, false, 0)) {
 			Game_Flag_Set(kFlagRC02toRC01);
 			Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
-			Ambient_Sounds_Remove_Looping_Sound(71, true);
-			Ambient_Sounds_Remove_Looping_Sound(75, true);
-			Ambient_Sounds_Adjust_Looping_Sound(85, 100, -101, 1);
+			Ambient_Sounds_Remove_Looping_Sound(kSfxBRBED5,   true);
+			Ambient_Sounds_Remove_Looping_Sound(kSfxWINDLOP8, true);
+			Ambient_Sounds_Adjust_Looping_Sound(kSfxRCRAIN1, 100, -101, 1);
 			Actor_Set_Goal_Number(kActorRunciter, kGoalRunciterDefault);
 			Set_Enter(kSetRC01, kSceneRC01);
 		}

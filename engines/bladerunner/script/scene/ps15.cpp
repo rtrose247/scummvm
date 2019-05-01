@@ -28,14 +28,14 @@ void SceneScriptPS15::InitializeScene() {
 	Setup_Scene_Information(-360.0f, -113.43f, 50.0f, 0);
 	Scene_Exit_Add_2D_Exit(0, 0, 0, 20, 479, 3);
 	Scene_Exit_Add_2D_Exit(1, 620, 0, 639, 479, 1);
-	Ambient_Sounds_Add_Looping_Sound(384, 20, 1, 1);
-	Ambient_Sounds_Add_Looping_Sound(141, 80, 0, 1);
-	Ambient_Sounds_Add_Sound(385, 5, 50, 8, 8, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(156, 5, 20, 30, 30, -70, 70, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(157, 5, 20, 30, 30, -70, 70, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(158, 5, 20, 30, 30, -70, 70, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(73, 5, 20, 5, 9, -70, 70, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(74, 5, 20, 5, 9, -70, 70, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxRUMLOOP1, 20, 1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxLABAMB3,  80, 0, 1);
+	Ambient_Sounds_Add_Sound(kSfxPHONE1, 5, 50,  8,  8, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxPAGE1,  5, 20, 30, 30,  -70,  70, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxPAGE2,  5, 20, 30, 30,  -70,  70, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxPAGE3,  5, 20, 30, 30,  -70,  70, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSWEEP3, 5, 20,  5,  9,  -70,  70, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSWEEP4, 5, 20,  5,  9,  -70,  70, -101, -101, 0, 0);
 	Actor_Put_In_Set(kActorSergeantWalls, kSetPS15);
 	Actor_Set_At_XYZ(kActorSergeantWalls, -265.4f, -113.43f, -31.29f, 623);
 }
@@ -43,7 +43,7 @@ void SceneScriptPS15::InitializeScene() {
 void SceneScriptPS15::SceneLoaded() {
 	Obstacle_Object("E.ARCH", true);
 	if (Global_Variable_Query(kVariableChapter) == 2) {
-		Item_Add_To_World(kItemWeaponsCrate, 983, 101, -208.0f, -113.43f, 30.28f, 750, 16, 12, false, true, false, true);
+		Item_Add_To_World(kItemWeaponsCrate, kModelAnimationWeaponsCrate, 101, -208.0f, -113.43f, 30.28f, 750, 16, 12, false, true, false, true);
 	}
 }
 
@@ -127,7 +127,7 @@ bool SceneScriptPS15::ClickedOnExit(int exitId) {
 			// Sometimes the scene transition code (or the Ambient_Sounds_Remove_All_Non_Looping_Sounds)
 			// would stop this from playing (rare occasions)
 			// Solution: moved into PS10 code
-			Sound_Play(155, 90, 0, 0, 50);  // LABBUZZ1.AUD
+			Sound_Play(kSfxLABBUZZ1, 90, 0, 0, 50);
 #endif // BLADERUNNER_ORIGINAL_BUGS
 			Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 			Ambient_Sounds_Remove_All_Looping_Sounds(1);

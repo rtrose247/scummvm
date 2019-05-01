@@ -27,13 +27,13 @@ namespace BladeRunner {
 void SceneScriptNR09::InitializeScene() {
 	if (Game_Flag_Query(kFlagNR10toNR09)) {
 		if (!Game_Flag_Query(kFlagNR10CameraDestroyed)) {
-			Ambient_Sounds_Adjust_Looping_Sound(452, 22, 100, 2);
+			Ambient_Sounds_Adjust_Looping_Sound(kSfx35MM, 22, 100, 2);
 		}
 		Game_Flag_Reset(kFlagNR10toNR09);
 		Setup_Scene_Information(-556.07f, 0.35f, 399.04f, 440);
 	} else {
 		if (!Game_Flag_Query(kFlagNR10CameraDestroyed)) {
-			Ambient_Sounds_Add_Looping_Sound(452, 22, 100, 1);
+			Ambient_Sounds_Add_Looping_Sound(kSfx35MM, 22, 100, 1);
 		}
 		Setup_Scene_Information(-704.07f, 0.35f, 663.04f,   0);
 	}
@@ -41,14 +41,14 @@ void SceneScriptNR09::InitializeScene() {
 	Scene_Exit_Add_2D_Exit(0, 400, 100, 440, 280, 1);
 	Scene_Exit_Add_2D_Exit(1, 0, 0, 30, 479, 3);
 
-	Ambient_Sounds_Add_Looping_Sound(205, 22, 0, 1);
-	Ambient_Sounds_Add_Looping_Sound( 71, 33, 0, 1);
-	Ambient_Sounds_Add_Sound(303, 2, 50, 7, 17, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(304, 2, 50, 7, 17, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(305, 2, 50, 7, 17, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(306, 2, 50, 7, 17, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(307, 2, 50, 7, 17, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(308, 2, 50, 7, 17, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTDRONE1, 22, 0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxBRBED5,   33, 0, 1);
+	Ambient_Sounds_Add_Sound(kSfxBBGRN1,  2, 50, 7, 17, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBBGRN2,  2, 50, 7, 17, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBBGRN3,  2, 50, 7, 17, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBBMOVE1, 2, 50, 7, 17, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBBMOVE2, 2, 50, 7, 17, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBBMOVE3, 2, 50, 7, 17, -100, 100, -101, -101, 0, 0);
 }
 
 void SceneScriptNR09::SceneLoaded() {
@@ -131,11 +131,11 @@ void SceneScriptNR09::playNextMusic() {
 	} else {
 		int track = Global_Variable_Query(kVariableEarlyQBackMusic);
 		if (track == 0) {
-			Music_Play(16, 61, -80, 2, -1, 0, 0);
+			Music_Play(kMusicDkoDnce1, 61, -80, 2, -1, 0, 0);
 		} else if (track == 1) {
-			Music_Play(15, 41, -80, 2, -1, 0, 0);
+			Music_Play(kMusicStrip1, 41, -80, 2, -1, 0, 0);
 		} else if (track == 2) {
-			Music_Play(7, 41, -80, 2, -1, 0, 0);
+			Music_Play(kMusicArkDnce1, 41, -80, 2, -1, 0, 0);
 		}
 		track++;
 		if (track > 2) {

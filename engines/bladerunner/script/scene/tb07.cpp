@@ -35,21 +35,21 @@ void SceneScriptTB07::InitializeScene() {
 
 	Scene_Exit_Add_2D_Exit(0, 383, 445, 639, 479, 2);
 
-	Ambient_Sounds_Add_Looping_Sound(109, 20, 0, 1);
-	Ambient_Sounds_Add_Sound(363, 2, 55, 14, 14, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(364, 2, 55, 14, 14, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(365, 2, 55, 14, 14, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(366, 2, 55, 14, 14, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(212, 1, 15, 20, 25, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(213, 1, 15, 20, 25, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(214, 1, 20, 20, 25, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(215, 1, 15, 20, 25, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(216, 1, 15, 20, 25, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxBRBED3, 20, 0, 1);
+	Ambient_Sounds_Add_Sound(kSfxSUNROOM1, 2, 55, 14, 14, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSUNROOM2, 2, 55, 14, 14, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSUNROOM3, 2, 55, 14, 14, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSUNROOM4, 2, 55, 14, 14, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBELLY1,   1, 15, 20, 25, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBELLY2,   1, 15, 20, 25, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBELLY3,   1, 20, 20, 25, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBELLY4,   1, 15, 20, 25, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBELLY5,   1, 15, 20, 25, -100, 100, -101, -101, 0, 0);
 
 	if ( Global_Variable_Query(kVariableChapter) == 4
 	 && !Actor_Clue_Query(kActorMcCoy, kClueDNATyrell)
 	) {
-		Item_Add_To_World(kItemDNATyrell, 941, kSetTB07, 9.7f, 48.7f, -174.22f, 0, 12, 12, false, true, false, true);
+		Item_Add_To_World(kItemDNATyrell, kModelAnimationDNADataDisc, kSetTB07, 9.7f, 48.7f, -174.22f, 0, 12, 12, false, true, false, true);
 	}
 	if (Game_Flag_Query(kFlagTB07ShadeDown)) {
 		Scene_Loop_Set_Default(kTB07LoopMainShadeDown);
@@ -79,7 +79,7 @@ bool SceneScriptTB07::ClickedOnItem(int itemId, bool a2) {
 	if (!Loop_Actor_Walk_To_Item(kActorMcCoy, itemId, 36, true, false)) {
 		Actor_Face_Item(kActorMcCoy, itemId, true);
 		if (itemId == kItemDNATyrell) {
-			Item_Pickup_Spin_Effect(941, 331, 296);
+			Item_Pickup_Spin_Effect(kModelAnimationDNADataDisc, 331, 296);
 			Actor_Clue_Acquire(kActorMcCoy, kClueDNATyrell, false, -1);
 		}
 		Item_Remove_From_World(itemId);
@@ -177,7 +177,7 @@ bool SceneScriptTB07::ClickedOn2DRegion(int region) {
 
 void SceneScriptTB07::SceneFrameAdvanced(int frame) {
 	if (frame == 66) {
-		Ambient_Sounds_Play_Sound(591, 20, 99, 0, 0);
+		Ambient_Sounds_Play_Sound(kSfxLIGHTON, 20, 99, 0, 0);
 	}
 	//return false;
 }

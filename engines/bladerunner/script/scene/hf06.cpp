@@ -29,14 +29,14 @@ void SceneScriptHF06::InitializeScene() {
 	Game_Flag_Reset(kFlagHF05toHF06);
 	Scene_Exit_Add_2D_Exit(0, 195, 197, 271, 237, 2);
 
-	Ambient_Sounds_Add_Looping_Sound( 54, 50,    0, 1);
-	Ambient_Sounds_Add_Looping_Sound( 99, 40, -100, 1);
-	Ambient_Sounds_Add_Looping_Sound(100, 40,  100, 1);
-	Ambient_Sounds_Add_Sound( 68, 10, 100, 25, 50, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 69, 10, 100, 25, 50, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(375, 10, 70, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(376, 10, 70, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(377, 10, 70, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTRAIN1,  50,    0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxROOFAIR1, 40, -100, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxROOFRMB1, 40,  100, 1);
+	Ambient_Sounds_Add_Sound(kSfxSPIN2B,  10, 100, 25,  50, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN3A,  10, 100, 25,  50, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER2, 10,  70, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER3, 10,  70, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER4, 10,  70, 50, 100, 0, 0, -101, -101, 0, 0);
 
 	if (Game_Flag_Query(kFlagHF06SteelInterruption)) {
 		Scene_Loop_Set_Default(3);
@@ -181,7 +181,7 @@ void SceneScriptHF06::ActorChangedGoal(int actorId, int newGoal, int oldGoal, bo
 		}
 
 		if (otherActorId != -1) {
-			Music_Play(21, 35, 0, 3, -1, 0, 0);
+			Music_Play(kMusicLoveSong, 35, 0, 3, -1, 0, 0);
 			Player_Set_Combat_Mode(false);
 			Delay(1000);
 			Actor_Voice_Over(990, kActorVoiceOver);
@@ -301,23 +301,23 @@ void SceneScriptHF06::steelInterruption() {
 	Delay(500);
 	Scene_Loop_Set_Default(3);
 	Scene_Loop_Start_Special(kSceneLoopModeOnce, 2, true);
-	Sound_Play(562, 50, 0, 0, 50);
+	Sound_Play(kSfxBOMBFAIL, 50, 0, 0, 50);
 	Game_Flag_Set(kFlagHF06SteelInterruption);
 	Scene_Exits_Disable();
 	Non_Player_Actor_Combat_Mode_On(kActorSteele, kActorCombatStateUncover, true, actorId, 15, kAnimationModeCombatIdle, kAnimationModeCombatWalk, kAnimationModeCombatRun, 0, 0, 100, 10, 300, false);
 }
 
 void SceneScriptHF06::addAmbientSounds() {
-	Ambient_Sounds_Add_Sound(87, 20, 80, 20, 100, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Speech_Sound(23, 250, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(23, 330, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(23, 340, 5, 90, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(23, 360, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(24, 380, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(24, 510, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(38,  80, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(38, 160, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(38, 280, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxSIREN2, 20, 80, 20, 100, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerLeary,    250, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerLeary,    330, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerLeary,    340, 5, 90, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerLeary,    360, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerGrayford, 380, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerGrayford, 510, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorDispatcher,       80, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorDispatcher,      160, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorDispatcher,      280, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
 }
 
 } // End of namespace BladeRunner

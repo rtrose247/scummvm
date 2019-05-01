@@ -34,13 +34,13 @@ enum kMA06Loops {
 void SceneScriptMA06::InitializeScene() {
 	Setup_Scene_Information(40.0f, 1.0f, -20.0f, 400);
 
-	Ambient_Sounds_Add_Looping_Sound(210, 50, 0, 1);
-	Ambient_Sounds_Add_Looping_Sound(408, 33, 0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxELEAMB3,  50, 0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxAPRTFAN1, 33, 0, 1);
 
 	Scene_Loop_Start_Special(kSceneLoopModeLoseControl, kMA06LoopDoorOpen, false);
 	Scene_Loop_Set_Default(kMA06LoopMain);
 
-	Sound_Play(209, 100, 50, 50, 100);
+	Sound_Play(kSfxELDOORC1, 100, 50, 50, 100);
 }
 
 void SceneScriptMA06::SceneLoaded() {
@@ -86,7 +86,7 @@ void SceneScriptMA06::PlayerWalkedIn() {
 	activateElevator();
 
 	if (isElevatorOnDifferentFloor()) {
-		Sound_Play(114, 25, 0, 0, 50);
+		Sound_Play(kSfxSPINUP1, 25, 0, 0, 50);
 		Delay(4000);
 	}
 
@@ -103,7 +103,7 @@ void SceneScriptMA06::PlayerWalkedIn() {
 	}
 
 	Scene_Loop_Start_Special(kSceneLoopModeChangeSet, kMA06LoopDoorClose, true);
-	Sound_Play(208, 100, 50, 50, 50);
+	Sound_Play(kSfxELDOORO2, 100, 50, 50, 50);
 	//return true;
 }
 
@@ -150,7 +150,7 @@ void SceneScriptMA06::activateElevator() {
 			if (Game_Flag_Query(kFlagSpinnerAtMA01)) {
 				Game_Flag_Set(kFlagMA06toMA01);
 			} else {
-				Sound_Play(412, 100, 0, 0, 50);
+				Sound_Play(kSfxELEBAD1, 100, 0, 0, 50);
 				Delay(500);
 				Actor_Says(kActorAnsweringMachine, 610, 3);
 			}
@@ -159,7 +159,7 @@ void SceneScriptMA06::activateElevator() {
 			if (Global_Variable_Query(kVariableChapter) == 4
 			 && Game_Flag_Query(kFlagMA02RajifTalk)
 			) {
-				Sound_Play(412, 100, 0, 0, 50);
+				Sound_Play(kSfxELEBAD1, 100, 0, 0, 50);
 				Delay(500);
 				Actor_Says(kActorAnsweringMachine, 610, kAnimationModeTalk);
 				Delay(500);

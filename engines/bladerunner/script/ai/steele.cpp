@@ -192,7 +192,7 @@ bool AIScriptSteele::Update() {
 }
 
 void AIScriptSteele::TimerExpired(int timer) {
-	if (timer == 0
+	if (timer == kActorTimerAIScriptCustomTask0
 	 && Actor_Query_Goal_Number(kActorSteele) == kGoalSteeleNR11StartWaiting
 	) {
 		if (Player_Query_Current_Scene() == kSceneNR11) {
@@ -203,10 +203,10 @@ void AIScriptSteele::TimerExpired(int timer) {
 		return; // true;
 	}
 
-	if (timer == 1) {
+	if (timer == kActorTimerAIScriptCustomTask1) {
 		int goal = Actor_Query_Goal_Number(kActorSteele);
 
-		AI_Countdown_Timer_Reset(kActorSteele, 1);
+		AI_Countdown_Timer_Reset(kActorSteele, kActorTimerAIScriptCustomTask1);
 
 		if (goal == kGoalSteeleKP03Exploded) {
 			Actor_Set_Goal_Number(kActorSteele, kGoalSteeleKP03Dying);
@@ -739,7 +739,7 @@ bool AIScriptSteele::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 
 	case kGoalSteeleShootIzo:
 		Actor_Force_Stop_Walking(kActorMcCoy);
-		Sound_Play(27, 100, 0, 0, 50);
+		Sound_Play(kSfxSMCAL3, 100, 0, 0, 50);
 		Actor_Set_Goal_Number(kActorIzo, kGoalIzoDie);
 		Actor_Change_Animation_Mode(kActorMcCoy, kAnimationModeIdle);
 		Actor_Face_Actor(kActorMcCoy, kActorSteele, true);
@@ -852,19 +852,19 @@ bool AIScriptSteele::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		return true;
 
 	case kGoalSteeleNR11StartWaiting:
-		AI_Countdown_Timer_Reset(kActorSteele, 0);
-		AI_Countdown_Timer_Start(kActorSteele, 0, 15);
+		AI_Countdown_Timer_Reset(kActorSteele, kActorTimerAIScriptCustomTask0);
+		AI_Countdown_Timer_Start(kActorSteele, kActorTimerAIScriptCustomTask0, 15);
 		return true;
 
 	case kGoalSteeleNR11StopWaiting:
-		AI_Countdown_Timer_Reset(kActorSteele, 0);
+		AI_Countdown_Timer_Reset(kActorSteele, kActorTimerAIScriptCustomTask0);
 		return true;
 
 	case kGoalSteeleNR11Enter:
 		if (comp_distance(kActorMcCoy, -4.0, 0.33f, 0.0f, 100.0f, 0.33f, -4.0f) < 48.0f) {
 			Loop_Actor_Walk_To_XYZ(kActorMcCoy, 32.0f, 0.33f, 17.0f, 0, false, false, 0);
 		}
-		AI_Countdown_Timer_Reset(kActorSteele, 0);
+		AI_Countdown_Timer_Reset(kActorSteele, kActorTimerAIScriptCustomTask0);
 		Player_Loses_Control();
 		if (Actor_Query_Goal_Number(kActorDektora) == kGoalSteeleNR01ConfrontGordo) {
 			Async_Actor_Walk_To_XYZ(kActorMcCoy, -15.53f, 0.33f, 73.49f, 0, false);
@@ -1111,7 +1111,7 @@ bool AIScriptSteele::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 	case kGoalSteeleNR01ShootGordo:
 		Player_Loses_Control();
 		Actor_Change_Animation_Mode(kActorSteele, kAnimationModeCombatAttack);
-		Sound_Play(27, 100, 0, 0, 50);
+		Sound_Play(kSfxSMCAL3, 100, 0, 0, 50);
 		Game_Flag_Reset(kFlagSteeleAimingAtGordo);
 		Actor_Set_Targetable(kActorSteele, false);
 		Actor_Set_Goal_Number(kActorGordo, kGoalGordoNR01Die);
@@ -1142,7 +1142,7 @@ bool AIScriptSteele::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 	case kGoalSteeleNR01ShootMcCoy:
 		ADQ_Flush();
 		Actor_Change_Animation_Mode(kActorSteele, kAnimationModeCombatAttack);
-		Sound_Play(27, 100, 0, 0, 50);
+		Sound_Play(kSfxSMCAL3, 100, 0, 0, 50);
 		Actor_Force_Stop_Walking(kActorMcCoy);
 		Actor_Change_Animation_Mode(kActorMcCoy, kAnimationModeDie);
 		Actor_Retired_Here(kActorMcCoy, 12, 12, true, -1);
@@ -1182,7 +1182,7 @@ bool AIScriptSteele::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 	case kGoalSteeleNR01McCoyShotGun:
 		ADQ_Flush();
 		Actor_Change_Animation_Mode(kActorMcCoy, kAnimationModeCombatAttack);
-		Sound_Play(27, 100, 0, 0, 50);
+		Sound_Play(kSfxSMCAL3, 100, 0, 0, 50);
 		_animationState = 38;
 		_animationFrame = 0;
 		Actor_Set_Goal_Number(kActorGordo, kGoalGordoNR01ReleaseHostage);
@@ -1356,7 +1356,7 @@ bool AIScriptSteele::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 	case kGoalSteeleKP03Exploded:
 		Actor_Force_Stop_Walking(kActorSteele);
 		Actor_Change_Animation_Mode(kActorSteele, 51);
-		AI_Countdown_Timer_Start(kActorSteele, 1, 2);
+		AI_Countdown_Timer_Start(kActorSteele, kActorTimerAIScriptCustomTask1, 2);
 		return true;
 
 	case kGoalSteeleKP03Dying:
@@ -1376,7 +1376,7 @@ bool AIScriptSteele::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 			Actor_Says(kActorSteele, 460, 3);
 			Actor_Says(kActorSteele, 470, 3);
 		}
-		AI_Countdown_Timer_Start(kActorSteele, 1, 3);
+		AI_Countdown_Timer_Start(kActorSteele, kActorTimerAIScriptCustomTask1, 3);
 		return true;
 
 	case kGoalSteeleKP03ShootMcCoy:
@@ -1747,11 +1747,11 @@ bool AIScriptSteele::UpdateAnimation(int *animation, int *frame) {
 			} else {
 				snd = 9015;
 			}
-			Sound_Play_Speech_Line(1, snd, 75, 0, 99);
+			Sound_Play_Speech_Line(kActorSteele, snd, 75, 0, 99);
 		}
 
 		if (_animationFrame == 4) {
-			Actor_Combat_AI_Hit_Attempt(1);
+			Actor_Combat_AI_Hit_Attempt(kActorSteele);
 		}
 
 		if (_animationFrame >= Slice_Animation_Query_Number_Of_Frames(*animation) - 1) {

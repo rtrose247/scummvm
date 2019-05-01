@@ -50,14 +50,14 @@ void SceneScriptMA01::InitializeScene() {
 		Scene_Exit_Add_2D_Exit(kMA01ExitSpinner, 234, 240, 398, 328, 2);
 	}
 
-	Ambient_Sounds_Add_Looping_Sound(101, 90,    0, 1);
-	Ambient_Sounds_Add_Looping_Sound( 99, 40, -100, 1);
-	Ambient_Sounds_Add_Looping_Sound(100, 40,  100, 1);
-	Ambient_Sounds_Add_Sound( 68, 10, 100, 25, 50, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 69, 10, 100, 25, 50, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(375, 10, 70, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(376, 10, 70, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(377, 10, 70, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxROOFRAN1, 90,    0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxROOFAIR1, 40, -100, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxROOFRMB1, 40,  100, 1);
+	Ambient_Sounds_Add_Sound(kSfxSPIN2B,  10, 100, 25,  50, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN3A,  10, 100, 25,  50, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER2, 10,  70, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER3, 10,  70, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER4, 10,  70, 50, 100, 0, 0, -101, -101, 0, 0);
 
 	if (Game_Flag_Query(kFlagMA06toMA01)) {
 		Scene_Loop_Set_Default(kMA01LoopMain);
@@ -215,31 +215,31 @@ bool SceneScriptMA01::ClickedOn2DRegion(int region) {
 
 void SceneScriptMA01::SceneFrameAdvanced(int frame) {
 	if (frame == 15) {
-		Ambient_Sounds_Play_Sound(102, 70, -100, 100, 0);
+		Ambient_Sounds_Play_Sound(kSfxROOFLIT1,  70, -100, 100,  0);
 	}
 
 	if (frame == 61
 	 || frame == 183
 	) {
-		Ambient_Sounds_Play_Sound(116, 100, 40, 0, 99);
+		Ambient_Sounds_Play_Sound(kSfxSPINOPN4, 100,   40,   0, 99);
 	}
 
 	if (frame == 107
 	 || frame == 227
 	) {
-		Ambient_Sounds_Play_Sound(119, 100, 40, 0, 99);
+		Ambient_Sounds_Play_Sound(kSfxSPINCLS1, 100,   40,   0, 99);
 	}
 
 	if (frame == 1) {
-		Ambient_Sounds_Play_Sound(118, 40, -60, 20, 99);
+		Ambient_Sounds_Play_Sound(kSfxCARDOWN3,  40,  -60,  20, 99);
 	}
 
 	if (frame == 241) {
-		Ambient_Sounds_Play_Sound(117, 40, 0, 0, 99);
+		Ambient_Sounds_Play_Sound(kSfxCARUP3,    40,    0,   0, 99);
 	}
 
 	if (frame == 58) {
-		Sound_Play(122, 17, 20, 20, 50);
+		Sound_Play(kSfxMTLHIT1, 17, 20, 20, 50);
 	}
 
 	if ((frame == 75

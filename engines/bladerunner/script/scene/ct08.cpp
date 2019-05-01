@@ -57,17 +57,17 @@ void SceneScriptCT08::InitializeScene() {
 		Scene_2D_Region_Add(0, 185, 185, 230, 230);
 	}
 
-	Ambient_Sounds_Add_Looping_Sound(381, 100, 1, 1);
-	Ambient_Sounds_Add_Looping_Sound(205,  20, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60,  0, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60, 20, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60, 40, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60, 50, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Sound( 67, 80, 180, 16,  25, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 68, 50, 180, 16,  25, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(379,  5, 180, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(380,  5, 180, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(377,  5, 180, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxRAIN10,   100, 1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTDRONE1,  20, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy,  0, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy, 20, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy, 40, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy, 50, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxSPIN2A,  80, 180, 16,  25, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN2B,  50, 180, 16,  25, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDR2,   5, 180, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDR3,   5, 180, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER4,  5, 180, 50, 100, 0, 0, -101, -101, 0, 0);
 
 	if (Game_Flag_Query(kFlagCT51toCT08)) {
 		Scene_Loop_Start_Special(kSceneLoopModeLoseControl, 0, false);
@@ -81,10 +81,10 @@ void SceneScriptCT08::SceneLoaded() {
 	Obstacle_Object("ASHTRAY", true);
 	Unobstacle_Object("BLANKET03", true);
 	if (!Actor_Clue_Query(kActorMcCoy, kClueRagDoll)) {
-		Item_Add_To_World(kItemRagDoll, 943, kSetCT08_CT51_UG12, 44.0f, 0.0f, -95.0f, 540, 12, 12, false, true, false, true);
+		Item_Add_To_World(kItemRagDoll, kModelAnimationRagDoll, kSetCT08_CT51_UG12, 44.0f, 0.0f, -95.0f, 540, 12, 12, false, true, false, true);
 	}
 	if (!Actor_Clue_Query(kActorMcCoy, kClueCheese)) {
-		Item_Add_To_World(kItemCheese, 936, kSetCT08_CT51_UG12, -102.0f, 2.0f, 41.0f, 432, 6, 6, false, true, false, true);
+		Item_Add_To_World(kItemCheese, kModelAnimationCheese, kSetCT08_CT51_UG12, -102.0f, 2.0f, 41.0f, 432, 6, 6, false, true, false, true);
 	}
 }
 
@@ -158,7 +158,7 @@ bool SceneScriptCT08::ClickedOn2DRegion(int region) {
 			Game_Flag_Reset(kFlagMcCoyTiedDown);
 			Player_Set_Combat_Mode_Access(true);
 			Scene_Exits_Enable();
-			Ambient_Sounds_Play_Sound(564, 40, 99, 0, 0);
+			Ambient_Sounds_Play_Sound(kSfxBRKROPE1, 40, 99, 0, 0);
 			Scene_2D_Region_Remove(0);
 			Player_Loses_Control();
 		}

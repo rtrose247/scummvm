@@ -45,10 +45,10 @@ void SceneScriptRC04::InitializeScene() {
 		Actor_Change_Animation_Mode(kActorBulletBob, 88);
 	}
 
-	Ambient_Sounds_Add_Looping_Sound(381, 100, 1, 1);
-	Ambient_Sounds_Add_Sound(82, 5, 30, 10, 20, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(83, 5, 30, 10, 20, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(84, 5, 30, 10, 20, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxRAIN10, 100, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxRCCARBY1, 5, 30, 10, 20, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxRCCARBY2, 5, 30, 10, 20, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxRCCARBY3, 5, 30, 10, 20, -100, 100, -101, -101, 0, 0);
 }
 
 void SceneScriptRC04::SceneLoaded() {
@@ -245,7 +245,7 @@ void SceneScriptRC04::dialogueWithBulletBob() {
 		Actor_Says(kActorBulletBob, 880, 34);
 		Actor_Clue_Acquire(kActorBulletBob, kClueHoldensBadge, true, kActorMcCoy);
 		Actor_Modify_Friendliness_To_Other(kActorBulletBob, kActorMcCoy, 8);
-		if (Query_Difficulty_Level() != 0) {
+		if (Query_Difficulty_Level() != kGameDifficultyEasy) {
 			Global_Variable_Increment(kVariableChinyen, 60);
 		}
 		break;
@@ -266,10 +266,10 @@ void SceneScriptRC04::dialogueWithBulletBob() {
 		}
 		Actor_Says(kActorBulletBob, 2120, 31);
 		if (Global_Variable_Query(kVariableChinyen) > 40
-		 || Query_Difficulty_Level() == 0
+		 || Query_Difficulty_Level() == kGameDifficultyEasy
 		) {
 			Actor_Says(kActorMcCoy, 4940, 13);
-			if (Query_Difficulty_Level() != 0) {
+			if (Query_Difficulty_Level() != kGameDifficultyEasy) {
 				Global_Variable_Decrement(kVariableChinyen, 40);
 			}
 			Item_Pickup_Spin_Effect(995, 405, 192);
@@ -370,14 +370,14 @@ bool SceneScriptRC04::ClickedOnActor(int actorId) {
 				Delay(1000);
 				Actor_Says(kActorBulletBob, 2010, 35);
 				if (Global_Variable_Query(kVariableChinyen) > 50
-				 || Query_Difficulty_Level() == 0
+				 || Query_Difficulty_Level() == kGameDifficultyEasy
 				) {
 					Actor_Says(kActorMcCoy, 8975, 16);
-					if (Query_Difficulty_Level() != 0) {
+					if (Query_Difficulty_Level() != kGameDifficultyEasy) {
 						Global_Variable_Decrement(kVariableChinyen, 50);
 					}
 					Delay(3000);
-					Item_Pickup_Spin_Effect(941, 405, 192);
+					Item_Pickup_Spin_Effect(kModelAnimationDNADataDisc, 405, 192);
 					Actor_Says(kActorBulletBob, 2030, 30);
 					Game_Flag_Set(kFlagKIAPrivacyAddon);
 				} else {

@@ -46,7 +46,7 @@ void SceneScriptHF05::InitializeScene() {
 	}
 	Scene_Exit_Add_2D_Exit(2, 589,   0, 639, 479, 1);
 
-	Ambient_Sounds_Add_Looping_Sound(103, 40, 1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxRAINAWN1, 40, 1, 1);
 
 	if (Game_Flag_Query(kFlagHF05Hole)) {
 		Scene_Loop_Set_Default(kHF05LoopMainLoopHole);
@@ -80,8 +80,8 @@ bool SceneScriptHF05::ClickedOn3DObject(const char *objectName, bool a2) {
 		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 95.0f, 40.63f, 308.0f, 0, true, false, 0)) {
 			Actor_Face_Object(kActorMcCoy, "TOP CON", true);
 			if (Actor_Query_In_Set(kActorCrazylegs, kSetHF05)
-			 && Actor_Query_Goal_Number(kActorCrazylegs) != 1
-			 && Actor_Query_Goal_Number(kActorCrazylegs) != 2
+			 && Actor_Query_Goal_Number(kActorCrazylegs) != kGoalCrazyLegsShotAndHit
+			 && Actor_Query_Goal_Number(kActorCrazylegs) != kGoalCrazyLegsLeavesShowroom
 			) {
 				Actor_Face_Actor(kActorCrazylegs, kActorMcCoy, true);
 				Actor_Says(kActorCrazylegs, 480, 13);
@@ -92,7 +92,7 @@ bool SceneScriptHF05::ClickedOn3DObject(const char *objectName, bool a2) {
 			 ||  Game_Flag_Query(kFlagHF05Hole)
 			) {
 				Actor_Change_Animation_Mode(kActorMcCoy, 23);
-				Sound_Play(412, 100, 0, 0, 50);
+				Sound_Play(kSfxELEBAD1, 100, 0, 0, 50);
 				return true;
 			}
 
@@ -120,7 +120,7 @@ bool SceneScriptHF05::ClickedOn3DObject(const char *objectName, bool a2) {
 			if (getCompanionActor() == kActorMcCoy) {
 				ADQ_Flush();
 				ADQ_Add(kActorVoiceOver, 940, -1);
-				Ambient_Sounds_Play_Sound(147, 50, 99, 0, 0);
+				Ambient_Sounds_Play_Sound(kSfxLABMISC2, 50, 99, 0, 0);
 				Delay(1500);
 				Loop_Actor_Walk_To_XYZ(kActorMcCoy, 181.54f, 40.63f, 388.09f, 0, false, true, 0);
 				Actor_Face_Heading(kActorMcCoy, 0, false);
@@ -129,13 +129,13 @@ bool SceneScriptHF05::ClickedOn3DObject(const char *objectName, bool a2) {
 			} else {
 				if (getCompanionActor() == kActorDektora) {
 					Actor_Face_Heading(kActorDektora, 0, false);
-					Ambient_Sounds_Play_Sound(147, 50, 99, 0, 0);
+					Ambient_Sounds_Play_Sound(kSfxLABMISC2, 50, 99, 0, 0);
 					Delay(3000);
 					Actor_Face_Heading(kActorDektora, 0, false);
 					Actor_Change_Animation_Mode(kActorDektora, 23);
 				} else {
 					Actor_Face_Heading(kActorLucy, 0, false);
-					Ambient_Sounds_Play_Sound(147, 50, 99, 0, 0);
+					Ambient_Sounds_Play_Sound(kSfxLABMISC2, 50, 99, 0, 0);
 					Delay(3000);
 					Actor_Face_Heading(kActorLucy, 0, false);
 					Actor_Change_Animation_Mode(kActorLucy, 13);
@@ -152,11 +152,26 @@ bool SceneScriptHF05::ClickedOn3DObject(const char *objectName, bool a2) {
 
 bool SceneScriptHF05::ClickedOnActor(int actorId) {
 	if (actorId == kActorCrazylegs) {
+#if BLADERUNNER_ORIGINAL_BUGS
 		if (!Loop_Actor_Walk_To_Actor(kActorMcCoy, kActorCrazylegs, 60, true, false)) {
 			Actor_Face_Actor(kActorMcCoy, kActorCrazylegs, true);
 			Actor_Face_Actor(kActorCrazylegs, kActorMcCoy, true);
 			dialogueWithCrazylegs1();
 		}
+#else
+		// Don't (re)start a dialogue with CrayLegs if he is leaving or insulted by McCoy drawing his gun
+		if (Actor_Query_Goal_Number(kActorCrazylegs) != kGoalCrazyLegsLeavesShowroom
+		    && Actor_Query_Goal_Number(kActorCrazylegs) != kGoalCrazyLegsMcCoyDrewHisGun) {
+			if (!Loop_Actor_Walk_To_Actor(kActorMcCoy, kActorCrazylegs, 60, true, false)) {
+				Actor_Face_Actor(kActorMcCoy, kActorCrazylegs, true);
+				Actor_Face_Actor(kActorCrazylegs, kActorMcCoy, true);
+				dialogueWithCrazylegs1();
+			}
+		} else {
+			Actor_Face_Actor(kActorMcCoy, kActorCrazylegs, true);
+			Actor_Says(kActorMcCoy, 5560, 15); // Hey
+		}
+#endif // BLADERUNNER_ORIGINAL_BUGS
 	}
 	return false;
 }
@@ -213,56 +228,56 @@ bool SceneScriptHF05::ClickedOn2DRegion(int region) {
 void SceneScriptHF05::SceneFrameAdvanced(int frame) {
 	switch (frame) {
 	case 126:
-		Sound_Play(352, 90, -20, 70, 50);
+		Sound_Play(kSfxMAGMOVE1, 90, -20,  70, 50);
 		break;
 
 	case 152:
-		Sound_Play(346, 90, 0, 0, 50);
+		Sound_Play(kSfxDORSLID2, 90,   0,   0, 50);
 		break;
 
 	case 156:
-		Sound_Play(348, 47, 100, 100, 50);
+		Sound_Play(kSfxLOWERN1,  47, 100, 100, 50);
 		break;
 
 	case 161:
-		Sound_Play(345, 90, 0, 0, 50);
+		Sound_Play(kSfxDORSLID1, 90,   0,   0, 50);
 		break;
 
 	case 176:
-		Sound_Play(350, 32, 100, 100, 50);
+		Sound_Play(kSfxMAGCHNK1, 32, 100, 100, 50);
 		break;
 
 	case 178:
-		Sound_Play(355, 47, 100, 100, 50);
+		Sound_Play(kSfxRAISEY1,  47, 100, 100, 50);
 		break;
 
 	case 179:
-		Sound_Play(490, 90, 0, 0, 50);
-		Music_Play(1, 50, 0, 2, -1, 0, 0);
+		Sound_Play(kSfxCAREXPL1, 90,   0,   0, 50);
+		Music_Play(kMusicBatl226M, 50, 0, 2, -1, 0, 0);
 		break;
 
 	case 186:
-		Sound_Play(343, 32, 100, 100, 50);
+		Sound_Play(kSfxCARCREK1, 32, 100, 100, 50);
 		break;
 
 	case 209:
-		Sound_Play(353, 90, 100, -20, 50);
+		Sound_Play(kSfxMAGMOVE2, 90, 100, -20, 50);
 		break;
 
 	case 243:
-		Sound_Play(349, 40, -20, -20, 50);
+		Sound_Play(kSfxLOWERY1,  40, -20, -20, 50);
 		break;
 
 	case 261:
-		Sound_Play(344, 47, -20, -20, 50);
+		Sound_Play(kSfxCARLAND1, 47, -20, -20, 50);
 		break;
 
 	case 268:
-		Sound_Play(351, 58, -20, -20, 50);
+		Sound_Play(kSfxMAGDROP1, 58, -20, -20, 50);
 		break;
 
 	case 269:
-		Sound_Play(354, 43, -20, -20, 50);
+		Sound_Play(kSfxRAISEN1,  43, -20, -20, 50);
 		break;
 	}
 	//return true;
@@ -307,7 +322,7 @@ void SceneScriptHF05::PlayerWalkedIn() {
 			 && !Game_Flag_Query(kFlagHF05PoliceArrived)
 			) {
 				Game_Flag_Set(kFlagHF05PoliceArrived);
-				Music_Play(1, 40, 0, 2, -1, 0, 0);
+				Music_Play(kMusicBatl226M, 40, 0, 2, -1, 0, 0);
 				Actor_Says(kActorOfficerGrayford, 200, kAnimationModeTalk);
 				Actor_Says(kActorOfficerGrayford, 210, kAnimationModeTalk);
 				Actor_Set_Goal_Number(kActorOfficerLeary, 420);
@@ -347,8 +362,8 @@ void SceneScriptHF05::PlayerWalkedIn() {
 }
 
 void SceneScriptHF05::PlayerWalkedOut() {
-	if (Actor_Query_Goal_Number(kActorCrazylegs) == 210) {
-		Actor_Set_Goal_Number(kActorCrazylegs, 2);
+	if (Actor_Query_Goal_Number(kActorCrazylegs) == kGoalCrazyLegsMcCoyDrewHisGun) {
+		Actor_Set_Goal_Number(kActorCrazylegs, kGoalCrazyLegsLeavesShowroom);
 	}
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 	Ambient_Sounds_Remove_All_Looping_Sounds(1);
@@ -544,7 +559,7 @@ void SceneScriptHF05::dialogueWithCrazylegs2() { // cut feature? it is impossibl
 		Game_Flag_Set(kFlagCrazylegsArrested);
 		Actor_Put_In_Set(kActorCrazylegs, kSetPS09);
 		Actor_Set_At_XYZ(kActorCrazylegs, -315.15f, 0.0f, 241.06f, 583);
-		Actor_Set_Goal_Number(kActorCrazylegs, 699);
+		Actor_Set_Goal_Number(kActorCrazylegs, kGoalCrazyLegsIsArrested);
 		Game_Flag_Set(kFlagCrazylegsArrestedTalk);
 		if (Game_Flag_Query(kFlagSpinnerAtNR01)) {
 			Set_Enter(kSetNR01, kSceneNR01);
@@ -659,9 +674,9 @@ void SceneScriptHF05::talkWithCrazylegs3(int affectionTowardsActor) {
 		} else {
 			Actor_Says(kActorLucy, 380, kAnimationModeTalk);
 		}
-		Actor_Says(kActorMcCoy, 1740, 14);
-		Actor_Says(kActorCrazylegs, 120, 12);
-		Actor_Set_Goal_Number(kActorCrazylegs, 2);
+		Actor_Says(kActorMcCoy, 1740, 14);    // You tell her we're headed South.
+		Actor_Says(kActorCrazylegs, 120, 12); // Ten Four.
+		Actor_Set_Goal_Number(kActorCrazylegs, kGoalCrazyLegsLeavesShowroom);
 		if (affectionTowardsActor == kActorDektora) {
 			Actor_Says(kActorDektora, 100, kAnimationModeTalk);
 		} else {
@@ -687,9 +702,16 @@ void SceneScriptHF05::talkWithCrazyLegs1() {
 	}
 	Loop_Actor_Walk_To_XYZ(kActorMcCoy, 307.0f, 40.63f, 184.0f, 0, false, false, 0);
 	Loop_Actor_Walk_To_Actor(kActorCrazylegs, kActorMcCoy, 72, false, false);
-	Ambient_Sounds_Play_Sound(149, 99, 99, 0, 0);
+	Ambient_Sounds_Play_Sound(kSfxLABMISC4, 99, 99, 0, 0);
 	Actor_Face_Actor(kActorCrazylegs, kActorMcCoy, true);
 	Actor_Face_Actor(kActorMcCoy, kActorCrazylegs, true);
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+	// There is a chance here that Crazylegs will "interrupt himself"
+	// and thus sometimes skip the last sentence of the above queued dialogue in chapter 3.
+	// So we explicitly wait for the queue to be emptied before proceeding to his next line
+	ADQ_Wait_For_All_Queued_Dialogue();
+#endif // BLADERUNNER_ORIGINAL_BUGS
 	Actor_Says(kActorCrazylegs, 170, kAnimationModeTalk);
 	Actor_Says(kActorCrazylegs, 180, 12);
 	Actor_Says(kActorCrazylegs, 190, 14);
@@ -732,16 +754,16 @@ void SceneScriptHF05::talkWithCrazyLegs1() {
 }
 
 void SceneScriptHF05::addAmbientSounds() {
-	Ambient_Sounds_Add_Sound(87, 20, 80, 20, 100, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Speech_Sound(23, 250, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(23, 330, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(23, 340, 5, 90, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(23, 360, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(24, 380, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(24, 510, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(38,  80, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(38, 160, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(38, 280, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxSIREN2, 20, 80, 20, 100, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerLeary,    250, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerLeary,    330, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerLeary,    340, 5, 90, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerLeary,    360, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerGrayford, 380, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorOfficerGrayford, 510, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorDispatcher,       80, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorDispatcher,      160, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorDispatcher,      280, 5, 70, 7, 10, -50, 50, -101, -101, 1, 1);
 }
 
 int SceneScriptHF05::getCompanionActor() {

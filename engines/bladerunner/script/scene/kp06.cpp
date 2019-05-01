@@ -34,18 +34,18 @@ void SceneScriptKP06::InitializeScene() {
 	Scene_Exit_Add_2D_Exit(0, 270, 445, 639, 479, 2);
 	Scene_Exit_Add_2D_Exit(1, 320, 158, 352, 220, 0);
 
-	Ambient_Sounds_Add_Looping_Sound(464, 34, 1, 1);
-	Ambient_Sounds_Add_Looping_Sound(383, 27, 1, 1);
-	Ambient_Sounds_Add_Looping_Sound(384, 90, 1, 1);
-	Ambient_Sounds_Add_Sound(440, 2, 100, 25,  33, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(441, 2, 100, 25,  33, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(442, 2, 100, 25,  33, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(375, 5, 180, 50, 100, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(376, 5, 180, 50, 100, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(377, 5, 180, 50, 100, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(443, 2, 100, 25,  33, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(444, 2, 100, 25,  33, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(445, 2, 100, 25,  33, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxKPAMB1,   34, 1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxSKINBED1, 27, 1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxRUMLOOP1, 90, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxSCARY1,  2, 100, 25,  33, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCARY2,  2, 100, 25,  33, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCARY3,  2, 100, 25,  33, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER2, 5, 180, 50, 100, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER3, 5, 180, 50, 100, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER4, 5, 180, 50, 100, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCARY4,  2, 100, 25,  33, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCARY5,  2, 100, 25,  33, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCARY6,  2, 100, 25,  33, -100, 100, -101, -101, 0, 0);
 
 	if (Game_Flag_Query(kFlagKP05toKP06) ) {
 		Scene_Loop_Start_Special(kSceneLoopModeLoseControl, 0, false);
@@ -217,6 +217,14 @@ void SceneScriptKP06::PlayerWalkedIn() {
 			Actor_Says(kActorGaff, 310, -1);
 			Delay(3000);
 			Outtake_Play(kOuttakeEnd7, false, -1);
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+			// match behavior of other ending outtakes
+			// but do it after the cutscene,
+			// since this particular cutscene has no sound
+			Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
+			Ambient_Sounds_Remove_All_Looping_Sounds(1);
+#endif // BLADERUNNER_ORIGINAL_BUGS
 			Game_Over();
 		}
 		return; // true;

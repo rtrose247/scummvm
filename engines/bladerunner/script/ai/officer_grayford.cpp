@@ -202,8 +202,8 @@ bool AIScriptOfficerGrayford::Update() {
 }
 
 void AIScriptOfficerGrayford::TimerExpired(int timer) {
-	if (timer == 2) {
-		AI_Countdown_Timer_Reset(kActorOfficerGrayford, 2);
+	if (timer == kActorTimerAIScriptCustomTask2) {
+		AI_Countdown_Timer_Reset(kActorOfficerGrayford, kActorTimerAIScriptCustomTask2);
 		if (Actor_Query_Goal_Number(kActorOfficerGrayford) == 104) {
 			Actor_Set_Goal_Number(kActorOfficerGrayford, 105);
 		} else if (Actor_Query_Goal_Number(kActorOfficerGrayford) == 105) {
@@ -255,8 +255,8 @@ void AIScriptOfficerGrayford::CompletedMovementTrack() {
 		if (Random_Query(0, 2)) {
 			Actor_Change_Animation_Mode(kActorOfficerGrayford, 43);
 		} else {
-			AI_Countdown_Timer_Reset(kActorOfficerGrayford, 2);
-			AI_Countdown_Timer_Start(kActorOfficerGrayford, 2, Random_Query(6, 12));
+			AI_Countdown_Timer_Reset(kActorOfficerGrayford, kActorTimerAIScriptCustomTask2);
+			AI_Countdown_Timer_Start(kActorOfficerGrayford, kActorTimerAIScriptCustomTask2, Random_Query(6, 12));
 		}
 		Actor_Face_Waypoint(kActorOfficerGrayford, 97, true);
 		// return false;
@@ -365,7 +365,7 @@ void AIScriptOfficerGrayford::ClickedByPlayer() {
 		Actor_Face_Actor(kActorMcCoy, kActorOfficerGrayford, true);
 		Actor_Says(kActorMcCoy, 1005, kAnimationModeTalk);
 		AI_Movement_Track_Flush(kActorOfficerGrayford);
-		AI_Countdown_Timer_Reset(kActorOfficerGrayford, 2);
+		AI_Countdown_Timer_Reset(kActorOfficerGrayford, kActorTimerAIScriptCustomTask2);
 		if (_animationState == 35 || _animationState == 34) {
 			_animationState = 37;
 			_animationFrame = 0;
@@ -380,7 +380,7 @@ void AIScriptOfficerGrayford::ClickedByPlayer() {
 		Actor_Face_Actor(kActorMcCoy, kActorOfficerGrayford, true);
 		Actor_Says(kActorMcCoy, 1005, kAnimationModeTalk);
 		AI_Movement_Track_Flush(kActorOfficerGrayford);
-		AI_Countdown_Timer_Reset(kActorOfficerGrayford, 2);
+		AI_Countdown_Timer_Reset(kActorOfficerGrayford, kActorTimerAIScriptCustomTask2);
 		if (_animationState == 35 || _animationState == 34) {
 			_animationState = 37;
 			_animationFrame = 0;
@@ -548,20 +548,20 @@ bool AIScriptOfficerGrayford::GoalChanged(int currentGoalNumber, int newGoalNumb
 
 		Actor_Change_Animation_Mode(kActorOfficerGrayford, 43);
 
-		if (Player_Query_Current_Scene() == 28) {
+		if (Player_Query_Current_Scene() == kSceneDR04) {
 			Actor_Says(kActorOfficerGrayford, 170, kAnimationModeTalk);
 		}
 		return true;
 
 	case 104:
-		AI_Countdown_Timer_Reset(kActorOfficerGrayford, 2);
+		AI_Countdown_Timer_Reset(kActorOfficerGrayford, kActorTimerAIScriptCustomTask2);
 		AI_Movement_Track_Flush(kActorOfficerGrayford);
 		AI_Movement_Track_Append(kActorOfficerGrayford, 112, 0);
 		AI_Movement_Track_Repeat(kActorOfficerGrayford);
 		return true;
 
 	case 105:
-		AI_Countdown_Timer_Reset(kActorOfficerGrayford, 2);
+		AI_Countdown_Timer_Reset(kActorOfficerGrayford, kActorTimerAIScriptCustomTask2);
 		AI_Movement_Track_Flush(kActorOfficerGrayford);
 		AI_Movement_Track_Append(kActorOfficerGrayford, 113, 0);
 		AI_Movement_Track_Repeat(kActorOfficerGrayford);
@@ -571,7 +571,7 @@ bool AIScriptOfficerGrayford::GoalChanged(int currentGoalNumber, int newGoalNumb
 		Actor_Face_Actor(kActorMcCoy, kActorOfficerGrayford, true);
 		Actor_Says(kActorMcCoy, 1000, 14);
 		AI_Movement_Track_Flush(kActorOfficerGrayford);
-		AI_Countdown_Timer_Reset(kActorOfficerGrayford, 2);
+		AI_Countdown_Timer_Reset(kActorOfficerGrayford, kActorTimerAIScriptCustomTask2);
 
 		if (_animationState == 35
 		 || _animationState == 34
@@ -979,7 +979,7 @@ bool AIScriptOfficerGrayford::UpdateAnimation(int *animation, int *frame) {
 		*animation = 616;
 		_animationFrame++;
 		if (_animationFrame == 11) {
-			Ambient_Sounds_Play_Sound(556, 25, 0, 0, 25);
+			Ambient_Sounds_Play_Sound(kSfxHOLSTER1, 25, 0, 0, 25);
 		}
 		if (_animationFrame >= Slice_Animation_Query_Number_Of_Frames(*animation)) {
 			*animation = 625;

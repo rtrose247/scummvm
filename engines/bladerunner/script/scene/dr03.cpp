@@ -43,9 +43,9 @@ void SceneScriptDR03::InitializeScene() {
 	}
 
 	Ambient_Sounds_Remove_All_Looping_Sounds(1);
-	Ambient_Sounds_Add_Looping_Sound(110,  7,  0, 1);
-	Ambient_Sounds_Add_Looping_Sound(109, 50,  0, 1);
-	Ambient_Sounds_Add_Looping_Sound( 95, 20, 70, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxRESPRTR1,  7,  0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxBRBED3,   50,  0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxBOILPOT2, 20, 70, 1);
 }
 
 void SceneScriptDR03::SceneLoaded() {
@@ -172,9 +172,9 @@ void SceneScriptDR03::SceneFrameAdvanced(int frame) {
 	 || frame == 49
 	) {
 		if (Random_Query(0, 1)) {
-			Sound_Play(97, Random_Query(20, 33), 80, 80, 50);
+			Sound_Play(kSfxNEON7, Random_Query(20, 33), 80, 80, 50);
 		} else {
-			Sound_Play(59, Random_Query(5, 6), 80, 80, 50);
+			Sound_Play(kSfxNEON5, Random_Query(5, 6), 80, 80, 50);
 		}
 	}
 }

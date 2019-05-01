@@ -59,23 +59,23 @@ void SceneScriptNR01::InitializeScene() {
 		Scene_Exit_Add_2D_Exit(3, 320, 445, 639, 479, 2);
 	}
 
-	Ambient_Sounds_Add_Looping_Sound(54, 50, 0, 1);
-	Ambient_Sounds_Add_Looping_Sound(362, 22, 55, 1);
-	Ambient_Sounds_Add_Sound(361, 10, 10, 20, 20,  -70, -70, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(182,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(184,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(185,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(186,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(188,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(189,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(191,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(192,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(195,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 68, 10, 80, 16, 25,    0,   0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 69, 10, 80, 16, 25,    0,   0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(375, 10, 80, 33, 33,    0,   0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(376, 10, 80, 33, 33,    0,   0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(377, 10, 80, 33, 33,    0,   0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTRAIN1,  50,  0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxMUSBLEED, 22, 55, 1);
+	Ambient_Sounds_Add_Sound(kSfxSEXYAD2,  10, 10, 20, 20,  -70, -70, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_0480R,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_0540R,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_0560R,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_0870R,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_0900R,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_0940R,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_1070R,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_1080R,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_1160R,  5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN2B,   10, 80, 16, 25,    0,   0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN3A,   10, 80, 16, 25,    0,   0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER2,  10, 80, 33, 33,    0,   0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER3,  10, 80, 33, 33,    0,   0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER4,  10, 80, 33, 33,    0,   0, -101, -101, 0, 0);
 
 	if (Game_Flag_Query(kFlagSteeleKnowsBulletBobIsDead)
 	 && Actor_Query_Goal_Number(kActorSteele) == kGoalSteeleNR01WaitForMcCoy
@@ -260,7 +260,7 @@ bool SceneScriptNR01::ClickedOn2DRegion(int region) {
 	if (region == 0
 	 && Player_Query_Combat_Mode()
 	) {
-		Sound_Play(517, 100, 0, 0, 50);
+		Sound_Play(kSfxGUNH1A, 100, 0, 0, 50);
 		Actor_Set_Goal_Number(kActorSteele, kGoalSteeleNR01McCoyShotGun);
 		Scene_2D_Region_Remove(0);
 	}
@@ -268,7 +268,7 @@ bool SceneScriptNR01::ClickedOn2DRegion(int region) {
 	if (region == 1
 	 && Player_Query_Combat_Mode()
 	) {
-		Sound_Play(517, 100, 0, 0, 50);
+		Sound_Play(kSfxGUNH1A, 100, 0, 0, 50);
 		Actor_Set_Goal_Number(kActorGordo, kGoalGordoNR01Die);
 		Actor_Set_Goal_Number(kActorSteele, kGoalSteeleNR01McCoyShotGordo);
 		Scene_2D_Region_Remove(1);
@@ -280,11 +280,11 @@ bool SceneScriptNR01::ClickedOn2DRegion(int region) {
 
 void SceneScriptNR01::SceneFrameAdvanced(int frame) {
 	if (frame == 61) {
-		Sound_Play(118, 40, 0, 0, 50);
+		Sound_Play(kSfxCARDOWN3, 40, 0, 0, 50);
 	}
 
 	if (frame == 184) {
-		Sound_Play(117, 40, 80, 80, 50);
+		Sound_Play(kSfxCARUP3, 40, 80, 80, 50);
 	}
 	//return 0;
 }

@@ -25,13 +25,13 @@
 namespace BladeRunner {
 
 enum kCT01Loops {
-	kCT01LoopInshotFromCT12WithSpinner = 0,
-	kCT01LoopInshot                    = 1,
-	kCT01LoopMain                      = 2,
-	kCT01LoopDoorAnim                  = 4,
-	kCT01LoopOutshot                   = 5,
-	kCT01LoopInshotFromCT12NoSpinner   = 6,
-	kCT01LoopMainLoopNoSpinner         = 7
+	kCT01LoopInshotFromCT12WithSpinner = 0, //   0 -  14
+	kCT01LoopInshot                    = 1, //  15 - 194
+	kCT01LoopMain                      = 2, // 195 - 255
+	kCT01LoopDoorAnim                  = 4, // 256 - 315
+	kCT01LoopOutshot                   = 5, // 316 - 435
+	kCT01LoopInshotFromCT12NoSpinner   = 6, // 436 - 450
+	kCT01LoopMainLoopNoSpinner         = 7  // 451 - 511
 };
 
 enum kCT01Exits {
@@ -42,7 +42,7 @@ enum kCT01Exits {
 };
 
 void SceneScriptCT01::InitializeScene() {
-	Music_Play(3, 28, 0, 2, -1, 1, 0);
+	Music_Play(kMusicKyoto, 28, 0, 2, -1, 1, 0);
 	Game_Flag_Reset(kFlagArrivedFromSpinner1);
 	if (Game_Flag_Query(kFlagCT02toCT01)) {
 		Game_Flag_Reset(kFlagCT02toCT01);
@@ -63,6 +63,25 @@ void SceneScriptCT01::InitializeScene() {
 			}
 		}
 	} else if (Game_Flag_Query(kFlagSpinnerAtCT01)) {
+#if BLADERUNNER_RESTORED_CUT_CONTENT
+		// 0. This scene is not available in chapters 4 and 5
+		// 1. Add open/close spinner door animation and sound
+		// 2. Keep walkers from messing about with the scene (popping up or overlapping with landing) until spinner has landed
+		// Note: kFlagSpinnerAtCT01 reset (original) is not handled the same was as in NR01 but it still works
+		// Note 2: Gordo sitting at the diner overlaps with the counter bar in front of him
+		//         so the loop will be prevented from playing when he is there.
+		if ( Global_Variable_Query(kVariableChapter) < 4
+			&& Actor_Query_Which_Set_In(kActorGordo) != kSetCT01_CT12
+		    && Random_Query(1, 3) == 1
+		){
+			Scene_Loop_Start_Special(kSceneLoopModeLoseControl, kCT01LoopInshot, false);
+		}
+		// Pause generic walkers outside special loop
+		// so that they're always paused when McCoy enters (less chance to collide with him)
+		// There's also another flag called kFlagUnpauseGenWalkers
+		// but the usage of that flag seems more obscure and dubious for this purpose
+		Game_Flag_Set(kFlagGenericWalkerWaiting);
+#endif // BLADERUNNER_RESTORED_CUT_CONTENT
 		Setup_Scene_Information(-530.0f, -6.5f, 241.0f, 506);
 		Game_Flag_Set(kFlagArrivedFromSpinner1);
 	} else {
@@ -78,22 +97,23 @@ void SceneScriptCT01::InitializeScene() {
 	if (Game_Flag_Query(kFlagSpinnerAtCT01)) {
 		Scene_Exit_Add_2D_Exit(kCT01ExitSpinner, 0, 286, 158, 350, 2);
 	}
-	Ambient_Sounds_Add_Looping_Sound(54, 50, 1, 1);
-	Ambient_Sounds_Add_Looping_Sound(55, 40, -100, 1);
-	Ambient_Sounds_Add_Looping_Sound(56, 40, 100, 1);
-	Ambient_Sounds_Add_Sound(61, 10, 30, 16, 20, 0, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(62, 10, 30, 16, 20, 0, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(63, 10, 30, 16, 20, 0, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(64, 10, 30, 16, 20, 0, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Speech_Sound(60,  0, 10, 260, 27, 47, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60, 20, 10, 260, 27, 47, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60, 40, 10, 260, 27, 47, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60, 50, 10, 260, 27, 47, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Sound(68,  10, 40, 33, 50,    0,   0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(69,  10, 40, 33, 50,    0,   0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(375, 20, 40, 33, 50, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(376, 20, 40, 33, 50, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(377, 20, 40, 33, 50, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTRAIN1, 50,    1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTAMBL1, 40, -100, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTAMBR1, 40,  100, 1);
+	Ambient_Sounds_Add_Sound(kSfxDISH1,   10, 30, 16, 20,    0, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxDISH2,   10, 30, 16, 20,    0, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxDISH3,   10, 30, 16, 20,    0, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxDISH4,   10, 30, 16, 20,    0, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy,  0, 10, 260, 27, 47, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy, 20, 10, 260, 27, 47, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy, 40, 10, 260, 27, 47, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy, 50, 10, 260, 27, 47, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxSPIN2B,  10, 40, 33, 50,    0,   0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN3A,  10, 40, 33, 50,    0,   0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER2, 20, 40, 33, 50, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER3, 20, 40, 33, 50, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER4, 20, 40, 33, 50, -100, 100, -101, -101, 0, 0);
+
 	if (Game_Flag_Query(kFlagSpinnerAtCT01)) {
 		Scene_Loop_Set_Default(kCT01LoopMain);
 	} else {
@@ -272,7 +292,14 @@ bool SceneScriptCT01::ClickedOnExit(int exitId) {
 			Game_Flag_Reset(kFlagMcCoyInTyrellBuilding);
 			Game_Flag_Reset(kFlagMcCoyInDNARow);
 			Game_Flag_Reset(kFlagMcCoyInBradburyBuilding);
+//#if BLADERUNNER_RESTORED_CUT_CONTENT
+//			// Restored spinner door opens/ closes, so we disable this for now
+//			// NOTE: Reverted this cut content since this might be annoying
+//                   as it slows down the pacing...
+//			int spinnerDest = Spinner_Interface_Choose_Dest(kCT01LoopDoorAnim, false);
+//#else
 			int spinnerDest = Spinner_Interface_Choose_Dest(-1, false);
+//#endif // BLADERUNNER_RESTORED_CUT_CONTENT
 
 			switch (spinnerDest) {
 			case kSpinnerDestinationPoliceStation:
@@ -373,15 +400,25 @@ void SceneScriptCT01::SceneFrameAdvanced(int frame) {
 	 )
 	 && ((frame - 1) % 10) == 0
 	) {
-		Ambient_Sounds_Play_Sound(Random_Query(59, 60), 25, 30, 30, 0);
+		Ambient_Sounds_Play_Sound(Random_Query(kSfxNEON5, kSfxNEON6), 25, 30, 30, 0);
 	}
 
 	if (frame == 23) {
-		Ambient_Sounds_Play_Sound(118, 40, 99, 0, 0);
+		Ambient_Sounds_Play_Sound(kSfxCARDOWN3, 40,  99,   0,  0);
 	}
 
+#if BLADERUNNER_RESTORED_CUT_CONTENT
+	if (frame == 136 || frame == 258) {
+		Sound_Play(kSfxSPINOPN4, 100, 80, 80, 50);
+	}
+
+	if (frame == 183 || frame == 303) {
+		Sound_Play(kSfxSPINCLS1, 100, 80, 80, 50);
+	}
+#endif // BLADERUNNER_RESTORED_CUT_CONTENT
+
 	if (frame == 316) {
-		Ambient_Sounds_Play_Sound(373, 50, -50, 100, 99);
+		Ambient_Sounds_Play_Sound(kSfxCARUP3B,  50, -50, 100, 99);
 	}
 
 	if (frame == 196
@@ -391,16 +428,16 @@ void SceneScriptCT01::SceneFrameAdvanced(int frame) {
 		if (v3 == 0) {
 			Overlay_Play("ct01spnr", 0, false, true, 0);
 			if (Random_Query(0, 1)) {
-				Ambient_Sounds_Play_Sound(68, Random_Query(33, 50), 0, 0, 0);
+				Ambient_Sounds_Play_Sound(kSfxSPIN2B, Random_Query(33, 50), 0, 0, 0);
 			} else {
-				Ambient_Sounds_Play_Sound(67, Random_Query(33, 50), 0, 0, 0);
+				Ambient_Sounds_Play_Sound(kSfxSPIN2A, Random_Query(33, 50), 0, 0, 0);
 			}
 		} else if (v3 == 1) {
 			Overlay_Play("ct01spnr", 1, false, true, 0);
 			if (Random_Query(0, 1)) {
-				Ambient_Sounds_Play_Sound(69, Random_Query(33, 50), 0, 0, 0);
+				Ambient_Sounds_Play_Sound(kSfxSPIN3A, Random_Query(33, 50), 0, 0, 0);
 			} else {
-				Ambient_Sounds_Play_Sound(66, Random_Query(33, 50), 0, 0, 0);
+				Ambient_Sounds_Play_Sound(kSfxSPIN1A, Random_Query(33, 50), 0, 0, 0);
 			}
 		}
 	}
@@ -415,10 +452,18 @@ void SceneScriptCT01::PlayerWalkedIn() {
 		Game_Flag_Reset(kFlagCT02toCT01walk);
 	} else {
 		if (!Game_Flag_Query(kFlagArrivedFromSpinner1)) {
-			Game_Flag_Reset(kFlagArrivedFromSpinner1);
+			Game_Flag_Reset(kFlagArrivedFromSpinner1); // a bug? why reset a flag that is already cleared?
 			return;
 		}
 		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -330.0f, -6.5f, 221.0f, 0, false, false, 0);
+#if BLADERUNNER_RESTORED_CUT_CONTENT
+		// unpause generic walkers here, less chance to collide with McCOy while he enters the scene
+		if( Game_Flag_Query(kFlagArrivedFromSpinner1)
+			&& Game_Flag_Query(kFlagGenericWalkerWaiting)
+		) {
+			Game_Flag_Reset(kFlagGenericWalkerWaiting);
+		}
+#endif // BLADERUNNER_RESTORED_CUT_CONTENT
 		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -314.0f, -6.5f, 326.0f, 0, false, false, 0);
 		if (!Game_Flag_Query(kFlagCT01Visited)) {
 			Game_Flag_Set(kFlagCT01Visited);
@@ -442,8 +487,8 @@ void SceneScriptCT01::PlayerWalkedIn() {
 void SceneScriptCT01::PlayerWalkedOut() {
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 	if (Game_Flag_Query(kFlagCT01toCT12)) {
-		Ambient_Sounds_Remove_Looping_Sound(55, true);
-		Ambient_Sounds_Remove_Looping_Sound(56, true);
+		Ambient_Sounds_Remove_Looping_Sound(kSfxCTAMBL1, true);
+		Ambient_Sounds_Remove_Looping_Sound(kSfxCTAMBR1, true);
 	} else {
 		Ambient_Sounds_Remove_All_Looping_Sounds(1);
 	}
@@ -548,7 +593,7 @@ void SceneScriptCT01::dialogueWithHowieLee() {
 		Actor_Says(kActorMcCoy, 290, 13);
 		if (Actor_Query_Friendliness_To_Other(kActorHowieLee, kActorMcCoy) > 49
 		 && (Global_Variable_Query(kVariableChinyen) > 10
-		  || Query_Difficulty_Level() == 0
+		  || Query_Difficulty_Level() == kGameDifficultyEasy
 		 )
 		) {
 			Actor_Says(kActorHowieLee, 50, kAnimationModeTalk);
@@ -556,7 +601,7 @@ void SceneScriptCT01::dialogueWithHowieLee() {
 			Actor_Face_Actor(kActorHowieLee, kActorMcCoy, true);
 			Actor_Says(kActorHowieLee, 70, 16);
 			Actor_Says(kActorMcCoy, 325, 13);
-			if (Query_Difficulty_Level() != 0) {
+			if (Query_Difficulty_Level() != kGameDifficultyEasy) {
 				Global_Variable_Decrement(kVariableChinyen, 10);
 			}
 			Game_Flag_Set(kFlagCT01BoughtHowieLeeFood);

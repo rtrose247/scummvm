@@ -38,12 +38,12 @@ void SceneScriptPS01::InitializeScene() {
 	if (Game_Flag_Query(kFlagSpinnerAtPS01)) {
 		Scene_Exit_Add_2D_Exit(1, 344, 288, 584, 384, 2);
 	}
-	Ambient_Sounds_Add_Looping_Sound(381, 100, 1, 1);
-	Ambient_Sounds_Add_Sound( 68, 60, 180, 16,  25, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 69, 60, 180, 16,  25, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(375, 60, 180, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(376, 50, 180, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(377, 50, 180, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxRAIN10, 100, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxSPIN2B,  60, 180, 16,  25, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN3A,  60, 180, 16,  25, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER2, 60, 180, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER3, 50, 180, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER4, 50, 180, 50, 100, 0, 0, -101, -101, 0, 0);
 
 	if (Game_Flag_Query(kFlagPS02toPS01)) {
 		if (Game_Flag_Query(kFlagSpinnerAtPS01)) {
@@ -192,33 +192,33 @@ void SceneScriptPS01::SceneFrameAdvanced(int frame) {
 	if (frame == 71
 	 || frame == 188
 	) {
-		Sound_Play(116, 100, 40, 0, 50);
+		Sound_Play(kSfxSPINOPN4, 100, 40, 0, 50);
 	}
 
 	if (frame == 108
 	 || frame == 228
 	) {
-		Sound_Play(119, 100, 40, 0, 50);
+		Sound_Play(kSfxSPINCLS1, 100, 40, 0, 50);
 	}
 
 	if (frame == 1) {
-		Sound_Play(118, 40, 0, 0, 50);
+		Sound_Play(kSfxCARDOWN3,  40, 0, 0, 50);
 	}
 
 	if (frame == 76) {
-		Sound_Play(121, 50, 0, 0, 50);
+		Sound_Play(kSfxSERVOD1,   50, 0, 0, 50);
 	}
 
 	if (frame == 192) {
-		Sound_Play(120, 50, 0, 0, 50);
+		Sound_Play(kSfxSERVOU1,   50, 0, 0, 50);
 	}
 
 	if (frame == 59) {
-		Sound_Play(122, 15, 0, 0, 50);
+		Sound_Play(kSfxMTLHIT1,   15, 0, 0, 50);
 	}
 
 	if (frame == 275) {
-		Sound_Play(117, 40, 0, 0, 50);
+		Sound_Play(kSfxCARUP3,    40, 0, 0, 50);
 	}
 
 	if (!Game_Flag_Query(kFlagArrivedFromSpinner2)) {

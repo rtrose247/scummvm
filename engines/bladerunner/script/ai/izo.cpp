@@ -238,10 +238,10 @@ void AIScriptIzo::Retired(int byActorId) {
 		return; //false;
 	}
 
-	Global_Variable_Decrement(kVariableReplicantsSurvivorsAtMoobus, 1);
+	Global_Variable_Decrement(kVariableReplicantsSurvivorsAtMoonbus, 1);
 	Actor_Set_Goal_Number(kActorIzo, kGoalIzoGone);
 
-	if (Global_Variable_Query(kVariableReplicantsSurvivorsAtMoobus) == 0) {
+	if (Global_Variable_Query(kVariableReplicantsSurvivorsAtMoonbus) == 0) {
 		Player_Loses_Control();
 		Delay(2000);
 		Player_Set_Combat_Mode(false);
@@ -557,10 +557,10 @@ bool AIScriptIzo::UpdateAnimation(int *animation, int *frame) {
 			} else {
 				snd = 9015;
 			}
-			Sound_Play_Speech_Line(7, snd, 75, 0, 99);
+			Sound_Play_Speech_Line(kActorIzo, snd, 75, 0, 99);
 		}
 		if (_animationFrame == 9) {
-			Actor_Combat_AI_Hit_Attempt(7);
+			Actor_Combat_AI_Hit_Attempt(kActorIzo);
 		}
 		if (Actor_Query_Goal_Number(kActorIzo) == kGoalIzoWaitingAtRC03
 		 && _animationFrame == 6
@@ -738,7 +738,7 @@ bool AIScriptIzo::UpdateAnimation(int *animation, int *frame) {
 			_animationFrame = 0;
 			_animationState = 0;
 			Game_Flag_Set(kFlagUnused407);
-			Item_Add_To_World(kItemCamera, 977, kSetHC01_HC02_HC03_HC04, 597.46f, 0.14f, 49.92f, 0, 12, 12, false, true, false, false);
+			Item_Add_To_World(kItemCamera, kModelAnimationIzoCamera, kSetHC01_HC02_HC03_HC04, 597.46f, 0.14f, 49.92f, 0, 12, 12, false, true, false, false);
 			Actor_Set_Goal_Number(kActorIzo, kGoalIzoRunToUG02);
 		}
 		break;

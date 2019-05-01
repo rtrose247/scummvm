@@ -50,18 +50,18 @@ void SceneScriptDR04::InitializeScene() {
 	Scene_Exit_Add_2D_Exit(2, 222, 110, 269, 207, 0);
 
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(0);
-	Ambient_Sounds_Add_Looping_Sound( 54, 50,    1,   1);
-	Ambient_Sounds_Add_Looping_Sound(288, 55, -100,   1);
-	Ambient_Sounds_Add_Looping_Sound(217, 28, -100, 100);
-	Ambient_Sounds_Add_Speech_Sound(60,  0, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60, 20, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60, 40, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Speech_Sound(60, 50, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
-	Ambient_Sounds_Add_Sound( 67, 40, 180, 16, 25, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 66, 40, 180, 16, 25, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(378,  5, 80, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(379,  5, 80, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(380,  5, 80, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTRAIN1, 50,    1,   1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxFIREBD1, 55, -100,   1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxHUMMER1, 28, -100, 100);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy,  0, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy, 20, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy, 40, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Speech_Sound(kActorBlimpGuy, 50, 10, 260, 17, 24, -100, 100, -101, -101, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxSPIN2A, 40, 180,  16,  25, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN1A, 40, 180,  16,  25, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDR1,  5,  80,  50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDR2,  5,  80,  50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDR3,  5,  80,  50, 100, 0, 0, -101, -101, 0, 0);
 
 	if (Game_Flag_Query(kFlagDR05BombExploded)) {
 		Scene_Loop_Set_Default(kDR04LoopMainPostExplosion);
@@ -225,7 +225,7 @@ void SceneScriptDR04::SceneFrameAdvanced(int frame) {
 
 		switch (frame) {
 		case 193:
-			Sound_Play(301, 100, 0, 100, 50);
+			Sound_Play(kSfxINDXPLOD, 100, 0, 100, 50);
 			Actor_Set_Goal_Number(kActorMoraji, kGoalMorajiChooseFate);
 			Player_Loses_Control();
 			Actor_Force_Stop_Walking(kActorMcCoy);

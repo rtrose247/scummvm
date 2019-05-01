@@ -123,12 +123,12 @@ protected:
 	void Actor_Set_Immunity_To_Obstacles(int actorId, bool isImmune);
 	void Item_Add_To_World(int itemId, int animationId, int setId, float x, float y, float z, signed int facing, int height, int width, bool isTargetable, bool isObstacle, bool isPoliceMazeEnemy, bool updateOnly);
 	void Item_Remove_From_World(int itemId);
-	void Set_Subtitle_Text_On_Screen(Common::String displayText);
 	void Item_Spin_In_World(int itemId);
 	void Item_Flag_As_Target(int itemId);
 	void Item_Flag_As_Non_Target(int itemId);
-	void Item_Pickup_Spin_Effect(int a1, int a2, int a3);
+	void Item_Pickup_Spin_Effect(int animationId, int x, int y);
 	bool Item_Query_Visible(int itemId);
+	void Set_Subtitle_Text_On_Screen(Common::String displayText);
 	int Animation_Open();
 	int Animation_Close();
 	int Animation_Start();
@@ -259,6 +259,7 @@ protected:
 	void ADQ_Flush();
 	void ADQ_Add(int actorId, int sentenceId, int animationMode);
 	void ADQ_Add_Pause(int delay);
+	void ADQ_Wait_For_All_Queued_Dialogue();
 	bool Game_Over();
 	void Autosave_Game(int textId);
 	void I_Sez(const char *str);

@@ -54,23 +54,23 @@ void SceneScriptHF01::InitializeScene() {
 		}
 	}
 
-	Ambient_Sounds_Add_Looping_Sound( 54, 50,   0, 1);
-	Ambient_Sounds_Add_Looping_Sound(340, 25,   0, 1);
-	Ambient_Sounds_Add_Looping_Sound( 81, 60, 100, 1);
-	Ambient_Sounds_Add_Sound(182,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(184,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(185,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(186,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(188,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(189,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(191,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(192,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(195,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 68, 10, 180, 16,  25,    0,   0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 69, 10, 180, 16,  25,    0,   0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(375, 10, 180, 50, 100,    0,   0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(376, 10, 180, 50, 100,    0,   0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(377, 10, 180, 50, 100,    0,   0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTRAIN1, 50,   0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxARCBED1, 25,   0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxRCAMBR1, 60, 100, 1);
+	Ambient_Sounds_Add_Sound(kSfx67_0480R,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_0540R,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_0560R,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_0870R,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_0900R,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_0940R,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_1070R,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_1080R,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfx67_1160R,  5,  70, 12,  12, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN2B,   10, 180, 16,  25,    0,   0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN3A,   10, 180, 16,  25,    0,   0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER2,  10, 180, 50, 100,    0,   0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER3,  10, 180, 50, 100,    0,   0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER4,  10, 180, 50, 100,    0,   0, -101, -101, 0, 0);
 
 	if (Game_Flag_Query(kFlagSpinnerAtHF01)) {
 		if (!Game_Flag_Query(kFlagHF02toHF01)
@@ -157,7 +157,7 @@ bool SceneScriptHF01::ClickedOnActor(int actorId) {
 			  || Actor_Clue_Query(kActorMcCoy, kCluePhoneCallLucy1)
 			 )
 			 && !Game_Flag_Query(kFlagCrazylegsArrested)
-			 &&  Actor_Query_Goal_Number(kActorCrazylegs) != 2
+			 &&  Actor_Query_Goal_Number(kActorCrazylegs) != kGoalCrazyLegsLeavesShowroom
 			 &&  Game_Flag_Query(kFlagMcCoyIsHelpingReplicants)
 			 && !Game_Flag_Query(kFlagHF01TalkToLovedOne)
 			) {
@@ -300,23 +300,23 @@ bool SceneScriptHF01::ClickedOn2DRegion(int region) {
 
 void SceneScriptHF01::SceneFrameAdvanced(int frame) {
 	if (frame == 10) {
-		Sound_Play(118, 40, 0, 0, 50);
+		Sound_Play(kSfxCARDOWN3, 40, 0, 0, 50);
 	}
 
 	if (frame == 72
 	 || frame == 193
 	) {
-		Sound_Play(116, 100, -50, -50, 50);
+		Sound_Play(kSfxSPINOPN4, 100, -50, -50, 50);
 	}
 
 	if (frame == 88
 	 || frame == 214
 	) {
-		Sound_Play(119, 100, -50, -50, 50);
+		Sound_Play(kSfxSPINCLS1, 100, -50, -50, 50);
 	}
 
 	if (frame == 242) {
-		Sound_Play(117, 40, -50, 80, 50);
+		Sound_Play(kSfxCARUP3,    40, -50, 80, 50);
 	}
 
 	if (Actor_Query_Goal_Number(kActorMurray) == 1) {
@@ -340,7 +340,7 @@ void SceneScriptHF01::PlayerWalkedIn() {
 	}
 
 	if (!Game_Flag_Query(kFlagCrazylegsArrested)
-	 &&  Actor_Query_Goal_Number(kActorCrazylegs) != 2
+	 &&  Actor_Query_Goal_Number(kActorCrazylegs) != kGoalCrazyLegsLeavesShowroom
 	) {
 		if (Actor_Clue_Query(kActorMcCoy, kCluePhoneCallLucy1)
 		 && Global_Variable_Query(kVariableAffectionTowards) == kAffectionTowardsLucy

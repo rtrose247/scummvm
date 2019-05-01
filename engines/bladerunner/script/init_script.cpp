@@ -27,13 +27,13 @@
 namespace BladeRunner {
 
 void InitScript::SCRIPT_Initialize_Game() {
-	Assign_Player_Gun_Hit_Sounds(0, 517, 518, 519);
-	Assign_Player_Gun_Hit_Sounds(1, 520, 521, 522);
-	Assign_Player_Gun_Hit_Sounds(2, 523, 524, 525);
+	Assign_Player_Gun_Hit_Sounds(0, kSfxGUNH1A, kSfxGUNH1B, kSfxGUNH1C);
+	Assign_Player_Gun_Hit_Sounds(1, kSfxGUNH2A, kSfxGUNH2B, kSfxGUNH2C);
+	Assign_Player_Gun_Hit_Sounds(2, kSfxGUNH3A, kSfxGUNH3B, kSfxGUNH3C);
 
-	Assign_Player_Gun_Miss_Sounds(0, 526, 527, 528);
-	Assign_Player_Gun_Miss_Sounds(1, 529, 530, 531);
-	Assign_Player_Gun_Miss_Sounds(2, 532, 533, 534);
+	Assign_Player_Gun_Miss_Sounds(0, kSfxGUNM1A, kSfxGUNM1B, kSfxGUNM1C);
+	Assign_Player_Gun_Miss_Sounds(1, kSfxGUNM2A, kSfxGUNM2B, kSfxGUNM2C);
+	Assign_Player_Gun_Miss_Sounds(2, kSfxGUNM3A, kSfxGUNM3B, kSfxGUNM3C);
 
 	Init_Globals();
 	Init_Game_Flags();
@@ -2441,8 +2441,8 @@ void InitScript::Init_CDB() {
 	CDB_Set_Crime(kClueVictimInformation, kCrimeEisendullerMurder);
 	CDB_Set_Crime(kClueAttemptedFileAccess, kCrimeEisendullerMurder);
 	CDB_Set_Crime(kClueKingstonKitchenBox1, kCrimeEisendullerMurder);
-	CDB_Set_Crime(kClueTyrellSalesPamphlet1, kCrimeEisendullerMurder);
-	CDB_Set_Crime(kClueTyrellSalesPamphlet2, kCrimeEisendullerMurder);
+	CDB_Set_Crime(kClueTyrellSalesPamphletEntertainModel, kCrimeEisendullerMurder);
+	CDB_Set_Crime(kClueTyrellSalesPamphletLolita, kCrimeEisendullerMurder);
 	CDB_Set_Crime(kClueDogCollar1, kCrimeEisendullerMurder);
 	CDB_Set_Crime(kClueRachaelInterview, kCrimeEisendullerMurder);
 	CDB_Set_Crime(kClueTyrellInterview, kCrimeEisendullerMurder);
@@ -2541,8 +2541,8 @@ void InitScript::Init_CDB() {
 	CDB_Set_Clue_Asset_Type(kClueAttemptedFileAccess, kClueTypeAudioRecording);
 	CDB_Set_Clue_Asset_Type(kClueCrystalsCase, kClueTypeAudioRecording);
 	CDB_Set_Clue_Asset_Type(kClueKingstonKitchenBox1, kClueTypeObject);
-	CDB_Set_Clue_Asset_Type(kClueTyrellSalesPamphlet1, kClueTypeObject);
-	CDB_Set_Clue_Asset_Type(kClueTyrellSalesPamphlet2, kClueTypeObject);
+	CDB_Set_Clue_Asset_Type(kClueTyrellSalesPamphletEntertainModel, kClueTypeObject);
+	CDB_Set_Clue_Asset_Type(kClueTyrellSalesPamphletLolita, kClueTypeObject);
 	CDB_Set_Clue_Asset_Type(kCluePeruvianLadyInterview, kClueTypeAudioRecording);
 	CDB_Set_Clue_Asset_Type(kClueHasanInterview, kClueTypeAudioRecording);
 	CDB_Set_Clue_Asset_Type(kClueBobInterview1, kClueTypeAudioRecording);
@@ -2585,8 +2585,8 @@ void InitScript::Init_CDB() {
 	CDB_Set_Clue_Asset_Type(kClueStolenCheese, kClueTypeAudioRecording);
 	CDB_Set_Clue_Asset_Type(kClueGordoInterview3, kClueTypeAudioRecording);
 	CDB_Set_Clue_Asset_Type(kClueGordoConfession, kClueTypeAudioRecording);
-	CDB_Set_Clue_Asset_Type(kClueGordosLighter1, kClueTypeObject);
-	CDB_Set_Clue_Asset_Type(kClueGordosLighter2, kClueTypeObject);
+	CDB_Set_Clue_Asset_Type(kClueGordosLighterReplicant, kClueTypeObject);
+	CDB_Set_Clue_Asset_Type(kClueGordosLighterHuman, kClueTypeObject);
 	CDB_Set_Clue_Asset_Type(kClueDektoraInterview4, kClueTypeAudioRecording);
 	CDB_Set_Clue_Asset_Type(kClueHollowayInterview, kClueTypeAudioRecording);
 	CDB_Set_Clue_Asset_Type(kClueBakersBadge, kClueTypeObject);

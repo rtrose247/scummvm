@@ -194,12 +194,13 @@ public:
 	bool _actorIsSpeaking;
 	bool _actorSpeakStopIsRequested;
 	bool _gameOver;
-	int  _gameAutoSave;
+	int  _gameAutoSaveTextId;
+	bool _gameIsAutoSaving;
 	bool _gameIsLoading;
 	bool _sceneIsLoading;
 	bool _vqaIsPlaying;
 	bool _vqaStopIsRequested;
-	bool _subtitlesEnabled; // tracks the state of whether subtitles are enabled or disabled from ScummVM GUI option or KIA checkbox (the states are synched)
+	bool _subtitlesEnabled;  // tracks the state of whether subtitles are enabled or disabled from ScummVM GUI option or KIA checkbox (the states are synched)
 	bool _sitcomMode;
 	bool _shortyMode;
 
@@ -274,6 +275,7 @@ public:
 
 	void gameWaitForActive();
 	void loopActorSpeaking();
+	void loopQueuedDialogueStillPlaying();
 
 	void outtakePlay(int id, bool no_localization, int container = -1);
 
@@ -292,7 +294,7 @@ public:
 	void playerGainsControl();
 	void playerDied();
 
-	bool saveGame(Common::WriteStream &stream, const Graphics::Surface &thumbnail);
+	bool saveGame(Common::WriteStream &stream, Graphics::Surface &thumbnail);
 	bool loadGame(Common::SeekableReadStream &stream);
 	void newGame(int difficulty);
 	void autoSaveGame(int textId, bool endgame);
@@ -306,8 +308,13 @@ public:
 	Common::String getTargetName() const;
 };
 
-static inline const Graphics::PixelFormat createRGB555() {
-	return Graphics::PixelFormat(2, 5, 5, 5, 0, 10, 5, 0, 0);
+static inline const Graphics::PixelFormat gameDataPixelFormat() {
+	return Graphics::PixelFormat(2, 5, 5, 5, 1, 10, 5, 0, 15);
+}
+
+static inline const Graphics::PixelFormat screenPixelFormat() {
+	// Should be a format supported by Android port
+	return Graphics::PixelFormat(2, 5, 5, 5, 1, 11, 6, 1, 0);
 }
 
 void blit(const Graphics::Surface &src, Graphics::Surface &dst);

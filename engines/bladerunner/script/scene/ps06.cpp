@@ -30,7 +30,7 @@ void SceneScriptPS06::InitializeScene() {
 	Scene_Exit_Add_2D_Exit(0, 610, 0, 639, 479, 1);
 
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(false);
-	Ambient_Sounds_Add_Looping_Sound(388, 50, 1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxESPLOOP3, 50, 1, 1);
 }
 
 void SceneScriptPS06::SceneLoaded() {
@@ -86,13 +86,13 @@ bool SceneScriptPS06::ClickedOn3DObject(const char *objectName, bool a2) {
 			return true;
 		} else {
 			Actor_Clues_Transfer_New_To_Mainframe(kActorMcCoy);
-			Ambient_Sounds_Play_Sound(587, 50, 0, 0, 99);
+			Ambient_Sounds_Play_Sound(kSfxDATALOAD, 50, 0, 0, 99);
 			Delay(2000);
 			Actor_Says(kActorAnsweringMachine, 340,  kAnimationModeTalk);
 			Actor_Clues_Transfer_New_From_Mainframe(kActorMcCoy);
-			Ambient_Sounds_Play_Sound(587, 50, 0, 0, 99);
+			Ambient_Sounds_Play_Sound(kSfxDATALOAD, 50, 0, 0, 99);
 			Delay(2000);
-			Ambient_Sounds_Play_Sound(588, 80, 0, 0, 99);
+			Ambient_Sounds_Play_Sound(kSfxBEEPNEAT, 80, 0, 0, 99);
 			Actor_Says(kActorAnsweringMachine, 350, kAnimationModeTalk);
 			return true;
 		}

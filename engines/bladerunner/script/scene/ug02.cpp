@@ -34,25 +34,25 @@ void SceneScriptUG02::InitializeScene() {
 	Scene_Exit_Add_2D_Exit(0, 529, 130, 607, 277, 0);
 	Scene_Exit_Add_2D_Exit(1, 305,  36, 335, 192, 0);
 
-	Ambient_Sounds_Add_Looping_Sound(332, 43, 0, 1);
-	Ambient_Sounds_Add_Looping_Sound(333, 43, 0, 1);
-	Ambient_Sounds_Add_Sound(303, 5, 50, 17, 37, 100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(304, 5, 50, 17, 37, 100, 100, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(123, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(130, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(131, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(132, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(133, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(134, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(135, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(136, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 47, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 48, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 49, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 50, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 51, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 52, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 53, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxUGBED1, 43, 0, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxUGBED2, 43, 0, 1);
+	Ambient_Sounds_Add_Sound(kSfxBBGRN1,   5, 50, 17, 37, 100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxBBGRN2,   5, 50, 17, 37, 100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPNBEEP9, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPNBEEP2, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPNBEEP3, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPNBEEP4, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPNBEEP5, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPNBEEP6, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPNBEEP7, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPNBEEP8, 2, 50, 17, 37, -50, -20, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER1, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER2, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER3, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER4, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER5, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER6, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER7, 2, 50, 27, 27,  10,  30, -101, -101, 0, 0);
 }
 
 void SceneScriptUG02::SceneLoaded() {
@@ -73,7 +73,7 @@ void SceneScriptUG02::SceneLoaded() {
 	if (!Game_Flag_Query(kFlagUG02RagiationGooglesTaken)
 	  && Game_Flag_Query(kFlagIzoIsReplicant)
 	) {
-		Item_Add_To_World(kItemRadiationGoogles, 963, kSetUG02, -300.37f, 120.16f, -81.31f, 0, 8, 8, false, true, false, true);
+		Item_Add_To_World(kItemRadiationGoogles, kModelAnimationRadiationGoggles, kSetUG02, -300.37f, 120.16f, -81.31f, 0, 8, 8, false, true, false, true);
 	}
 }
 
@@ -130,7 +130,14 @@ bool SceneScriptUG02::ClickedOn3DObject(const char *objectName, bool a2) {
 			} else if (!Actor_Clue_Query(kActorMcCoy, kClueWeaponsCache)) {
 				Actor_Voice_Over(2510, kActorVoiceOver);
 				Actor_Voice_Over(2520, kActorVoiceOver);
-				Actor_Voice_Over(2530, kActorVoiceOver);
+#if BLADERUNNER_ORIGINAL_BUGS
+				Actor_Voice_Over(2530, kActorVoiceOver); // But there was no way to tell what was missing without Izo standing there checking his inventory.
+#else
+				// This voice over says that Izo is there in Chapter 4 checking out his weapon's cache
+				// This does not happen in the original game (Izo being there) although this case can be triggered
+				// TODO Restore this quote ONLY IF we restore the related cut-content so that Izo may appear here in Chapter 4.
+				//Actor_Voice_Over(2530, kActorVoiceOver); // But there was no way to tell what was missing without Izo standing there checking his inventory.
+#endif // BLADERUNNER_ORIGINAL_BUGS
 			} else if (!Game_Flag_Query(kFlagUG02AmmoTaken)) {
 				Item_Pickup_Spin_Effect(996, 360, 440);
 				Actor_Says(kActorMcCoy, 8525, 14);

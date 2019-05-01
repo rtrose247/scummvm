@@ -37,15 +37,15 @@ void SceneScriptPS04::InitializeScene() {
 	}
 	Scene_Exit_Add_2D_Exit(0, 347, 113, 469, 302, 0);
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(0);
-	Ambient_Sounds_Add_Looping_Sound(45, 16, 1, 1);
-	Ambient_Sounds_Add_Looping_Sound(46, 50, 1, 1);
-	Ambient_Sounds_Add_Sound(47, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(48, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(49, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(50, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(51, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(52, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(53, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxPSAMB6, 16, 1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxRTONE3, 50, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER1, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER2, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER3, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER4, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER5, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER6, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSCANNER7, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
 	Scene_Loop_Start_Special(0, 0, 0);
 	Scene_Loop_Set_Default(1);
 }
@@ -61,7 +61,7 @@ void SceneScriptPS04::SceneLoaded() {
 	 && !Actor_Clue_Query(kActorMcCoy, kClueWeaponsOrderForm)
 	 && !Game_Flag_Query(kFlagPS04WeaponsOrderForm)
 	) {
-		Item_Add_To_World(kItemWeaponsOrderForm, 958, kSetPS04, -643.5f, -318.82f, 1148.87f, 525, 16, 12, false, true, false, true);
+		Item_Add_To_World(kItemWeaponsOrderForm, kModelAnimationOriginalRequisitionForm, kSetPS04, -643.5f, -318.82f, 1148.87f, 525, 16, 12, false, true, false, true);
 		Game_Flag_Set(kFlagPS04WeaponsOrderForm);
 	}
 
@@ -192,7 +192,7 @@ void SceneScriptPS04::dialogueWithGuzza() {
 			Actor_Says(kActorGuzza, 550, 32);
 			Actor_Says(kActorMcCoy, 4065, 18);
 			Actor_Says(kActorGuzza, 560, 34);
-			if (Query_Difficulty_Level() != 0) {
+			if (Query_Difficulty_Level() != kGameDifficultyEasy) {
 				Global_Variable_Increment(kVariableChinyen, 100);
 			}
 		} else {
@@ -215,7 +215,7 @@ void SceneScriptPS04::dialogueWithGuzza() {
 		Actor_Says(kActorGuzza, 550, 32);
 		Actor_Says(kActorMcCoy, 4065, 18);
 		Actor_Says(kActorGuzza, 560, 34);
-		if (Query_Difficulty_Level() != 0) {
+		if (Query_Difficulty_Level() != kGameDifficultyEasy) {
 			Global_Variable_Increment(kVariableChinyen, 100);
 		}
 #endif // BLADERUNNER_RESTORED_CUT_CONTENT
@@ -260,13 +260,13 @@ void SceneScriptPS04::dialogueWithGuzza() {
 			Actor_Says(kActorGuzza, 270, 32);
 			Game_Flag_Set(kFlagPS04GuzzaTalkZubenRetired);
 #if BLADERUNNER_ORIGINAL_BUGS
-			if (Query_Difficulty_Level() != 0) {
+			if (Query_Difficulty_Level() != kGameDifficultyEasy) {
 				Global_Variable_Increment(kVariableChinyen, 200);
 			}
 			Game_Flag_Set(kFlagZubenBountyPaid);
 #else
 			if (!Game_Flag_Query(kFlagZubenBountyPaid)) { // get retirement money only if haven't been auto-paid at end of Day 1 (sleep trigger)
-				if (Query_Difficulty_Level() != 0) {
+				if (Query_Difficulty_Level() != kGameDifficultyEasy) {
 					Global_Variable_Increment(kVariableChinyen, 200);
 				}
 				Game_Flag_Set(kFlagZubenBountyPaid); // not a proper bug, but was missing from original code, so the flag would remain in non-consistent state in this case

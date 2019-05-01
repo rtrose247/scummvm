@@ -36,13 +36,13 @@ void SceneScriptKP07::InitializeScene() {
 		 && Actor_Query_Goal_Number(kActorDektora) < kGoalDektoraGone
 		) {
 			Actor_Set_Targetable(kActorDektora, true);
-			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoobus, 1);
+			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoonbus, 1);
 			Actor_Put_In_Set(kActorDektora, kSetKP07);
 			Actor_Set_At_XYZ(kActorDektora, -52.0f, -41.52f, -5.0f, 289);
 		}
 
 		if (Actor_Query_Goal_Number(kActorZuben) < kGoalZubenGone) {
-			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoobus, 1);
+			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoonbus, 1);
 			Actor_Set_Targetable(kActorZuben, true);
 			Actor_Put_In_Set(kActorZuben, kSetKP07);
 			Actor_Set_At_XYZ(kActorZuben, -26.0f, -41.52f, -135.0f, 0);
@@ -51,7 +51,7 @@ void SceneScriptKP07::InitializeScene() {
 		if (Game_Flag_Query(kFlagIzoIsReplicant)
 		 && Actor_Query_Goal_Number(kActorIzo) < 599
 		) {
-			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoobus, 1);
+			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoonbus, 1);
 			Actor_Set_Targetable(kActorIzo, true);
 			Actor_Put_In_Set(kActorIzo, kSetKP07);
 			Actor_Set_At_XYZ(kActorIzo, -38.0f, -41.52f, -175.0f, 500);
@@ -60,7 +60,7 @@ void SceneScriptKP07::InitializeScene() {
 		if (Game_Flag_Query(kFlagGordoIsReplicant)
 		 && Actor_Query_Goal_Number(kActorGordo) < kGoalGordoGone
 		) {
-			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoobus, 1);
+			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoonbus, 1);
 			Actor_Set_Targetable(kActorGordo, true);
 			Actor_Put_In_Set(kActorGordo, kSetKP07);
 			Actor_Set_At_XYZ(kActorGordo, 61.0f, -41.52f, -3.0f, 921);
@@ -69,21 +69,21 @@ void SceneScriptKP07::InitializeScene() {
 		if (Game_Flag_Query(kFlagLucyIsReplicant)
 		 && Actor_Query_Goal_Number(kActorLucy) < kGoalLucyGone
 		) {
-			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoobus, 1);
+			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoonbus, 1);
 			Actor_Put_In_Set(kActorLucy, kSetKP07);
 			Actor_Set_At_XYZ(kActorLucy, 78.0f, -41.52f, -119.0f, 659);
 		}
 
 		if (Actor_Query_Goal_Number(kActorLuther) < kGoalLutherGone) {
-			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoobus, 1);
+			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoonbus, 1);
 			Actor_Put_In_Set(kActorLuther, kSetKP07);
 			Actor_Set_At_XYZ(kActorLuther, -47.0f, 0.0f, 151.0f, 531);
 		}
 	}
 
-	Ambient_Sounds_Add_Looping_Sound(585,  7, 1, 1);
-	Ambient_Sounds_Add_Looping_Sound(586, 52, 1, 1);
-	Ambient_Sounds_Add_Looping_Sound(109, 38, 1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxCOMPBED1,  7, 1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxMOONBED2, 52, 1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxBRBED3,   38, 1, 1);
 
 	if (Game_Flag_Query(kFlagKP07BusActive)) {
 		Scene_Loop_Set_Default(2);
@@ -94,7 +94,7 @@ void SceneScriptKP07::InitializeScene() {
 
 void SceneScriptKP07::SceneLoaded() {
 	if (!Game_Flag_Query(kFlagMcCoyIsHelpingReplicants)) {
-		Music_Play(19, 25, 0, 0, -1, 1, 0);
+		Music_Play(kMusicClovDie1, 25, 0, 0, -1, 1, 0);
 	}
 	Obstacle_Object("BUNK_TRAY01", true);
 	Unobstacle_Object("BUNK_TRAY01", true);
@@ -121,7 +121,7 @@ bool SceneScriptKP07::ClickedOnActor(int actorId) {
 			if (Game_Flag_Query(kFlagMcCoyIsHelpingReplicants)) {
 				Actor_Set_Goal_Number(kActorClovis, kGoalClovisKP07FlyAway);
 			} else {
-				Music_Play(20, 31, 0, 0, -1, 1, 0);
+				Music_Play(kMusicClovDies, 31, 0, 0, -1, 1, 0);
 				Actor_Set_Goal_Number(kActorClovis, kGoalClovisKP07TalkToMcCoy);
 			}
 			return true;
@@ -180,7 +180,7 @@ void SceneScriptKP07::PlayerWalkedIn() {
 			Actor_Says(kActorClovis, 1250, 3);
 			if (Actor_Query_Goal_Number(kActorSadik) == kGoalSadikUG18NeedsReactorCoreFromMcCoy) {
 				Actor_Put_In_Set(kActorSadik, kSetKP07);
-				Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoobus, 1);
+				Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoonbus, 1);
 				Actor_Set_At_XYZ(kActorSadik, -12.0f, -41.58f, 72.0f, 0);
 				Actor_Face_Actor(kActorSadik, kActorClovis, true);
 			}

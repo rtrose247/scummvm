@@ -101,31 +101,31 @@ void SceneScriptRC01::InitializeScene() {
 	}
 
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(false);
-	Ambient_Sounds_Add_Looping_Sound(54, 30, 0, 1); // CTRAIN1.AUD
+	Ambient_Sounds_Add_Looping_Sound(kSfxCTRAIN1, 30, 0, 1);
 
 	if (!Game_Flag_Query(kFlagRC01PoliceDone)) {
-		Ambient_Sounds_Add_Sound(181, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_0470R.AUD
-		Ambient_Sounds_Add_Sound(182, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_0480R.AUD
-		Ambient_Sounds_Add_Sound(183, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_0500R.AUD
-		Ambient_Sounds_Add_Sound(184, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_0540R.AUD
-		Ambient_Sounds_Add_Sound(185, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_0560R.AUD
-		Ambient_Sounds_Add_Sound(186, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_0870R.AUD
-		Ambient_Sounds_Add_Sound(188, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_0900R.AUD
-		Ambient_Sounds_Add_Sound(189, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_0940R.AUD
-		Ambient_Sounds_Add_Sound(190, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_0960R.AUD
-		Ambient_Sounds_Add_Sound(191, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_1070R.AUD
-		Ambient_Sounds_Add_Sound(192, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_1080R.AUD
-		Ambient_Sounds_Add_Sound(193, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_1100R.AUD
-		Ambient_Sounds_Add_Sound(194, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_1140R.AUD
-		Ambient_Sounds_Add_Sound(195, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0); // 67_1160R.AUD
+		Ambient_Sounds_Add_Sound(kSfx67_0470R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_0480R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_0500R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_0540R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_0560R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_0870R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_0900R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_0940R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_0960R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_1070R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_1080R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_1100R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_1140R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
+		Ambient_Sounds_Add_Sound(kSfx67_1160R, 5, 70, 12, 12, -100, 100, -101, -101, 0, 0);
 	}
 
-	Ambient_Sounds_Add_Looping_Sound(81, 60, 100, 1); // RCAMBR1.AUD
-	Ambient_Sounds_Add_Sound(82,  5, 30, 30, 50, -100, 100, -101, -101, 0, 0); // RCCARBY1.AUD
-	Ambient_Sounds_Add_Sound(83,  5, 30, 30, 55, -100, 100, -101, -101, 0, 0); // RCCARBY2.AUD
-	Ambient_Sounds_Add_Sound(84,  5, 30, 30, 50, -100, 100, -101, -101, 0, 0); // RCCARBY3.AUD
-	Ambient_Sounds_Add_Sound(67, 10, 50, 30, 50, -100, 100, -101, -101, 0, 0); // SPIN2A.AUD
-	Ambient_Sounds_Add_Sound(87, 20, 80, 20, 40, -100, 100, -101, -101, 0, 0); // SIREN2.AUD
+	Ambient_Sounds_Add_Looping_Sound(kSfxRCAMBR1, 60, 100, 1);
+	Ambient_Sounds_Add_Sound(kSfxRCCARBY1,  5, 30, 30, 50, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxRCCARBY2,  5, 30, 30, 55, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxRCCARBY3,  5, 30, 30, 50, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN2A,   10, 50, 30, 50, -100, 100, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSIREN2,   20, 80, 20, 40, -100, 100, -101, -101, 0, 0);
 
 	if (Game_Flag_Query(kFlagRC01PoliceDone)) {
 		if (!Game_Flag_Query(kFlagRC02toRC01) && !Game_Flag_Query(kFlagRC03toRC01)) {
@@ -222,7 +222,7 @@ void SceneScriptRC01::SceneLoaded() {
 	}
 
 	if (!Game_Flag_Query(kFlagRC01ChromeDebrisTaken)) {
-		Item_Add_To_World(kItemChromeDebris, 938, kSetRC01, -148.60f, -0.30f, 225.15f, 256, 24, 24, false, true, false, true);
+		Item_Add_To_World(kItemChromeDebris, kModelAnimationChromeDebris, kSetRC01, -148.60f, -0.30f, 225.15f, 256, 24, 24, false, true, false, true);
 	}
 
 	if (!Game_Flag_Query(kFlagIntroPlayed)) {
@@ -275,11 +275,23 @@ bool SceneScriptRC01::ClickedOn3DObject(const char *objectName, bool a2) {
 		if (!Loop_Actor_Walk_To_Scene_Object(kActorMcCoy, "DOOR LEFT", 48, true, false)) {
 			Actor_Face_Object(kActorMcCoy, "DOOR LEFT", true);
 			if (!Actor_Clue_Query(kActorMcCoy, kClueDoorForced2) && Actor_Query_In_Set(kActorOfficerLeary, kSetRC01) && Global_Variable_Query(kVariableChapter) > 0) {
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+				bool officerLearyWasInterrogatingTheCrowd = Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01CrowdInterrogation
+				                                            || Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01WalkToCrowd
+				                                            || Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01ResumeWalkToCrowd;
+#endif // BLADERUNNER_ORIGINAL_BUGS
 				Actor_Set_Goal_Number(kActorOfficerLeary, kGoalOfficerLearyDefault);
 				Actor_Face_Actor(kActorOfficerLeary, kActorMcCoy, true);
 				Actor_Says(kActorOfficerLeary, 0, 12);
 				Actor_Says(kActorMcCoy, 4495, 13);
 				Actor_Clue_Acquire(kActorMcCoy, kClueDoorForced2, true, kActorOfficerLeary);
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+				if (officerLearyWasInterrogatingTheCrowd) {
+					Actor_Set_Goal_Number(kActorOfficerLeary, kGoalOfficerLearyRC01ResumeWalkToCrowd);
+				}
+#endif // BLADERUNNER_ORIGINAL_BUGS
 			}
 #if BLADERUNNER_ORIGINAL_BUGS
 #else
@@ -317,6 +329,12 @@ bool SceneScriptRC01::ClickedOn3DObject(const char *objectName, bool a2) {
 bool SceneScriptRC01::ClickedOnActor(int actorId) {
 	if (actorId == kActorOfficerLeary && Global_Variable_Query(kVariableChapter) == 1) {
 		if (!Loop_Actor_Walk_To_Actor(kActorMcCoy, kActorOfficerLeary, 36, true, false)) {
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+			bool officerLearyWasInterrogatingTheCrowd = Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01CrowdInterrogation
+			                                            || Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01WalkToCrowd
+			                                            || Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01ResumeWalkToCrowd;
+#endif // BLADERUNNER_ORIGINAL_BUGS
 			Actor_Face_Actor(kActorMcCoy, kActorOfficerLeary, true);
 			Actor_Face_Actor(kActorOfficerLeary, kActorMcCoy, true);
 			if (Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01WalkToCrowd) {
@@ -369,6 +387,12 @@ bool SceneScriptRC01::ClickedOnActor(int actorId) {
 				}
 				Game_Flag_Reset(kFlagRC01McCoyAndOfficerLearyTalking);
 			}
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+			if (officerLearyWasInterrogatingTheCrowd) {
+				Actor_Set_Goal_Number(kActorOfficerLeary, kGoalOfficerLearyRC01ResumeWalkToCrowd);
+			}
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		}
 		return true;
 	}
@@ -377,6 +401,12 @@ bool SceneScriptRC01::ClickedOnActor(int actorId) {
 
 bool SceneScriptRC01::ClickedOnItem(int itemId, bool a2) {
 	if (itemId == kItemChromeDebris) {
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		bool officerLearyWasInterrogatingTheCrowd = Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01CrowdInterrogation
+		                                            || Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01WalkToCrowd
+		                                            || Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01ResumeWalkToCrowd;
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		Actor_Set_Goal_Number(kActorOfficerLeary, kGoalOfficerLearyDefault);
 		if (!Loop_Actor_Walk_To_Item(kActorMcCoy, kItemChromeDebris, 36, true, false)) {
 			Actor_Face_Item(kActorMcCoy, kItemChromeDebris, true);
@@ -396,6 +426,12 @@ bool SceneScriptRC01::ClickedOnItem(int itemId, bool a2) {
 			I_Sez("JM: He keeps me chuckling non-stop!\n");
 			Loop_Actor_Walk_To_Actor(kActorOfficerLeary, kActorMcCoy, 36, 0, false);
 		}
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		if (officerLearyWasInterrogatingTheCrowd) {
+			Actor_Set_Goal_Number(kActorOfficerLeary, kGoalOfficerLearyRC01ResumeWalkToCrowd);
+		}
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		return true;
 	}
 	return false;
@@ -589,6 +625,20 @@ bool SceneScriptRC01::ClickedOnExit(int exitId) {
 
 void SceneScriptRC01::interrogateCrowd() {
 	if (!Game_Flag_Query(kFlagRC01PoliceDone)) {
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		bool officerLearyWasInterrogatingTheCrowd = Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01CrowdInterrogation
+		                                            || Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01WalkToCrowd
+		                                            || Actor_Query_Goal_Number(kActorOfficerLeary) == kGoalOfficerLearyRC01ResumeWalkToCrowd;
+		if (officerLearyWasInterrogatingTheCrowd
+		    || (Actor_Clue_Query(kActorMcCoy, kClueCrowdInterviewA)
+		        && Actor_Clue_Query(kActorMcCoy, kClueCrowdInterviewB) )
+		) {
+			Actor_Says(kActorMcCoy, 8525, 3); // generic "hmph"
+			return;
+		}
+#endif // BLADERUNNER_ORIGINAL_BUGS
+
 		if (!Loop_Actor_Walk_To_Scene_Object(kActorMcCoy, "BARICADE03", 36, true, false)) {
 			Actor_Set_Goal_Number(kActorOfficerLeary, kGoalOfficerLearyDefault);
 			Actor_Face_Object(kActorMcCoy, "BARICADE03", true);
@@ -612,25 +662,25 @@ bool SceneScriptRC01::ClickedOn2DRegion(int region) {
 
 void SceneScriptRC01::SceneFrameAdvanced(int frame) {
 	if (frame == 1) {
-		Sound_Play(118, 40, 0, 0, 50); // CARDOWN3.AUD
+		Sound_Play(kSfxCARDOWN3, 40, 0, 0, 50);
 	}
 	if (frame == 61 || frame == 362) {
-		Sound_Play(116, 100, 80, 80, 50); // SPINOPN4.AUD
+		Sound_Play(kSfxSPINOPN4, 100, 80, 80, 50);
 	}
 	if (frame == 108 || frame == 409) {
-		Sound_Play(119, 100, 80, 80, 50); // SPINCLS1.AUD
+		Sound_Play(kSfxSPINCLS1, 100, 80, 80, 50);
 	}
 	if (frame == 183 || frame == 484) {
-		Sound_Play(116, 100, 80, 80, 50); // SPINOPN4.AUD
+		Sound_Play(kSfxSPINOPN4, 100, 80, 80, 50);
 	}
 	if (frame == 228 || frame == 523) {
-		Sound_Play(119, 100, 80, 80, 50); // SPINCLS1.AUD
+		Sound_Play(kSfxSPINCLS1, 100, 80, 80, 50);
 	}
 	if (frame == 243 || frame == 545) {
-		Sound_Play(117, 40, 80, 80, 50); // CARUP3.AUD
+		Sound_Play(kSfxCARUP3, 40, 80, 80, 50);
 	}
 	if (frame == 315) {
-		Sound_Play(118, 40, 80, 80, 50); // CARDOWN3.AUD
+		Sound_Play(kSfxCARDOWN3, 40, 80, 80, 50);
 	}
 }
 

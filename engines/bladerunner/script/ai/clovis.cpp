@@ -188,10 +188,10 @@ bool AIScriptClovis::ShotAtAndHit() {
 void AIScriptClovis::Retired(int byActorId) {
 	if (Game_Flag_Query(kFlagMcCoyIsHelpingReplicants)) {
 		if (Actor_Query_In_Set(kActorClovis, kSetKP07)) {
-			Global_Variable_Decrement(kVariableReplicantsSurvivorsAtMoobus, 1);
+			Global_Variable_Decrement(kVariableReplicantsSurvivorsAtMoonbus, 1);
 			Actor_Set_Goal_Number(kActorClovis, kGoalClovisGone);
 
-			if (Global_Variable_Query(kVariableReplicantsSurvivorsAtMoobus) == 0) {
+			if (Global_Variable_Query(kVariableReplicantsSurvivorsAtMoonbus) == 0) {
 				Player_Loses_Control();
 				Delay(2000);
 				Player_Set_Combat_Mode(false);
@@ -390,8 +390,8 @@ bool AIScriptClovis::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		Actor_Put_In_Set(kActorClovis, kSetKP07);
 		Actor_Set_Targetable(kActorClovis, true);
 		if (Game_Flag_Query(kFlagMcCoyIsHelpingReplicants)) {
-			Global_Variable_Set(kVariableReplicantsSurvivorsAtMoobus, 0);
-			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoobus, 1);
+			Global_Variable_Set(kVariableReplicantsSurvivorsAtMoonbus, 0);
+			Global_Variable_Increment(kVariableReplicantsSurvivorsAtMoonbus, 1);
 			Actor_Set_At_XYZ(kActorClovis, 45.0f, -41.52f, -85.0f, 750);
 		} else {
 			Actor_Set_At_XYZ(kActorClovis, 84.85f, -50.56f, -68.87f, 800);
@@ -439,17 +439,17 @@ bool AIScriptClovis::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		Actor_Says(kActorClovis, 1310, kAnimationModeTalk);
 		Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 		Ambient_Sounds_Remove_All_Looping_Sounds(1);
-		Outtake_Play(kOuttakeEnd4A, 0, -1);
+		Outtake_Play(kOuttakeEnd4A, false, -1);
 		if (Global_Variable_Query(kVariableAffectionTowards) == kAffectionTowardsLucy
 		 && Game_Flag_Query(kFlagLucyIsReplicant)
 		) {
-			Outtake_Play(kOuttakeEnd4B, 0, -1);
+			Outtake_Play(kOuttakeEnd4B, false, -1);
 		} else if (Global_Variable_Query(kVariableAffectionTowards) == kAffectionTowardsDektora
 		       && Game_Flag_Query(kFlagDektoraIsReplicant)
 		) {
-			Outtake_Play(kOuttakeEnd4C, 0, -1);
+			Outtake_Play(kOuttakeEnd4C, false, -1);
 		}
-		Outtake_Play(kOuttakeEnd4D, 0, -1);
+		Outtake_Play(kOuttakeEnd4D, false, -1);
 		Game_Over();
 		return true;
 
@@ -461,7 +461,7 @@ bool AIScriptClovis::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 			// Lucy's retirement on the moonbus should be handled in her ai script AIScriptLucy::Retired()
 			// like the others - even if she won't attack McCoy, she should be retired immediately (with one shot)
 			Actor_Set_Goal_Number(kActorLucy, kGoalLucyGone);
-			Global_Variable_Decrement(kVariableReplicantsSurvivorsAtMoobus, 1);
+			Global_Variable_Decrement(kVariableReplicantsSurvivorsAtMoonbus, 1);
 #else
 			// This is her code if she's attacked when escaping with McCoy
 			// will this work?
@@ -476,7 +476,7 @@ bool AIScriptClovis::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 			// Luther's retirement on the moonbus should be handled in his ai script AIScriptLuther:Retired()
 			// like the others - even if he won't attack McCoy, he should be retired immediately (with one shot)
 			Actor_Set_Goal_Number(kActorLuther, kGoalLutherGone);
-			Global_Variable_Decrement(kVariableReplicantsSurvivorsAtMoobus, 1);
+			Global_Variable_Decrement(kVariableReplicantsSurvivorsAtMoonbus, 1);
 #endif // BLADERUNNER_ORIGINAL_BUGS
 		}
 
@@ -832,10 +832,10 @@ bool AIScriptClovis::UpdateAnimation(int *animation, int *frame) {
 			} else {
 				snd = 9015;
 			}
-			Sound_Play_Speech_Line(5, snd, 75, 0, 99);
+			Sound_Play_Speech_Line(kActorClovis, snd, 75, 0, 99);
 		}
 		if (_animationFrame == 4) {
-			Actor_Combat_AI_Hit_Attempt(5);
+			Actor_Combat_AI_Hit_Attempt(kActorClovis);
 		}
 		if (_animationFrame >= Slice_Animation_Query_Number_Of_Frames(*animation)) {
 			flag = true;

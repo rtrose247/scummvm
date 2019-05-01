@@ -31,9 +31,9 @@ void SceneScriptPS02::InitializeScene() {
 	Scene_Exit_Add_2D_Exit(0, 0, 0, 240, 479, 3);
 
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(0);
-	Ambient_Sounds_Add_Looping_Sound(386, 20, 1, 1);
-	Ambient_Sounds_Add_Looping_Sound(210, 20, 1, 1);
-	Ambient_Sounds_Add_Sound(0, 3, 20, 12, 16, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxESPLOOP1, 20, 1, 1);
+	Ambient_Sounds_Add_Looping_Sound(kSfxELEAMB3,  20, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxCROSLOCK, 3, 20, 12, 16, 0, 0, -101, -101, 0, 0);
 
 	Scene_Loop_Start_Special(kSceneLoopModeLoseControl, 0, false);
 	Scene_Loop_Set_Default(1);
@@ -112,11 +112,11 @@ bool SceneScriptPS02::ClickedOn2DRegion(int region) {
 
 void SceneScriptPS02::SceneFrameAdvanced(int frame) {
 	if (frame == 1) {
-		Ambient_Sounds_Play_Sound(208, 45, 0, 0, 0);
+		Ambient_Sounds_Play_Sound(kSfxELDOORO2, 45, 0, 0, 0);
 	}
 
 	if (frame == 91) {
-		Ambient_Sounds_Play_Sound(209, 45, 0, 0, 0);
+		Ambient_Sounds_Play_Sound(kSfxELDOORC1, 45, 0, 0, 0);
 	}
 	//return true;
 }

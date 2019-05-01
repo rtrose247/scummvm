@@ -56,10 +56,8 @@ bool SliceAnimations::open(const Common::String &name) {
 			_palettes[i].color[j].g = color_g;
 			_palettes[i].color[j].b = color_b;
 
-			uint16 rgb555 = ((uint16)color_r << 10) |
-			                ((uint16)color_g <<  5) |
-			                 (uint16)color_b;
-
+			const int bladeToScummVmConstant = 256 / 32; // 5 bits to 8 bits
+			uint16 rgb555 = screenPixelFormat().RGBToColor(color_r * bladeToScummVmConstant, color_g * bladeToScummVmConstant, color_b * bladeToScummVmConstant);
 			_palettes[i].color555[j] = rgb555;
 		}
 	}
@@ -177,10 +175,8 @@ void *SliceAnimations::PageFile::loadPage(uint32 pageNumber) {
 }
 
 void *SliceAnimations::getFramePtr(uint32 animation, uint32 frame) {
-//RTR 3.10.2019
-//commenting flanking ifdef's
-//#if BLADERUNNER_ORIGINAL_BUGS
-//#else
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
 	// FIXME: Maybe there's a better way?
 	// Sanitize bad frame value
 	// For some actors (currently only happened with hawkers_barkeep) it is possible
@@ -195,18 +191,12 @@ void *SliceAnimations::getFramePtr(uint32 animation, uint32 frame) {
 	// if _var1, _var2, _var3  == (0, 6, 1) when LOADING that save file,
 	// then animationFrame will remain 19, which is invalid for his 705 animation
 	// and the assert will produce a fault when trying to call drawInWorld for him.
-//----
-//RTR 10.4.2018
-//need clamp:i.e.,
-//additional clamp to animations[] => go to 0
-	if (frame >= _animations[animation].frameCount)	{
-		debug("Bad frame: %u max: %u animation: %u", frame, _animations[animation].frameCount, animation);			
-
+	if (frame >= _animations[animation].frameCount) {
+		debug("Bad frame: %u max: %u animation: %u", frame, _animations[animation].frameCount, animation);
 		frame = 0;
 	}
 //	assert(frame < _animations[animation].frameCount);
-//#endif // BLADERUNNER_ORIGINAL_BUGS
-//----
+#endif // BLADERUNNER_ORIGINAL_BUGS
 
 	uint32 frameOffset = _animations[animation].offset + frame * _animations[animation].frameSize;
 	uint32 page        = frameOffset / _pageSize;

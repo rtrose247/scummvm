@@ -30,12 +30,12 @@ void SceneScriptCT51::InitializeScene() {
 
 	Scene_Exit_Add_2D_Exit(1, 0, 0, 30, 479, 3);
 
-	Ambient_Sounds_Add_Looping_Sound(381, 100, 1, 1);
-	Ambient_Sounds_Add_Sound( 68, 60, 180, 16,  25, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound( 69, 60, 180, 16,  25, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(375, 60, 180, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(376, 50, 180, 50, 100, 0, 0, -101, -101, 0, 0);
-	Ambient_Sounds_Add_Sound(377, 50, 180, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Looping_Sound(kSfxRAIN10, 100, 1, 1);
+	Ambient_Sounds_Add_Sound(kSfxSPIN2B,  60, 180, 16,  25, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxSPIN3A,  60, 180, 16,  25, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER2, 60, 180, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER3, 50, 180, 50, 100, 0, 0, -101, -101, 0, 0);
+	Ambient_Sounds_Add_Sound(kSfxTHNDER4, 50, 180, 50, 100, 0, 0, -101, -101, 0, 0);
 
 	Scene_Loop_Start_Special(kSceneLoopModeLoseControl, 0, false);
 	Scene_Loop_Set_Default(1);
@@ -45,10 +45,10 @@ void SceneScriptCT51::SceneLoaded() {
 	Unobstacle_Object("BLANKET03", true);
 	Clickable_Object("BED02");
 	if (!Actor_Clue_Query(kActorMcCoy, kClueRagDoll)) {
-		Item_Add_To_World(kItemRagDoll, 943, kSetCT08_CT51_UG12, 44.0f, 0.0f, -95.0f, 540, 24, 24, false, true, false, true);
+		Item_Add_To_World(kItemRagDoll, kModelAnimationRagDoll, kSetCT08_CT51_UG12, 44.0f, 0.0f, -95.0f, 540, 24, 24, false, true, false, true);
 	}
 	if (!Actor_Clue_Query(kActorMcCoy, kClueMoonbus1)) {
-		Item_Add_To_World(kItemMoonbusPhoto, 984, kSetCT08_CT51_UG12, 44.0f, 0.0f, -22.0f, 0, 12, 12, false, true, false, true);
+		Item_Add_To_World(kItemMoonbusPhoto, kModelAnimationPhoto, kSetCT08_CT51_UG12, 44.0f, 0.0f, -22.0f, 0, 12, 12, false, true, false, true);
 	}
 }
 
@@ -77,14 +77,14 @@ bool SceneScriptCT51::ClickedOnItem(int itemId, bool a2) {
 	if (itemId == kItemRagDoll) {
 		Actor_Clue_Acquire(kActorMcCoy, kClueRagDoll, true, -1);
 		Item_Pickup_Spin_Effect(943, 260, 200);
-		Ambient_Sounds_Play_Sound(563, 40, 99, 0, 0);
+		Ambient_Sounds_Play_Sound(kSfxBABYCRY2, 40, 99, 0, 0);
 		Item_Remove_From_World(kItemRagDoll);
 		return true;
 	}
 
 	if (itemId == kItemMoonbusPhoto) {
 		Actor_Clue_Acquire(kActorMcCoy, kClueMoonbus1, true, -1);
-		Item_Pickup_Spin_Effect(984, 490, 307);
+		Item_Pickup_Spin_Effect(kModelAnimationPhoto, 490, 307);
 		Item_Remove_From_World(kItemMoonbusPhoto);
 		Actor_Says(kActorMcCoy, 8527, kAnimationModeTalk);
 		return true;
