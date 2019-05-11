@@ -25,7 +25,7 @@
 namespace BladeRunner {
 
 enum kTB07Loops {
-	kTB07LoopMain          = 0,
+	kTB07LoopMainLoop      = 0,
 	kTB07LoopShadeDrop     = 2,
 	kTB07LoopMainShadeDown = 3
 };
@@ -54,7 +54,7 @@ void SceneScriptTB07::InitializeScene() {
 	if (Game_Flag_Query(kFlagTB07ShadeDown)) {
 		Scene_Loop_Set_Default(kTB07LoopMainShadeDown);
 	} else {
-		Scene_Loop_Set_Default(kTB07LoopMain);
+		Scene_Loop_Set_Default(kTB07LoopMainLoop);
 	}
 }
 
@@ -90,8 +90,10 @@ bool SceneScriptTB07::ClickedOnItem(int itemId, bool a2) {
 bool SceneScriptTB07::ClickedOnExit(int exitId) {
 	if (exitId == 0) {
 		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 68.0f, 12.0f, 288.0f, 0, true, false, 0)) {
+#if BLADERUNNER_ORIGINAL_BUGS
 			Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 			Ambient_Sounds_Remove_All_Looping_Sounds(1);
+#endif // BLADERUNNER_ORIGINAL_BUGS
 			if (Global_Variable_Query(kVariableChapter) == 4) {
 				Game_Flag_Set(kFlagTB07toTB02);
 				Set_Enter(kSetTB02_TB03, kSceneTB02);
@@ -199,6 +201,18 @@ void SceneScriptTB07::PlayerWalkedIn() {
 }
 
 void SceneScriptTB07::PlayerWalkedOut() {
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+	Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
+	Ambient_Sounds_Remove_All_Looping_Sounds(1);
+	if (Global_Variable_Query(kVariableChapter) < 4
+	    && !Game_Flag_Query(kFlagMcCoyInTyrellBuilding)
+	) {
+		// Acts 2, 3 - use a spinner fly-through transition
+		Outtake_Play(kOuttakeAway1,    true, -1);  // available in Acts 2, 3
+	}
+#endif // BLADERUNNER_ORIGINAL_BUGS
+
 }
 
 void SceneScriptTB07::DialogueQueueFlushed(int a1) {

@@ -1134,12 +1134,12 @@ enum Flags {
 	kFlagPS05TV4 = 692,
 	kFlagUG03DeadHomeless = 693,
 	kFlagUG14DeadHomeless = 694,
-	// 695 is never used
+	kFlagNR01VisitedFirstTimeWithSpinner = 695, // Re-purposed. Original: 695 is never used
 	kFlagKP07ReplicantsAttackMcCoy = 696,
 	kFlagKP07McCoyPulledGun = 697,
 	kFlagUG15LanceLuthorTrade = 698,
 	kFlagTalkToZuben = 699,
-	// 700 is never used
+	kFlagBB01VisitedFirstTimeWithSpinner = 700, // Re-purposed. Original: 700 is never used
 	kFlagMcCoyAttackedLucy = 701,
 	kFlagBulletBobDead = 702,
 	kFlagUG18BriefcaseTaken = 703,
@@ -1167,7 +1167,7 @@ enum Flags {
 	kFlagCT11DogWrapperAvailable = 725,
 	kFlagAR02Entered = 726,
 	kFlagPS04WeaponsOrderForm = 727,
-	// 728 is never used
+	kFlagDR01Visited = 728,                     // Re-purposed. Original: 728 is never used
 	kFlagNR08DektoraShow = 729
 };
 
@@ -1245,16 +1245,16 @@ enum Outtakes {
 	kOuttakeEnd7 = 26,
 	kOuttakeTyrellBuildingFly = 27,
 	kOuttakeWestwood = 28,
-	kOuttakeFlyThrough = 29,
-	kOuttakeAway1 = 30,
-	kOuttakeAway2 = 31,
-	kOuttakeAscent = 32,
-	kOuttakeDescent = 33,
-	kOuttakeInside1 = 34,
-	kOuttakeInside2 = 35,
-	kOuttakeTowards1 = 36,
-	kOuttakeTowards2 = 37,
-	kOuttakeTowards3 = 38,
+	kOuttakeFlyThrough = 29,        // Act 1
+	kOuttakeAway1 = 30,             // Act 2, 3
+	kOuttakeAway2 = 31,             // Act 1
+	kOuttakeAscent = 32,            // Act 1, 4, 5 - Original: unused
+	kOuttakeDescent = 33,           // Act 1, 4, 5
+	kOuttakeInside1 = 34,           // Act 1
+	kOuttakeInside2 = 35,           // Act 1, 2, 3
+	kOuttakeTowards1 = 36,          // Act 1
+	kOuttakeTowards2 = 37,          // Act 1
+	kOuttakeTowards3 = 38,          // Act 1, 2, 3
 	kOuttakeRachel = 39,
 	kOuttakeDektora = 40,
 	kOuttakeBladeRunner = 41
@@ -1759,8 +1759,10 @@ enum GameModelAnimations {
 	kModelAnimationDNAEvidenceTwoParts         = 990,
 	kModelAnimationDNAEvidenceThreeParts       = 991,
 //	kModelAnimation                            = 992, // unused?
-	kModelAnimationDNAEvidenceComplete         = 993
-//	kModelAnimation                            = 994-996
+	kModelAnimationDNAEvidenceComplete         = 993,
+//	kModelAnimation                            = 994, // unused?
+    kModelAnimationAmmoType01                  = 995, // from Bullet Bob's
+	kModelAnimationAmmoType02                  = 996  // from Izo stash (Act 4)
 };
 
 enum Elevators {

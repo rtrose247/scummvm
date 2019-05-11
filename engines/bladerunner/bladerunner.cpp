@@ -111,6 +111,7 @@ BladeRunnerEngine::BladeRunnerEngine(OSystem *syst, const ADGameDescription *des
 
 	_sitcomMode       = false;
 	_shortyMode       = false;
+	_cutContent       = true;
 
 	_playerLosesControlCounter = 0;
 

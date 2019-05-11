@@ -49,9 +49,7 @@ void AudioSpeech::mixerChannelEnded(int channel, void *data) {
 
 AudioSpeech::AudioSpeech(BladeRunnerEngine *vm) {
 	_vm = vm;
-	//RTR 4.28.19
 	_speechVolume = BLADERUNNER_ORIGINAL_SETTINGS ? 50 : 100;
-	//----
 	_isActive = false;
 	_data = new byte[kBufferSize];
 	_channel = -1;

@@ -25,7 +25,7 @@
 namespace BladeRunner {
 
 enum kCT11Loops {
-	kCT11LoopMain = 0,
+	kCT11LoopMainLoop  = 0,
 	kCT11LoopMainNoCar = 2
 };
 
@@ -52,7 +52,7 @@ void SceneScriptCT11::InitializeScene() {
 	if (Global_Variable_Query(kVariableChapter) > 3) {
 		Scene_Loop_Set_Default(kCT11LoopMainNoCar);
 	} else {
-		Scene_Loop_Set_Default(kCT11LoopMain);
+		Scene_Loop_Set_Default(kCT11LoopMainLoop);
 	}
 }
 
@@ -141,7 +141,7 @@ bool SceneScriptCT11::ClickedOn2DRegion(int region) {
 			Actor_Face_Heading(kActorMcCoy, 47, false);
 			Item_Remove_From_World(kItemDogWrapper);
 			Actor_Clue_Acquire(kActorMcCoy, kClueLichenDogWrapper, false, -1);
-			Item_Pickup_Spin_Effect(951, 510, 319);
+			Item_Pickup_Spin_Effect(kModelAnimationLichenDogWrapper, 510, 319);
 			Game_Flag_Reset(kFlagCT11DogWrapperAvailable);
 			Game_Flag_Set(kFlagCT11DogWrapperTaken);
 			Actor_Voice_Over(550, kActorVoiceOver);

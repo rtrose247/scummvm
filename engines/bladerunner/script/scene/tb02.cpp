@@ -321,7 +321,7 @@ void SceneScriptTB02::PlayerWalkedIn() {
 			Actor_Says(kActorTyrellGuard, 0, 50);
 			Actor_Says(kActorMcCoy, 5130, 13);
 			Actor_Says(kActorTyrellGuard, 10, 15);
-			Item_Pickup_Spin_Effect(975, 351, 315);
+			Item_Pickup_Spin_Effect(kModelAnimationVideoDisc, 351, 315);
 			Actor_Says(kActorTyrellGuard, 20, 23);
 			Actor_Says(kActorMcCoy, 5140, 17);
 			Actor_Says(kActorTyrellGuard, 30, 14);
@@ -383,6 +383,15 @@ void SceneScriptTB02::PlayerWalkedIn() {
 void SceneScriptTB02::PlayerWalkedOut() {
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 	Ambient_Sounds_Remove_All_Looping_Sounds(1);
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+	if (Global_Variable_Query(kVariableChapter) < 4
+	    && !Game_Flag_Query(kFlagMcCoyInTyrellBuilding)
+	) {
+		// Acts 2, 3 - use a spinner fly-through transition
+		Outtake_Play(kOuttakeTowards3, true, -1);  // available in Acts 1, 2, 3
+	}
+#endif // BLADERUNNER_ORIGINAL_BUGS
 }
 
 void SceneScriptTB02::DialogueQueueFlushed(int a1) {

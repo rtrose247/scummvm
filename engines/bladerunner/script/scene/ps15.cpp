@@ -70,7 +70,7 @@ bool SceneScriptPS15::ClickedOnActor(int actorId) {
 				Actor_Says(kActorMcCoy, 4475, 18);
 				Actor_Says(kActorMcCoy, 4480, 13);
 				Actor_Says(kActorSergeantWalls, 140, 16);
-				Item_Pickup_Spin_Effect(965, 211, 239);
+				Item_Pickup_Spin_Effect(kModelAnimationWeaponsOrderForm, 211, 239);
 				Actor_Says(kActorSergeantWalls, 150, 14);
 				Actor_Clue_Acquire(kActorMcCoy, kClueShippingForm, true, kActorSergeantWalls);
 				if (!Game_Flag_Query(kFlagPS04WeaponsOrderForm)) {
@@ -100,8 +100,13 @@ bool SceneScriptPS15::ClickedOnItem(int itemId, bool a2) {
 			Actor_Says(kActorSergeantWalls, 160, 14);
 			Actor_Says(kActorMcCoy, 4490, 12);
 			Actor_Says(kActorSergeantWalls, 170, 13);
-			Actor_Clue_Acquire(kActorMcCoy, kClueWeaponsOrderForm, true, kActorMcCoy);
-			Actor_Clue_Acquire(kActorMcCoy, kCluePoliceIssueWeapons, true, kActorMcCoy);
+#if BLADERUNNER_ORIGINAL_BUGS
+			Actor_Clue_Acquire(kActorMcCoy, kClueWeaponsOrderForm,   true, kActorMcCoy); // A bug? Shouldn't the last argument be -1 or kActorSergeantWalls here?
+			Actor_Clue_Acquire(kActorMcCoy, kCluePoliceIssueWeapons, true, kActorMcCoy); // A bug? Shouldn't the last argument be -1 or kActorSergeantWalls here?
+#else
+			Actor_Clue_Acquire(kActorMcCoy, kClueWeaponsOrderForm,   true, kActorSergeantWalls);
+			Actor_Clue_Acquire(kActorMcCoy, kCluePoliceIssueWeapons, true, kActorSergeantWalls);
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		}
 		return true;
 	}
