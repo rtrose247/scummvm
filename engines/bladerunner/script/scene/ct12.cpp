@@ -70,6 +70,17 @@ void SceneScriptCT12::InitializeScene() {
 		Game_Flag_Set(kFlagCT12GaffSpinner);
 	}
 
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+	if (!Actor_Query_In_Set(kActorHowieLee, kSetCT01_CT12)
+	    && Global_Variable_Query(kVariableChapter) == 1
+	) {
+		AI_Movement_Track_Flush(kActorHowieLee);
+		AI_Movement_Track_Append(kActorHowieLee, 67, 0); // in kSetCT01_CT12
+		Actor_Set_Goal_Number(kActorHowieLee, kGoalHowieLeeDefault);
+	}
+#endif // BLADERUNNER_ORIGINAL_BUGS
+
 	if (Game_Flag_Query(kFlagCT01toCT12)
 	 && Game_Flag_Query(kFlagSpinnerAtCT01)
 	) {
@@ -127,6 +138,7 @@ bool SceneScriptCT12::ClickedOnActor(int actorId) {
 	}
 
 	// cut off feature? grayford never visit CT12 as goal 308 is never triggered
+	// bug? Marking this as a bug to revisit at a later time
 	if (actorId == kActorOfficerGrayford
 	 && Global_Variable_Query(kVariableChapter) == 4
 	 && Game_Flag_Query(kFlagUG18GuzzaScene)

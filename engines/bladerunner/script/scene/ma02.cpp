@@ -173,13 +173,13 @@ void SceneScriptMA02::ActorChangedGoal(int actorId, int newGoal, int oldGoal, bo
 void SceneScriptMA02::PlayerWalkedIn() {
 	//RTR 3.24.2019
 	//Rajif talk
-	if (Global_Variable_Query(kVariableChapter) >=1 
-		&& !Game_Flag_Query(kFlagMA02RajifTalk) 
-		) {
-		Game_Flag_Set(kFlagUG07Empty);
-		Game_Flag_Set(kFlagMA02RajifTalk);
-		talkWithRajif();
-	}
+	//if (Global_Variable_Query(kVariableChapter) > 1 
+	//	&& !Game_Flag_Query(kFlagMA02RajifTalk) 
+	//	) {
+	//	Game_Flag_Set(kFlagUG07Empty);
+	//	Game_Flag_Set(kFlagMA02RajifTalk);
+	//	talkWithRajif();
+	//}
 	//----
 	if (Game_Flag_Query(kFlagMA06ToMA02)) {
 		selectNextTvNews();
