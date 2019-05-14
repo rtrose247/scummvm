@@ -775,7 +775,7 @@ void SceneScriptPS12::SceneLoaded() {
 	Police_Maze_Target_Track_Add(kItemPS12Target16,  -731.0f, 93.66f,  788.0f,  -702.0f, 93.66f,  788.0f,  6, getPoliceMazePS12TrackData44(), false);
 	Police_Maze_Target_Track_Add(kItemPS12Target17,  -580.0f, -80.0f,  925.0f,  -580.0f,  -8.0f,  925.0f, 10, getPoliceMazePS12TrackData45(), false);
 
-	Ambient_Sounds_Remove_All_Non_Looping_Sounds(0);
+	Ambient_Sounds_Remove_All_Non_Looping_Sounds(false);
 	Ambient_Sounds_Add_Looping_Sound(kSfxESPLOOP2, 50, 1, 1);
 	Ambient_Sounds_Add_Looping_Sound(kSfxCTRAIN1,  50, 1, 1);
 	Ambient_Sounds_Add_Sound(kSfxSTEAM1,  10,  50, 16, 25, -100, 100, -101, -101, 0, 0);
@@ -826,8 +826,8 @@ bool SceneScriptPS12::ClickedOnItem(int itemId, bool a2) {
 		Item_Spin_In_World(itemId);
 #endif // BLADERUNNER_ORIGINAL_BUGS
 		switch (itemId) {
-		case kItemPS12Target6:              // fall-through
-		case kItemPS12Target7:              // fall-through
+		case kItemPS12Target6:              // fall through
+		case kItemPS12Target7:              // fall through
 		case kItemPS12Target8:
 #if BLADERUNNER_ORIGINAL_BUGS
 #else
@@ -843,20 +843,20 @@ bool SceneScriptPS12::ClickedOnItem(int itemId, bool a2) {
 			Item_Flag_As_Non_Target(kItemPS12Target7);
 			Item_Flag_As_Non_Target(kItemPS12Target8);
 			break;
-		case kItemPS12Target1:              // fall-through
-		case kItemPS12Target2:              // fall-through
-		case kItemPS12Target3:              // fall-through
-		case kItemPS12Target4:              // fall-through
-		case kItemPS12Target5:              // fall-through
-		case kItemPS12Target9:              // fall-through
-		case kItemPS12Target10:             // fall-through
-		case kItemPS12Target11:             // fall-through
-		case kItemPS12Target12:             // fall-through
-		case kItemPS12Target13:             // fall-through
-		case kItemPS12Target14:             // fall-through
-		case kItemPS12Target15:             // fall-through
-		case kItemPS12Target16:             // fall-through
-		case kItemPS12Target17:             // fall-through
+		case kItemPS12Target1:              // fall through
+		case kItemPS12Target2:              // fall through
+		case kItemPS12Target3:              // fall through
+		case kItemPS12Target4:              // fall through
+		case kItemPS12Target5:              // fall through
+		case kItemPS12Target9:              // fall through
+		case kItemPS12Target10:             // fall through
+		case kItemPS12Target11:             // fall through
+		case kItemPS12Target12:             // fall through
+		case kItemPS12Target13:             // fall through
+		case kItemPS12Target14:             // fall through
+		case kItemPS12Target15:             // fall through
+		case kItemPS12Target16:             // fall through
+		case kItemPS12Target17:             // fall through
 		default:
 #if BLADERUNNER_ORIGINAL_BUGS
 #else
@@ -908,7 +908,7 @@ void SceneScriptPS12::ActorChangedGoal(int actorId, int newGoal, int oldGoal, bo
 
 void SceneScriptPS12::PlayerWalkedIn() {
 	if (Game_Flag_Query(kFlagPS11toPS12)) {
-		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -546.0f, -9.06f, 570.0f, 0, true, false, 0);
+		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -546.0f, -9.06f, 570.0f, 0, true, false, false);
 		Game_Flag_Reset(kFlagPS11toPS12);
 	}
 	Police_Maze_Set_Pause_State(false);

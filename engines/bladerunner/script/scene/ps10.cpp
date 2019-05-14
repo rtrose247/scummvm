@@ -400,7 +400,7 @@ void SceneScriptPS10::InitializeScene() {
 
 	Scene_Exit_Add_2D_Exit(1, 0, 0, 20, 479, 3);
 
-	Ambient_Sounds_Remove_All_Non_Looping_Sounds(0);
+	Ambient_Sounds_Remove_All_Non_Looping_Sounds(false);
 	Ambient_Sounds_Add_Looping_Sound(kSfxESPLOOP2, 50, 1, 1);
 	Ambient_Sounds_Add_Looping_Sound(kSfxCTRAIN1,  50, 1, 1);
 	Ambient_Sounds_Add_Sound(kSfxSTEAM1,  10,  50, 16, 25, -100, 100, -101, -101, 0, 0);
@@ -503,7 +503,7 @@ bool SceneScriptPS10::ClickedOnItem(int itemId, bool combatMode) {
 		case kItemPS10Target4:
 			Sound_Play(kSfxFEMHURT2, 50, 0, 0, 50);
 			break;
-		case kItemPS10Target5:              // fall-through
+		case kItemPS10Target5:              // fall through
 		case kItemPS10Target7:
 			Sound_Play(kSfxMALEHURT, 50, 0, 0, 50);
 			break;
@@ -578,7 +578,7 @@ void SceneScriptPS10::ActorChangedGoal(int actorId, int newGoal, int oldGoal, bo
 
 void SceneScriptPS10::PlayerWalkedIn() {
 	if (Game_Flag_Query(kFlagPS11toPS10)) {
-		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -352.09f, -9.23f, 267.95f, 0, false, true, 0);
+		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -352.09f, -9.23f, 267.95f, 0, false, true, false);
 		Police_Maze_Set_Pause_State(false);
 		Game_Flag_Reset(kFlagPS11toPS10);
 		//return true;

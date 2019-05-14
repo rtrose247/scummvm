@@ -24,6 +24,11 @@
 
 namespace BladeRunner {
 
+enum kPS04Loops {
+	kPS04LoopPanToPS04                 = 0, //   0 -  29
+	kPS04LoopMainLoop                  = 1  //  30 -  90 (actually 31-90)
+};
+
 void SceneScriptPS04::InitializeScene() {
 	AI_Movement_Track_Pause(kActorGuzza);
 	if (Game_Flag_Query(kFlagPS03toPS04)) {
@@ -36,7 +41,7 @@ void SceneScriptPS04::InitializeScene() {
 		Actor_Change_Animation_Mode(kActorGuzza, 53);
 	}
 	Scene_Exit_Add_2D_Exit(0, 347, 113, 469, 302, 0);
-	Ambient_Sounds_Remove_All_Non_Looping_Sounds(0);
+	Ambient_Sounds_Remove_All_Non_Looping_Sounds(false);
 	Ambient_Sounds_Add_Looping_Sound(kSfxPSAMB6, 16, 1, 1);
 	Ambient_Sounds_Add_Looping_Sound(kSfxRTONE3, 50, 1, 1);
 	Ambient_Sounds_Add_Sound(kSfxSCANNER1, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
@@ -46,8 +51,9 @@ void SceneScriptPS04::InitializeScene() {
 	Ambient_Sounds_Add_Sound(kSfxSCANNER5, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
 	Ambient_Sounds_Add_Sound(kSfxSCANNER6, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
 	Ambient_Sounds_Add_Sound(kSfxSCANNER7, 9, 40, 20, 20, 0, 0, -101, -101, 0, 0);
-	Scene_Loop_Start_Special(0, 0, 0);
-	Scene_Loop_Set_Default(1);
+
+	Scene_Loop_Start_Special(kSceneLoopModeLoseControl, kPS04LoopPanToPS04, false);
+	Scene_Loop_Set_Default(kPS04LoopMainLoop);
 }
 
 void SceneScriptPS04::SceneLoaded() {
@@ -110,7 +116,7 @@ bool SceneScriptPS04::ClickedOnItem(int itemId, bool a2) {
 
 bool SceneScriptPS04::ClickedOnExit(int exitId) {
 	if (exitId == 0) {
-		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -668.0f, -350.85f, 962.0f, 0, true, false, 0)) {
+		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -668.0f, -350.85f, 962.0f, 0, true, false, false)) {
 			Game_Flag_Set(kFlagPS04toPS03);
 			Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 			Ambient_Sounds_Remove_All_Looping_Sounds(1);
@@ -132,7 +138,7 @@ void SceneScriptPS04::ActorChangedGoal(int actorId, int newGoal, int oldGoal, bo
 }
 
 void SceneScriptPS04::PlayerWalkedIn() {
-	if (Actor_Query_Which_Set_In(kActorGuzza) == 64) {
+	if (Actor_Query_Which_Set_In(kActorGuzza) == kSetPS04) {
 		Actor_Face_Actor(kActorMcCoy, kActorGuzza, true);
 	}
 	//return false;
@@ -237,7 +243,7 @@ void SceneScriptPS04::dialogueWithGuzza() {
 			Actor_Says(kActorMcCoy, 3925, 18);
 			Actor_Face_Actor(kActorGuzza, kActorMcCoy, true);
 			Actor_Says(kActorGuzza, 170, 33);
-			Loop_Actor_Walk_To_XYZ(kActorMcCoy, -716.0f, -354.85f, 1042.0f, 0, false, false, 0);
+			Loop_Actor_Walk_To_XYZ(kActorMcCoy, -716.0f, -354.85f, 1042.0f, 0, false, false, false);
 			Actor_Face_Actor(kActorMcCoy, kActorGuzza, true);
 			Actor_Says(kActorMcCoy, 3930, 13);
 			Actor_Face_Actor(kActorGuzza, kActorMcCoy, true);
@@ -351,16 +357,28 @@ void SceneScriptPS04::dialogueWithGuzza() {
 		Actor_Says(kActorGuzza, 610, 33);
 		Actor_Face_Heading(kActorGuzza, 400, false);
 		Actor_Says(kActorGuzza, 620, 32);
-		Actor_Face_Actor(kActorGuzza, kActorMcCoy, true);
+		if (_vm->_cutContent) {
+			// add a fade-out here while Guzza calls-in for favors
+			Scene_Loop_Start_Special(kSceneLoopModeOnce, kPS04LoopPanToPS04, true);
+			Scene_Loop_Set_Default(kPS04LoopMainLoop);
+			Delay(1000);
+			Actor_Face_Actor(kActorGuzza, kActorMcCoy, true);
+			Delay(1000);
+		}
 		Actor_Says(kActorGuzza, 700, 34);
 		Actor_Says(kActorMcCoy, 4100, 13);
 		Actor_Says(kActorGuzza, 710, 31);
 		Actor_Says(kActorGuzza, 720, 34);
 		Actor_Says(kActorMcCoy, 4105, 18);
-		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -668.0f, -350.85f, 962.0f, 0, false, false, 0);
+#if BLADERUNNER_ORIGINAL_BUGS
+		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -668.0f, -350.85f, 962.0f, 0, false, false, false);
+#else
+		// enforce stop running (if was running) - McCoy running in Guzza's office in this scene looks bad
+		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -668.0f, -350.85f, 962.0f, 0, false, false, true);
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		Actor_Says(kActorGuzza, 730, 32);
 		Actor_Face_Actor(kActorMcCoy, kActorGuzza, true);
-		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -716.0f, -354.85f, 1042.0f, 0, false, false, 0);
+		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -716.0f, -354.85f, 1042.0f, 0, false, false, false);
 		Actor_Face_Actor(kActorGuzza, kActorMcCoy, true);
 		Actor_Says(kActorGuzza, 740, 31);
 		Actor_Says(kActorGuzza, 750, 32);

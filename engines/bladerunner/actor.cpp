@@ -137,6 +137,18 @@ void Actor::setup(int actorId) {
 	for (int i = 0; i != actorCount; ++i)
 		_friendlinessToOther[i] = 50;
 
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+	// if player actor was not idle and had an active _walkInfo then
+	// upon starting a new game, the player actpr wpi;d be put on the old _walkInfo
+	_walkInfo->reset();
+//	// delete _walkInfo and re-allocate it (a reset method would probably be better)
+//	if (_walkInfo != nullptr) {
+//		delete(_walkInfo);
+//	}
+//	_walkInfo = new ActorWalk(_vm);
+#endif // BLADERUNNER_ORIGINAL_BUGS
+
 	_combatInfo->setup();
 	_clues->removeAll();
 	_movementTrack->flush();
@@ -723,6 +735,14 @@ void Actor::tickCombat() {
 
 bool Actor::draw(Common::Rect *screenRect) {
 	Vector3 drawPosition(_position.x, -_position.z, _position.y + 2.0);
+
+#if !BLADERUNNER_ORIGINAL_BUGS
+	// In the original game, Moraji appears to be floating above the ground a bit
+	if (_id == kActorMoraji && _setId == kSetDR01_DR02_DR04) {
+		drawPosition.z -= 6.0f;
+	}
+#endif
+
 	float drawAngle = M_PI - _facing * (M_PI / 512.0f);
 	float drawScale = _scale;
 
@@ -1120,6 +1140,10 @@ int Actor::getFacing() const {
 
 int Actor::getAnimationMode() const {
 	return _animationMode;
+}
+
+int Actor::getAnimationId() const {
+	return _animationId;
 }
 
 void Actor::setGoal(int goalNumber) {

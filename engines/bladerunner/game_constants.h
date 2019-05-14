@@ -366,7 +366,7 @@ enum Clues {
 	kClueChinaBar = 260,
 	kCluePlasticExplosive = 261,
 	kClueDogCollar2 = 262,
-	kClueKingstonKitchenBox2 = 263,
+	kClueKingstonKitchenBox2 = 263, // ESPER hard-copy
 	kClueCrystalsCigarette = 264,
 	kClueSpinnerKeys = 265,
 	kClueAct2Ended = 266,
@@ -552,7 +552,7 @@ enum Flags {
 	kFlagHC02toHC04 = 110,
 	kFlagPS07KleinTalkClues = 111,
 	// 112 is never used
-	// 113 is never used
+	kFlagScorpionsInAR02 = 113,   // Re-purposed. Original: 113 is never used
 	kFlagRC03toRC01 = 114,
 	kFlagRC01toRC03 = 115,
 	kFlagRC03toAR02 = 116,
@@ -901,9 +901,9 @@ enum Flags {
 	// 459 is never used
 	kFlagSteeleWalkingAround = 460,
 	kFlagMaggieHasBomb = 461,
-	kFlagPS04GuzzaLeft = 462,
+	kFlagGuzzaIsMovingAround = 462,
 	kFlagHC01GuzzaWalk = 463,
-	kFlagHC01GuzzaPrepare= 464,
+	kFlagHC01GuzzaPrepare = 464,
 	kFlagMcCoyArrested = 465,
 	kFlagBB10Shelf1Available = 466,
 	kFlagBB10Shelf2Available = 467,
@@ -1126,7 +1126,7 @@ enum Flags {
 	kFlagHF05PoliceAttacked = 684,
 	kFlagClovisLyingDown = 685,
 	kFlagNotUsed686 = 686,
-	// 687 is never used
+	kFlagMcCoyCommentsOnFans = 687, // Re-purposed. Original: 687 is never used
 	kFlagPS05TV0 = 688,
 	kFlagPS05TV1 = 689,
 	kFlagPS05TV2 = 690,
@@ -1165,7 +1165,7 @@ enum Flags {
 	kFlagZubenBountyPaid = 723,
 	kFlagUG15BridgeBreaks = 724,
 	kFlagCT11DogWrapperAvailable = 725,
-	kFlagAR02Entered = 726,
+	kFlagAR02Entered = 726,  // Now: never checked (superseded by new kFlagScorpionsInAR02). Original: used to track if McCoy visited AR02 in order to remove scorpion's cage item if Dektora buys it
 	kFlagPS04WeaponsOrderForm = 727,
 	kFlagDR01Visited = 728,                     // Re-purposed. Original: 728 is never used
 	kFlagNR08DektoraShow = 729
@@ -1685,6 +1685,61 @@ enum GameItems {
 };
 
 enum GameModelAnimations {
+	kModelAnimationMcCoyWithGunIdle              =   0,
+	kModelAnimationMcCoyWithGunGotHitRight       =   1,
+	kModelAnimationMcCoyWithGunGotHitLeft        =   2,
+	kModelAnimationMcCoyWithGunWalking           =   3,
+	kModelAnimationMcCoyWithGunRunning           =   4,
+	kModelAnimationMcCoyWithGunShotDead          =   5,
+	kModelAnimationMcCoyWithGunClimbStairsUp     =   6,
+	kModelAnimationMcCoyWithGunClimbStairsDown   =   7,
+	kModelAnimationMcCoyWithGunUnholsterGun      =   8,
+	kModelAnimationMcCoyWithGunHolsterGun        =   9,
+	kModelAnimationMcCoyWithGunAiming            =  10,
+	kModelAnimationMcCoyWithGunStopAimResumeIdle =  11,
+	kModelAnimationMcCoyWithGunShooting          =  12,
+	kModelAnimationMcCoyWalking                  =  13,
+	kModelAnimationMcCoyRunning                  =  14,
+	kModelAnimationMcCoyClimbStairsUp            =  15,
+	kModelAnimationMcCoyClimbStairsDown          =  16,
+	kModelAnimationMcCoyGotHitRight              =  17,
+	kModelAnimationMcCoyFallsOnHisBack           =  18,
+	kModelAnimationMcCoyIdle                     =  19,
+	kModelAnimationMcCoyProtestingTalk           =  20,
+	kModelAnimationMcCoyScratchHeadTalk          =  21,
+	kModelAnimationMcCoyPointingTalk             =  22,
+	kModelAnimationMcCoyUpsetTalk                =  23,
+	kModelAnimationMcCoyDismissiveTalk           =  24,
+	kModelAnimationMcCoyScratchEarTalk           =  25,
+	kModelAnimationMcCoyHandsOnWaistTalk         =  26,
+	kModelAnimationMcCoyScratchEarLongerTalk     =  27,
+	kModelAnimationMcCoyDodgeAndDrawGun          =  28,
+	kModelAnimationMcCoyLeaningOver              =  29,
+	kModelAnimationMcCoyThrowsBeggarInTrash      =  30,
+	kModelAnimationMcCoyDiesInAgony              =  31,
+	kModelAnimationMcCoyGivesFromPocket          =  32,
+	kModelAnimationMcCoyLeaningOverSearching     =  33,
+	kModelAnimationMcCoyLeaningOverResumeIdle    =  34,
+	kModelAnimationMcCoyEntersSpinner            =  35,
+	kModelAnimationMcCoyExitsSpinner             =  36,
+	kModelAnimationMcCoyClimbsLadderUp           =  37,
+	kModelAnimationMcCoyClimbsLadderDown         =  38,
+	kModelAnimationMcCoyRecoversFromPassingOut   =  39,
+	kModelAnimationMcCoyGiveMovement             =  40,
+	kModelAnimationMcCoySittingToUseConsole      =  41,
+	kModelAnimationMcCoyWithGunGrabbedByArm0     =  42,
+	kModelAnimationMcCoyWithGunGrabbedByArm1     =  43,
+	kModelAnimationMcCoyWithGunGrabbedByArmHurt  =  44,
+	kModelAnimationMcCoyWithGunGrabbedByArmFreed =  45,
+	kModelAnimationMcCoyTiedInChairIdle          =  46,
+	kModelAnimationMcCoyTiedInChairMoving        =  47,
+	kModelAnimationMcCoyTiedInChairFreed         =  48,
+	kModelAnimationMcCoyStartled                 =  49,
+	kModelAnimationMcCoyCrouchingDown            =  50,
+	kModelAnimationMcCoyCrouchedIdle             =  51,
+	kModelAnimationMcCoyCrouchedGetsUp           =  52,
+	kModelAnimationMcCoyDrinkingBooze            =  53,
+	//
 	kModelAnimationBulletBobsTrackingGun       = 440,
 	kModelAnimationMaleTargetEmptyHandsActive  = 441,
 	kModelAnimationMaleTargetEmptyHandsDead    = 442, // 441+1
@@ -2049,23 +2104,26 @@ enum GoalGordo {
 };
 
 enum GoalGuzza {
-	kGoalGuzzaLeaveOffice = 100,
-	kGoalGuzzaGoToHawkersCircle1 = 101,
-	kGoalGuzzaGoToOffice = 102,
-	kGoalGuzzaGoToHawkersCircle2 = 103,
-	kGoalGuzzaGoToFreeSlotB = 104,
-	kGoalGuzzaGoToFreeSlotG = 105,
-	kGoalGuzzaSitAtNR03 = 201,
-	kGoalGuzzaUG18Wait = 300,
-	kGoalGuzzaUG18Target = 301,
-	kGoalGuzzaUG18WillGetShotBySadik = 302,
-	kGoalGuzzaUG18HitByMcCoy = 303,
-	kGoalGuzzaUG18MissedByMcCoy = 304,
-	kGoalGuzzaUG18ShotByMcCoy = 305,
-	kGoalGuzzaUG18ShootMcCoy = 306,
-	kGoalGuzzaUG18FallDown = 307,
-	kGoalGuzzaUG18ShotBySadik = 390,
-	kGoalGuzzaGone = 599
+
+	kGoalGuzzaDefault                 =   0, // added goal
+	kGoalGuzzaLeftOffice              = 100,
+	kGoalGuzzaGoToHawkersCircle1      = 101,
+	kGoalGuzzaAtOffice                = 102,
+	kGoalGuzzaGoToHawkersCircle2      = 103,
+	kGoalGuzzaGoToFreeSlotB           = 104,
+	kGoalGuzzaGoToFreeSlotG           = 105,
+	kGoalGuzzaWasAtNR03               = 200,
+	kGoalGuzzaSitAtNR03               = 201,
+	kGoalGuzzaUG18Wait                = 300,
+	kGoalGuzzaUG18Target              = 301,
+	kGoalGuzzaUG18WillGetShotBySadik  = 302,
+	kGoalGuzzaUG18HitByMcCoy          = 303,
+	kGoalGuzzaUG18MissedByMcCoy       = 304,
+	kGoalGuzzaUG18ShotByMcCoy         = 305,
+	kGoalGuzzaUG18ShootMcCoy          = 306,
+	kGoalGuzzaUG18FallDown            = 307,
+	kGoalGuzzaUG18ShotBySadik         = 390,
+	kGoalGuzzaGone                    = 599
 };
 
 enum GoalClovis {
@@ -2202,6 +2260,26 @@ enum GoalBulletBob {
 	kGoalBulletBobDead = 4,
 	kGoalBulletBobShotMcCoy = 6,
 	kGoalBulletBobGone = 99
+};
+
+enum GoalRachael {
+	kGoalRachaelDefault                        =   0,
+	kGoalRachaelLeavesAfterTyrellMeeting       = 200,
+	kGoalRachaelShouldBeOutsideMcCoysAct3      = 211, // added Rachael goal
+	kGoalRachaelShouldBeInElevatorMcCoysAct3   = 212, // added Rachael goal
+	kGoalRachaelIsOutsideMcCoysBuildingAct3    = 300,
+	kGoalRachaelIsInsideMcCoysElevatorAct3     = 302, // added Rachael goal
+	kGoalRachaelIsInsideElevatorStartTalkAct3  = 303, // added Rachael goal
+	kGoalRachaelIsOutWalksToPoliceHQAct3       = 305,
+	kGoalRachaelIsOutResumesWalkToPoliceHQAct3 = 306,
+	kGoalRachaelIsOutFleeingToPoliceHQAct3     = 307, // added Rachael goal
+	kGoalRachaelAtEndOfAct3IfNotMetWithMcCoy   = 399, // added Rachael goal
+	kGoalRachaelAtEndOfAct3IfMetWithMcCoy      = 400,
+	kGoalRachaelIsInsideMcCoysElevatorAct4     = 402, // added Rachael goal
+	kGoalRachaelIsInsideElevatorStartTalkAct4  = 403, // added Rachael goal
+	kGoalRachaelIsOutsideMcCoysBuildingAct4    = 404, // added Rachael goal
+	kGoalRachaelIsOutWalksToPoliceHQAct4       = 405, // added Rachael goal
+	kGoalRachaelAtEndOfAct4                    = 499  // added Rachael goal
 };
 
 enum GoalRunciter {
@@ -2559,7 +2637,7 @@ enum SFXSounds {
 	kSfxDRAMB5   = 111,  //           - Looping
 	kSfxFACTAMB2 = 112,  //             Looping
 	kSfxDRRAIN1  = 113,  // unused    - Looping
-	kSfxSPINUP1  = 114,  // used only once
+	kSfxSPINUP1  = 114,  // elevator sound
 	kSfxSPINOPN3 = 115,  // unused
 	kSfxSPINOPN4 = 116,
 	kSfxCARUP3   = 117,

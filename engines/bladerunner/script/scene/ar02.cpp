@@ -79,6 +79,7 @@ void SceneScriptAR02::InitializeScene() {
 
 void SceneScriptAR02::SceneLoaded() {
 	Obstacle_Object("DF_BOOTH", true);
+#if BLADERUNNER_ORIGINAL_BUGS
 	if (!Game_Flag_Query(kFlagAR02DektoraBoughtScorpions)) {
 		Item_Add_To_World(kItemScorpions, kModelAnimationCageOfScorpions, kSetAR01_AR02, -442.84f, 36.77f, -1144.51f, 360, 36, 36, false, true, false, true);
 	}
@@ -88,6 +89,24 @@ void SceneScriptAR02::SceneLoaded() {
 		Game_Flag_Set(kFlagNotUsed0);
 		Item_Remove_From_World(kItemScorpions);
 	}
+#else
+	if (Global_Variable_Query(kVariableChapter) < 4
+	    && !Game_Flag_Query(kFlagAR02DektoraBoughtScorpions)
+	    && !Game_Flag_Query(kFlagScorpionsInAR02)
+	) {
+		// the kFlagScorpionsInAR02 flag helps keep track of the item in AR
+		// and make it not blink in and out of existence
+		// in the transition from AR01 to AR02
+		Game_Flag_Set(kFlagScorpionsInAR02);
+		Item_Add_To_World(kItemScorpions, kModelAnimationCageOfScorpions, kSetAR01_AR02, -442.84f, 36.77f, -1144.51f, 360, 36, 36, false, true, false, true);
+	} else if (Global_Variable_Query(kVariableChapter) >= 4
+	           && !Game_Flag_Query(kFlagAR02DektoraBoughtScorpions)
+	           && Game_Flag_Query(kFlagScorpionsInAR02)
+	) {
+		Game_Flag_Reset(kFlagScorpionsInAR02);
+		Item_Remove_From_World(kItemScorpions);
+	}
+#endif // BLADERUNNER_ORIGINAL_BUGS
 }
 
 bool SceneScriptAR02::MouseClick(int x, int y) {
@@ -100,7 +119,7 @@ bool SceneScriptAR02::ClickedOn3DObject(const char *objectName, bool a2) {
 
 bool SceneScriptAR02::ClickedOnActor(int actorId) {
 	if (actorId == kActorInsectDealer) {
-		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -386.96f, 0.0f, -1078.45f, 12, 1, false, 0)) {
+		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -386.96f, 0.0f, -1078.45f, 12, true, false, false)) {
 			Actor_Face_Actor(kActorMcCoy, kActorInsectDealer, true);
 			Actor_Face_Actor(kActorInsectDealer, kActorMcCoy, true);
 			if (Global_Variable_Query(kVariableChapter) == 2) {
@@ -111,7 +130,7 @@ bool SceneScriptAR02::ClickedOnActor(int actorId) {
 					Player_Loses_Control();
 					ADQ_Flush();
 					ADQ_Add(kActorInsectDealer, 210, 14);
-					Loop_Actor_Walk_To_XYZ(kActorMcCoy, -350.66f, 0.0f, -1117.19f, 0, false, false, 0);
+					Loop_Actor_Walk_To_XYZ(kActorMcCoy, -350.66f, 0.0f, -1117.19f, 0, false, false, false);
 					Actor_Face_Actor(kActorMcCoy, kActorInsectDealer, true);
 					Actor_Says(kActorMcCoy, 110, 18);
 					Actor_Says(kActorInsectDealer, 230, 14);
@@ -164,7 +183,7 @@ bool SceneScriptAR02::ClickedOnActor(int actorId) {
 	if (actorId == kActorHasan
 	 && Global_Variable_Query(kVariableChapter) == 2
 	) {
-		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -240.79f, 0.0f, -1328.89f, 12, true, false, 0)) {
+		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -240.79f, 0.0f, -1328.89f, 12, true, false, false)) {
 			Actor_Face_Actor(kActorMcCoy, kActorHasan, true);
 			Actor_Face_Actor(kActorHasan, kActorMcCoy, true);
 			if (!Game_Flag_Query(kFlagAR02HassanTalk)) {
@@ -181,7 +200,7 @@ bool SceneScriptAR02::ClickedOnActor(int actorId) {
 
 bool SceneScriptAR02::ClickedOnItem(int itemId, bool a2) {
 	if (itemId == kItemScorpions) {
-		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -386.96f, 0.0f, -1078.45f, 12, true, false, 0)) {
+		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -386.96f, 0.0f, -1078.45f, 12, true, false, false)) {
 			Actor_Face_Actor(kActorMcCoy, kActorInsectDealer, true);
 			if (!Game_Flag_Query(kFlagAR02ScorpionsChecked)) {
 				Actor_Says(kActorInsectDealer, 0, 14);
@@ -210,7 +229,7 @@ bool SceneScriptAR02::ClickedOnItem(int itemId, bool a2) {
 
 bool SceneScriptAR02::ClickedOnExit(int exitId) {
 	if (exitId == 0) {
-		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -182.0f, 0.0f, -551.0f, 0, 1, false, 0)) {
+		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -182.0f, 0.0f, -551.0f, 0, true, false, false)) {
 			Game_Flag_Set(kFlagAR02toAR01);
 			Async_Actor_Walk_To_XYZ(kActorMcCoy, -182.0f, 0.0f, -407.0f, 0, false);
 			Set_Enter(kSetAR01_AR02, kSceneAR01);
@@ -219,8 +238,8 @@ bool SceneScriptAR02::ClickedOnExit(int exitId) {
 	}
 
 	if (exitId == 1) {
-		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -465.0f, 0.0f, -799.0f, 0, 1, false, 0)) {
-			Loop_Actor_Walk_To_XYZ(kActorMcCoy, -560.0f, 0.0f, -799.0f, 0, 0, false, 0);
+		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -465.0f, 0.0f, -799.0f, 0, true, false, false)) {
+			Loop_Actor_Walk_To_XYZ(kActorMcCoy, -560.0f, 0.0f, -799.0f, 0, false, false, false);
 			Game_Flag_Set(kFlagAR02toRC03);
 			Game_Flag_Reset(kFlagMcCoyInAnimoidRow);
 			Game_Flag_Set(kFlagMcCoyInRunciters);
@@ -244,7 +263,7 @@ void SceneScriptAR02::ActorChangedGoal(int actorId, int newGoal, int oldGoal, bo
 
 void SceneScriptAR02::PlayerWalkedIn() {
 	if (Game_Flag_Query(kFlagRC03toAR02)) {
-		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -465.0f, 0.0f, -799.0f, 0, false, false, 0);
+		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -465.0f, 0.0f, -799.0f, 0, false, false, false);
 		Game_Flag_Reset(kFlagRC03toAR02);
 	}
 	Game_Flag_Set(kFlagAR02Entered);

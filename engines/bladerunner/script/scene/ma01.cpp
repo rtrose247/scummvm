@@ -25,10 +25,10 @@
 namespace BladeRunner {
 
 enum kMA01Loops {
-	kMA01LoopInshotRoof  = 0,
-	kMA01LoopMain        = 1,
-	kMA01LoopOutDoorAnim = 3,
-	kMA01LoopOutshotRoof = 4
+	kMA01LoopInshotRoof   = 0,
+	kMA01LoopMainLoop = 1,
+	kMA01LoopOutDoorAnim  = 3,
+	kMA01LoopOutshotRoof  = 4
 };
 
 enum kMA01Exits {
@@ -60,13 +60,13 @@ void SceneScriptMA01::InitializeScene() {
 	Ambient_Sounds_Add_Sound(kSfxTHNDER4, 10,  70, 50, 100, 0, 0, -101, -101, 0, 0);
 
 	if (Game_Flag_Query(kFlagMA06toMA01)) {
-		Scene_Loop_Set_Default(kMA01LoopMain);
+		Scene_Loop_Set_Default(kMA01LoopMainLoop);
 		Game_Flag_Reset(kFlagMA06toMA01);
 	} else {
 		Actor_Set_Invisible(kActorMcCoy, true);
 		Game_Flag_Set(kFlagArrivedFromSpinner2);
 		Scene_Loop_Start_Special(kSceneLoopModeLoseControl, kMA01LoopInshotRoof, false);
-		Scene_Loop_Set_Default(kMA01LoopMain);
+		Scene_Loop_Set_Default(kMA01LoopMainLoop);
 	}
 
 	if (Game_Flag_Query(kFlagMA01GaffApproachMcCoy)) {
@@ -107,11 +107,11 @@ bool SceneScriptMA01::ClickedOnExit(int exitId) {
 
 	if (exitId == kMA01ExitMA06) {
 		if (Actor_Query_Goal_Number(kActorZuben) == kGoalZubenFled) {
-			if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 1446.0f, 0.0f, -725.0f, 72, true, false, 0)) {
+			if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 1446.0f, 0.0f, -725.0f, 72, true, false, false)) {
 				Actor_Set_Goal_Number(kActorZuben, kGoalZubenMA01AttackMcCoy);
 				Scene_Exits_Disable();
 			}
-		} else if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 1446.0f, 0.0f, -725.0f, 12, true, false, 0)) {
+		} else if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 1446.0f, 0.0f, -725.0f, 12, true, false, false)) {
 			Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 			Ambient_Sounds_Remove_All_Looping_Sounds(1);
 			Game_Flag_Set(kFlagMA01toMA06);
@@ -121,7 +121,7 @@ bool SceneScriptMA01::ClickedOnExit(int exitId) {
 	}
 
 	if (exitId == kMA01ExitSpinner) {
-		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 381.0f, 0.0f, 54.0f, 0, true, false, 0)) {
+		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 381.0f, 0.0f, 54.0f, 0, true, false, false)) {
 			Player_Loses_Control();
 			Actor_Face_Heading(kActorMcCoy, 736, false);
 			Game_Flag_Reset(kFlagMcCoyInChinaTown);
@@ -275,14 +275,22 @@ void SceneScriptMA01::PlayerWalkedOut() {
 	Actor_Set_Invisible(kActorMcCoy, false);
 	Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 	Ambient_Sounds_Remove_All_Looping_Sounds(1);
-	if (!Game_Flag_Query(kFlagMA01toMA06)
-	 &&  Global_Variable_Query(kVariableChapter) == 1
-	) {
-		Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
-		Ambient_Sounds_Remove_All_Looping_Sounds(1);
-		Outtake_Play(kOuttakeTowards2, true, -1);
-		Outtake_Play(kOuttakeInside1, true, -1);
-		Outtake_Play(kOuttakeTowards1, true, -1);
+	if (!Game_Flag_Query(kFlagMA01toMA06)) {
+		if (Global_Variable_Query(kVariableChapter) == 1) {
+			Outtake_Play(kOuttakeTowards2, true, -1);
+			Outtake_Play(kOuttakeInside1,  true, -1);
+			Outtake_Play(kOuttakeTowards1, true, -1);
+		}
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		else {
+			// Acts 2, 3 - should still use a spinner fly-through transition
+			if (!Game_Flag_Query(kFlagMcCoyInTyrellBuilding)) {
+				// don't play an extra outtake when going to Tyrell Building
+				Outtake_Play(kOuttakeAway1,    true, -1); // available in Acts 2, 3
+			}
+		}
+#endif // BLADERUNNER_ORIGINAL_BUGS
 	}
 }
 
