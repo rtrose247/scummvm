@@ -110,6 +110,14 @@ bool SceneScriptBB03::ClickedOnExit(int exitId) {
 		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 204.0f, 60.16f, -164.0f, 0, true, false, false)) {
 			if (Global_Variable_Query(kVariableChapter) < 4) {
 				if (Actor_Query_Goal_Number(kActorSebastian) == 200) {
+					//RTR 5.16.2019
+					//Obtain DNA clue for free:
+					Actor_Voice_Over(130, kActorVoiceOver);
+					Item_Pickup_Spin_Effect(kModelAnimationDNADataDisc, 439, 242);
+					Actor_Voice_Over(140, kActorVoiceOver);
+					Game_Flag_Set(kFlagBB07PrinterChecked);
+					Actor_Clue_Acquire(kActorMcCoy, kClueDNASebastian, true, -1);
+					//----
 					Actor_Says(kActorSebastian, 70, kAnimationModeTalk);
 					Actor_Says(kActorMcCoy, 7010, 13);
 					Actor_Says(kActorSebastian, 80, kAnimationModeTalk);

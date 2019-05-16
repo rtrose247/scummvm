@@ -81,11 +81,14 @@ void SceneScriptNR03::InitializeScene() {
 	}
 
 	// Guarding in NR03
-	if (Actor_Query_Goal_Number(kActorHanoi) > 209
-	 && Actor_Query_Goal_Number(kActorHanoi) < 215
-	) {
-		Actor_Set_Goal_Number(kActorHanoi, kGoalHanoiNR03StartGuarding);
-	}
+	//RTR 5.16.2019
+	//Hanoi=>dancer
+	//if (Actor_Query_Goal_Number(kActorHanoi) > 209
+	// && Actor_Query_Goal_Number(kActorHanoi) < 215
+	//) {
+	Actor_Set_Goal_Number(kActorHanoi, kGoalHanoiNR03GoToDancer);//kGoalHanoiNR03StartGuarding);
+	//}
+	//----
 }
 
 void SceneScriptNR03::SceneLoaded() {
@@ -152,63 +155,67 @@ bool SceneScriptNR03::ClickedOnExit(int exitId) {
 	}
 
 	if (exitId == 1) {
+		//RTR 5.16.2019
+		//Exits for free:
 		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -161.0f, -70.19f, -1139.0f, 0, true, false, false)) {
-			if (Actor_Query_Which_Set_In(kActorHanoi) == kSetNR03) {
-				AI_Movement_Track_Pause(kActorHanoi);
-				Actor_Face_Actor(kActorHanoi, kActorMcCoy, true);
-				Actor_Face_Actor(kActorMcCoy, kActorHanoi, true);
-				int warnings = Global_Variable_Query(kVariableHanoiNR04Warnings);
-				if (warnings == 0) {
-					Actor_Says(kActorHanoi, 50, 13);
-					AI_Movement_Track_Unpause(kActorHanoi);
-				} else if (warnings == 1) {
-					Actor_Says(kActorHanoi, 210, 15);
-					AI_Movement_Track_Unpause(kActorHanoi);
-				} else if (warnings == 2) {
-					Actor_Set_Goal_Number(kActorHanoi, kGoalHanoiThrowOutMcCoy);
-				}
+		//	if (Actor_Query_Which_Set_In(kActorHanoi) == kSetNR03) {
+		//		AI_Movement_Track_Pause(kActorHanoi);
+		//		Actor_Face_Actor(kActorHanoi, kActorMcCoy, true);
+		//		Actor_Face_Actor(kActorMcCoy, kActorHanoi, true);
+		//		int warnings = Global_Variable_Query(kVariableHanoiNR04Warnings);
+		//		if (warnings == 0) {
+		//			Actor_Says(kActorHanoi, 50, 13);
+		//			AI_Movement_Track_Unpause(kActorHanoi);
+		//		} else if (warnings == 1) {
+		//			Actor_Says(kActorHanoi, 210, 15);
+		//			AI_Movement_Track_Unpause(kActorHanoi);
+		//		} else if (warnings == 2) {
+		//			Actor_Set_Goal_Number(kActorHanoi, kGoalHanoiThrowOutMcCoy);
+		//		}
 				// game bug? after reentering this does nothing as variable is never reset or checked for > 2
-				Global_Variable_Increment(kVariableHanoiNR04Warnings, 1);
-			} else {
+		//		Global_Variable_Increment(kVariableHanoiNR04Warnings, 1);
+		//	} else {
 				Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 				Ambient_Sounds_Remove_All_Looping_Sounds(1);
 				Game_Flag_Set(kFlagNR03toNR04);
 				Set_Enter(kSetNR04, kSceneNR04);
-			}
+			//}
+			//----
 		}
-
 		return true;
 	}
 
 	if (exitId == 2) {
+		//RTR 5.16.2019
+		//Exits for free:
 		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -151.0f, -70.19f, -476.0f, 12, true, false, false)) {
-			if (Actor_Query_Which_Set_In(kActorHanoi) == kSetNR03
-			 && Actor_Query_Goal_Number(kActorHanoi) != kGoalHanoiNR03GoToDancer
-			) {
-				Actor_Face_Heading(kActorMcCoy, 680, false);
-				Actor_Change_Animation_Mode(kActorMcCoy, 12);
-				Delay(150);
-				Actor_Change_Animation_Mode(kActorMcCoy, kAnimationModeIdle);
-				AI_Movement_Track_Pause(kActorHanoi);
-				Actor_Face_Actor(kActorHanoi, kActorMcCoy, true);
-
-				int warnings = Global_Variable_Query(kVariableHanoiNR05Warnings);
-				if (warnings == 0) {
-					Actor_Says(kActorHanoi, 0, 15);
-					Actor_Face_Actor(kActorMcCoy, kActorHanoi, true);
-					Actor_Says(kActorMcCoy, 3335, 13);
-					Actor_Says(kActorHanoi, 10, 16);
-					AI_Movement_Track_Unpause(kActorHanoi);
-				} else if (warnings == 1) {
-					Actor_Face_Actor(kActorMcCoy, kActorHanoi, true);
-					Actor_Says(kActorHanoi, 210, 12);
-					AI_Movement_Track_Unpause(kActorHanoi);
-				} else if (warnings == 2) {
-					Actor_Set_Goal_Number(kActorHanoi, kGoalHanoiThrowOutMcCoy);
-				}
+		//	if (Actor_Query_Which_Set_In(kActorHanoi) == kSetNR03
+		//	 && Actor_Query_Goal_Number(kActorHanoi) != kGoalHanoiNR03GoToDancer
+		//	) {
+		//		Actor_Face_Heading(kActorMcCoy, 680, false);
+		//		Actor_Change_Animation_Mode(kActorMcCoy, 12);
+		//		Delay(150);
+		//		Actor_Change_Animation_Mode(kActorMcCoy, kAnimationModeIdle);
+		//		AI_Movement_Track_Pause(kActorHanoi);
+		//		Actor_Face_Actor(kActorHanoi, kActorMcCoy, true);
+		//
+		//		int warnings = Global_Variable_Query(kVariableHanoiNR05Warnings);
+		//		if (warnings == 0) {
+		//			Actor_Says(kActorHanoi, 0, 15);
+		//			Actor_Face_Actor(kActorMcCoy, kActorHanoi, true);
+		//			Actor_Says(kActorMcCoy, 3335, 13);
+		//			Actor_Says(kActorHanoi, 10, 16);
+		//			AI_Movement_Track_Unpause(kActorHanoi);
+		//		} else if (warnings == 1) {
+		//			Actor_Face_Actor(kActorMcCoy, kActorHanoi, true);
+		//			Actor_Says(kActorHanoi, 210, 12);
+		//			AI_Movement_Track_Unpause(kActorHanoi);
+		//		} else if (warnings == 2) {
+		//			Actor_Set_Goal_Number(kActorHanoi, kGoalHanoiThrowOutMcCoy);
+		//		}
 				// game bug? after reentering this does nothing as variable is never reset or checked for > 2
-				Global_Variable_Increment(kVariableHanoiNR05Warnings, 1);
-			} else {
+		//		Global_Variable_Increment(kVariableHanoiNR05Warnings, 1);
+		//	} else {
 				Player_Loses_Control();
 				Player_Set_Combat_Mode(false);
 				Loop_Actor_Walk_To_XYZ(kActorMcCoy, -229.0f, -70.19f, -469.0f, 0, false, false, true);
@@ -219,7 +226,8 @@ bool SceneScriptNR03::ClickedOnExit(int exitId) {
 				Game_Flag_Set(kFlagNR03toNR05);
 				Set_Enter(kSetNR05_NR08, kSceneNR05);
 				Scene_Loop_Start_Special(kSceneLoopModeChangeSet, kNR03LoopTableSwivel, false);
-			}
+			//}
+			//----
 		}
 		return true;
 	}
@@ -291,10 +299,12 @@ void SceneScriptNR03::PlayerWalkedIn() {
 		Loop_Actor_Walk_To_XYZ(kActorMcCoy, 302.0f, -70.19f, -715.0f, 0, false, false, false);
 		Game_Flag_Reset(kFlagNR01toNR03);
 	}
-
-	if (Player_Query_Combat_Mode()) {
-		Actor_Set_Goal_Number(kActorHanoi, kGoalHanoiThrowOutMcCoy);
-	}
+	//RTR 5.16.2019
+	//Combat free:
+	//if (Player_Query_Combat_Mode()) {
+	//	Actor_Set_Goal_Number(kActorHanoi, kGoalHanoiThrowOutMcCoy);
+	//}
+	//----
 	//return false;
 }
 

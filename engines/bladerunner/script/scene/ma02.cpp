@@ -69,12 +69,9 @@ void SceneScriptMA02::InitializeScene() {
 
 	if ( Global_Variable_Query(kVariableChapter) == 5
 	 &&  Game_Flag_Query(kFlagMcCoyIsHelpingReplicants)
-	//RTR 3.24.2019
-	//Omit
-	//&& !Actor_Clue_Query(kActorMcCoy, kClueCrystalsCigarette)
-	//----
+	 && !Actor_Clue_Query(kActorMcCoy, kClueCrystalsCigarette)
 	) {
-		Overlay_Play("MA02OVER", 0, 1, 0, 0);
+		Overlay_Play("MA02OVER", 0, true, false, 0);
 	}
 }
 
@@ -98,7 +95,7 @@ bool SceneScriptMA02::ClickedOn3DObject(const char *objectName, bool a2) {
 	}
 
 	if (Object_Query_Click("BAR-MAIN", objectName)) {
-		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -29.0f, -140.4f, 298.0f, 36, true, false, 0)) {
+		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -29.0f, -140.4f, 298.0f, 36, true, false, false)) {
 			Actor_Face_Object(kActorMcCoy, "BAR-MAIN", true);
 			if (Global_Variable_Query(kVariableChapter) < 4) {
 				Actor_Set_Goal_Number(kActorMaggie, kGoalMaggieMA02GetFed);
@@ -107,7 +104,7 @@ bool SceneScriptMA02::ClickedOn3DObject(const char *objectName, bool a2) {
 			        && !Actor_Clue_Query(kActorMcCoy, kClueCrystalsCigarette)
 			) {
 				Overlay_Remove("MA02OVER");
-				Item_Pickup_Spin_Effect(985, 480, 240);
+				Item_Pickup_Spin_Effect(kModelAnimationCrystalsCigarette, 480, 240);
 				Actor_Voice_Over(1150, kActorVoiceOver);
 				Actor_Voice_Over(1160, kActorVoiceOver);
 				Actor_Voice_Over(1170, kActorVoiceOver);
@@ -142,7 +139,7 @@ bool SceneScriptMA02::ClickedOnItem(int itemId, bool a2) {
 
 bool SceneScriptMA02::ClickedOnExit(int exitId) {
 	if (exitId == kMA02ExitMA06) {
-		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 23.19f, -144.12f, 378.27f, 0, true, false, 0)) {
+		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, 23.19f, -144.12f, 378.27f, 0, true, false, false)) {
 			Music_Stop(10);
 			Game_Flag_Set(kFlagMA02toMA06);
 			Set_Enter(kSetMA06, kSceneMA06);
@@ -151,7 +148,7 @@ bool SceneScriptMA02::ClickedOnExit(int exitId) {
 	}
 
 	if (exitId == kMA02ExitMA04) {
-		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -168.0f, -144.13f, 10.27f, 0, true, false, 0)) {
+		if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -168.0f, -144.13f, 10.27f, 0, true, false, false)) {
 			Game_Flag_Set(kFlagMA02ToMA04);
 			Set_Enter(kSetMA04, kSceneMA04);
 		}
@@ -171,22 +168,12 @@ void SceneScriptMA02::ActorChangedGoal(int actorId, int newGoal, int oldGoal, bo
 }
 
 void SceneScriptMA02::PlayerWalkedIn() {
-	//RTR 3.24.2019
-	//Rajif talk
-	//if (Global_Variable_Query(kVariableChapter) > 1 
-	//	&& !Game_Flag_Query(kFlagMA02RajifTalk) 
-	//	) {
-	//	Game_Flag_Set(kFlagUG07Empty);
-	//	Game_Flag_Set(kFlagMA02RajifTalk);
-	//	talkWithRajif();
-	//}
-	//----
 	if (Game_Flag_Query(kFlagMA06ToMA02)) {
 		selectNextTvNews();
 	}
 
 	if (Game_Flag_Query(kFlagMA04ToMA02)) {
-		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -148.12f, -144.13f, 34.27f, 0, true, false, 0);
+		Loop_Actor_Walk_To_XYZ(kActorMcCoy, -148.12f, -144.13f, 34.27f, 0, true, false, false);
 	}
 
 	if ( Global_Variable_Query(kVariableChapter) == 4
@@ -195,7 +182,7 @@ void SceneScriptMA02::PlayerWalkedIn() {
 		Game_Flag_Set(kFlagUG07Empty);
 		Game_Flag_Set(kFlagMA02RajifTalk);
 		talkWithRajif();
-		Loop_Actor_Walk_To_XYZ(kActorMcCoy, 23.19f, -144.12f, 378.27f, 0, false, false, 0);
+		Loop_Actor_Walk_To_XYZ(kActorMcCoy, 23.19f, -144.12f, 378.27f, 0, false, false, false);
 		Game_Flag_Set(kFlagMA02toMA06);
 		Set_Enter(kSetMA06, kSceneMA06);
 		//	return true;
