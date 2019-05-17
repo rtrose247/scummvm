@@ -39,6 +39,10 @@ void AIScriptDektora::Initialize() {
 	_x = _y = _z = 0.0f;
 
 	Actor_Set_Goal_Number(kActorDektora, kGoalDektoraDefault);
+	//RTR 5.17.2019
+	//always set targetable
+	Actor_Set_Targetable(kActorDektora, true);
+	//----
 }
 
 bool AIScriptDektora::Update() {
@@ -332,6 +336,10 @@ int AIScriptDektora::GetFriendlinessModifierIfGetsClue(int otherActorId, int clu
 }
 
 bool AIScriptDektora::GoalChanged(int currentGoalNumber, int newGoalNumber) {
+	//RTR 5.17.2019
+	//always set targetable
+	Actor_Set_Targetable(kActorDektora, true);
+	//----
 	switch (newGoalNumber) {
 	case kGoalDektoraStartWalkingAround:
 		AI_Movement_Track_Flush(kActorDektora);

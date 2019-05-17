@@ -49,10 +49,20 @@ void SceneScriptNR08::InitializeScene() {
 	}
 
 	Scene_Exit_Add_2D_Exit(0, 610, 0, 639, 479, 1);
-	if (Actor_Query_Goal_Number(kActorDektora) != kGoalDektoraNR08Dance) {
-		Scene_Exit_Add_2D_Exit(1,   0, 309,  30, 398, 3);
-		Scene_Exit_Add_2D_Exit(2, 520, 330, 556, 386, 0);
-	}
+	//RTR 5.17.2019
+	//Always enable
+	//if (Actor_Query_Goal_Number(kActorDektora) != kGoalDektoraNR08Dance) {
+	Scene_Exit_Add_2D_Exit(1,   0, 309,  30, 398, 3);
+	Scene_Exit_Add_2D_Exit(2, 520, 330, 556, 386, 0);
+	//}
+	if (Actor_Query_Goal_Number(kActorDektora) != kGoalDektoraNR08Dance)  
+		if (Actor_Query_Goal_Number(kActorDektora) != kGoalDektoraNR08ReadyToRun)
+			if (Actor_Query_Goal_Number(kActorSteele) != kGoalSteeleNR01GoToNR08)
+			{
+				Actor_Change_Animation_Mode(kActorDektora, kAnimationModeIdle);
+				Actor_Set_Goal_Number(kActorDektora, kGoalDektoraNR07Sit);
+			}			
+	//----
 
 	Ambient_Sounds_Add_Looping_Sound(kSfxBARAMB1, 50, 38, 0);
 	Ambient_Sounds_Add_Sound(kSfxBARSFX1,  3, 60, 14, 14,   60,  90, -101, -101, 0, 0);
@@ -84,6 +94,10 @@ void SceneScriptNR08::SceneLoaded() {
 	if (Actor_Query_Goal_Number(kActorDektora) == kGoalDektoraNR08Dance) {
 		Actor_Change_Animation_Mode(kActorDektora, 79);
 	}
+	//RTR 5.17.2019
+	//Always enable
+	Scene_Exits_Enable();
+	//----
 }
 
 bool SceneScriptNR08::MouseClick(int x, int y) {

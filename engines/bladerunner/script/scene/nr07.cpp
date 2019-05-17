@@ -64,15 +64,21 @@ bool SceneScriptNR07::ClickedOnActor(int actorId) {
 		if (Game_Flag_Query(kFlagNR07McCoyIsCop)) {
 			DM_Add_To_List_Never_Repeat_Once_Selected(1100, -1, 3, 8); // VOIGT-KAMPFF
 			DM_Add_To_List_Never_Repeat_Once_Selected(1110, 8, -1, -1); // CRYSTAL
-			if (Actor_Clue_Query(kActorMcCoy, kClueSuspectDektora)) { // cut content? clue is not obtainable
-				DM_Add_To_List_Never_Repeat_Once_Selected(1120, 3, 6, 7); // MOONBUS
-			}
+			//RTR 5.17.2019
+			//moonbus
+			//if (Actor_Clue_Query(kActorMcCoy, kClueSuspectDektora)) { // cut content? clue is not obtainable
+			DM_Add_To_List_Never_Repeat_Once_Selected(1120, 3, 6, 7); // MOONBUS
+			//}
+			//----
 			if (Actor_Clue_Query(kActorMcCoy, kClueCarRegistration1)) {
 				DM_Add_To_List_Never_Repeat_Once_Selected(1130, 3, 5, 7); // BLACK SEDAN
 			}
-			if (Game_Flag_Query(kFlagNotUsed510)) { // cut content? flag is never set
-				DM_Add_To_List_Never_Repeat_Once_Selected(1140, 1, 4, 7); // SCORPIONS
-			}
+			//RTR 5.17.2019
+			//scorpions
+			//if (Game_Flag_Query(kFlagNotUsed510)) { // cut content? flag is never set
+			DM_Add_To_List_Never_Repeat_Once_Selected(1140, 1, 4, 7); // SCORPIONS
+			//}
+			//----
 		} else {
 			DM_Add_To_List_Never_Repeat_Once_Selected(1080, 3, 5, 7); // BELT
 			DM_Add_To_List_Never_Repeat_Once_Selected(1090, 7, 5, 4); // EARLY-Q

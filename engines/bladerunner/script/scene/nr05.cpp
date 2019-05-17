@@ -43,9 +43,12 @@ void SceneScriptNR05::InitializeScene() {
 	}
 
 	Scene_Exit_Add_2D_Exit(0, 459, 147, 639, 290, 1);
-	if (Game_Flag_Query(kFlagNR08Available)) {
-		Scene_Exit_Add_2D_Exit(1, 0, 0, 30, 479, 3);
-	}
+	//RTR 5.17.2019
+	//Always enable
+	//if (Game_Flag_Query(kFlagNR08Available)) {
+	Scene_Exit_Add_2D_Exit(1, 0, 0, 30, 479, 3);
+	//}
+	//----
 
 	Ambient_Sounds_Add_Looping_Sound(kSfxBARAMB1, 50, 38, 0);
 	Ambient_Sounds_Add_Sound(kSfxBARSFX1,  3, 60, 20, 20,  -30,  30, -101, -101, 0, 0);
@@ -88,6 +91,11 @@ void SceneScriptNR05::SceneLoaded() {
 	Obstacle_Object("NM1-1+", true);
 	Clickable_Object("NM1-1+");
 	Unclickable_Object("NM1-1+");
+	//RTR 5.17.2019
+	Actor_Put_In_Set(kActorEarlyQ, kSetNR05_NR08);
+	Actor_Set_At_XYZ(kActorEarlyQ, -671.56f, 0.0f, -287.02f, 849);
+	Actor_Set_Goal_Number(kActorEarlyQ, kGoalEarlyQNR05TalkingToMcCoy);
+	//----
 }
 
 bool SceneScriptNR05::MouseClick(int x, int y) {
