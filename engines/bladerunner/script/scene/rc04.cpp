@@ -59,6 +59,12 @@ void SceneScriptRC04::SceneLoaded() {
 	Unobstacle_Object("DisplayTrim", true);
 	Unobstacle_Object("Display01", true);
 	Actor_Set_Goal_Number(kActorGenwalkerA, 200);
+	//RTR 5.18.2019
+	//always enable
+	Item_Pickup_Spin_Effect(kModelAnimationDNADataDisc, 405, 192);
+	Actor_Says(kActorBulletBob, 2030, 30);
+	Game_Flag_Set(kFlagKIAPrivacyAddon);
+	//----
 }
 
 bool SceneScriptRC04::MouseClick(int x, int y) {

@@ -30,7 +30,7 @@ void SceneScriptKP07::InitializeScene() {
 	Game_Flag_Reset(kFlagKP06toKP07);
 
 	Scene_Exit_Add_2D_Exit(0, 315, 185, 381, 285, 0);
-
+	
 	if (Game_Flag_Query(kFlagMcCoyIsHelpingReplicants)) {
 		if (Game_Flag_Query(kFlagDektoraIsReplicant)
 		 && Actor_Query_Goal_Number(kActorDektora) < kGoalDektoraGone
@@ -102,6 +102,20 @@ void SceneScriptKP07::SceneLoaded() {
 		Player_Set_Combat_Mode(false);
 		Scene_Exits_Disable();
 	}
+	//RTR 5.17.2019
+	//Place actors
+	Actor_Set_Targetable(kActorDektora, true);
+	Actor_Put_In_Set(kActorDektora, kSetKP07);
+	Actor_Set_At_XYZ(kActorDektora, -52.0f, -41.52f, -5.0f, 289);	
+	//
+	Actor_Set_Targetable(kActorGordo, true);
+	Actor_Put_In_Set(kActorGordo, kSetKP07);
+	Actor_Set_At_XYZ(kActorGordo, 61.0f, -41.52f, -3.0f, 921);
+	//
+	Actor_Put_In_Set(kActorLucy, kSetKP07);
+	Actor_Set_At_XYZ(kActorLucy, 78.0f, -41.52f, -119.0f, 659);
+	//----
+	
 }
 
 bool SceneScriptKP07::MouseClick(int x, int y) {

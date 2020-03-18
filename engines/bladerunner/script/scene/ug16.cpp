@@ -71,6 +71,19 @@ void SceneScriptUG16::SceneLoaded() {
 	Footstep_Sounds_Set(1, 2);
 	Footstep_Sounds_Set(2, 3);
 	Footstep_Sounds_Set(6, 3);
+	//RTR 3.9.2020
+	if (!Actor_Clue_Query(kActorMcCoy, kClueDNALutherLance))
+	{
+		Item_Pickup_Spin_Effect(kModelAnimationDNADataDisc, 418, 305);
+		Actor_Clue_Acquire(kActorMcCoy, kClueDNALutherLance, true, -1);
+	}
+	if (!Actor_Clue_Query(kActorMcCoy, kClueFolder))
+	{
+		Delay(1000);
+		Item_Pickup_Spin_Effect(kModelAnimationFolder, 460, 287);
+		Actor_Clue_Acquire(kActorMcCoy, kClueFolder, true, -1);
+	}
+	//----
 }
 
 bool SceneScriptUG16::MouseClick(int x, int y) {
